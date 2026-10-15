@@ -10,6 +10,7 @@ import {
   Wrench,
   Utensils
 } from 'lucide-react';
+import { TradeCharacter, StateCharacter } from './Characters';
 
 export default function JobCard({ job, onSelect }) {
   const { language, workerProfile, t } = useApp();
@@ -49,9 +50,7 @@ export default function JobCard({ job, onSelect }) {
       {/* Top Header: Trade, Pay & Safety Indicator */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <span className="text-2xl p-2.5 bg-[#FDE047] border-2 border-[#0A0A0A] rounded-2xl flex-shrink-0" aria-hidden="true">
-            {getTradeIcon(job.trade)}
-          </span>
+          <TradeCharacter trade={job.trade} className="w-13 h-13 flex-shrink-0" />
           <div>
             <div className="text-[12px] font-black text-neutral-500 uppercase tracking-wider">
               {job.startDate === 'Today'
@@ -129,8 +128,9 @@ export default function JobCard({ job, onSelect }) {
 
       {/* Warning Alert Note for Flagged Jobs */}
       {!isSafe && job.suspiciousFlags && (
-        <div className="bg-[#FEE2E2] border-2 border-[#DC2626] rounded-2xl p-3 text-xs text-[#991B1B] font-bold">
-          ⚠️ {job.suspiciousFlags[0][language] || job.suspiciousFlags[0].en}
+        <div className="bg-[#FEE2E2] border-2 border-[#DC2626] rounded-2xl p-3 text-xs text-[#991B1B] font-bold flex items-center gap-3">
+          <StateCharacter state="concerned" className="w-10 h-10 flex-shrink-0" />
+          <span className="flex-1">⚠️ {job.suspiciousFlags[0][language] || job.suspiciousFlags[0].en}</span>
         </div>
       )}
     </div>

@@ -86,7 +86,7 @@ export default function WorkerProfile() {
 
   // WhatsApp share link
   const shareText = encodeURIComponent(
-    `नमस्ते! मी ${workerProfile.name}, ${workerProfile.trade} (${workerProfile.experienceYears} वर्षे अनुभव, खोपोली नाका). माझे हॉकर्स हेल्प प्रोफाईल व कामे पहा: https://hawkershelp.in/worker/${workerProfile.id} | रोज: ₹${workerProfile.baseWageAsk}/दिवस`
+    `नमस्ते! मी ${workerProfile.name}, ${workerProfile.trade} (${workerProfile.experienceYears} वर्षे अनुभव, खोपोली नाका). माझे नाका (NAKA) प्रोफाईल व कामे पहा: https://naka.in/worker/${workerProfile.id} | रोज: ₹${workerProfile.baseWageAsk}/दिवस`
   );
   const waUrl = `https://wa.me/?text=${shareText}`;
 
@@ -449,7 +449,7 @@ export default function WorkerProfile() {
               <div className="w-44 h-44 bg-white border-4 border-slate-900 p-2 flex flex-col items-center justify-center shadow-inner relative">
                 <QrCode className="w-36 h-36 text-slate-900" />
                 <span className="text-[9px] font-bold text-slate-600 bg-white px-1 mt-1">
-                  HAWKER'S HELP ID #8921
+                  NAKA ID #8921
                 </span>
               </div>
             </div>

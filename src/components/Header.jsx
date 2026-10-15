@@ -7,10 +7,10 @@ export default function Header({ onOpenOnboarding }) {
 
   const handleSpeakHeader = () => {
     const text = language === 'mr'
-      ? 'हॉकर्स हेल्प. काम तुम्हाला शोधेल. नाक्यावरील उपलब्ध कामे.'
+      ? 'नाका ॲप. काम तुम्हाला शोधेल. नाक्यावरील उपलब्ध कामे.'
       : language === 'hi'
-      ? 'हॉकर्स हेल्प. काम आपको खोजेगा. नाके पर उपलब्ध काम.'
-      : "Hawker's Help. Work finds you. Nearby naka jobs.";
+      ? 'नाका ॲप. काम आपको खोजेगा. नाके पर उपलब्ध काम.'
+      : "NAKA. Work finds you. Nearby naka jobs.";
     speakText(text);
   };
 

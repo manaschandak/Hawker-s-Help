@@ -13,21 +13,21 @@ export default function LanguageSelect() {
       name: 'मराठी',
       englishName: 'Marathi',
       tagline: 'महाराष्ट्र नाका कामगार व मालकांसाठी प्राधान्य',
-      sampleGreeting: 'नमस्कार! हॉकर्स हेल्पमध्ये आपले स्वागत आहे.'
+      sampleGreeting: 'नमस्कार! नाका ॲपमध्ये आपले स्वागत आहे.'
     },
     {
       code: 'hi',
       name: 'हिन्दी',
       englishName: 'Hindi',
       tagline: 'दैनिक मजदूर और नियोक्ताओं के लिए सरल इंटरफ़ेस',
-      sampleGreeting: 'नमस्ते! हॉकर्स हेल्प में आपका स्वागत है।'
+      sampleGreeting: 'नमस्ते! नाका में आपका स्वागत है।'
     },
     {
       code: 'en',
       name: 'English',
       englishName: 'English',
       tagline: 'Standard interface for contractors & urban employers',
-      sampleGreeting: 'Welcome to Hawker\'s Help. Work finds you.'
+      sampleGreeting: 'Welcome to NAKA. Work finds you.'
     }
   ];
 

@@ -185,7 +185,7 @@ export default function PricingSection({ onBookCall, className = '' }) {
         <div className="mt-10 p-5 rounded-2xl bg-white border border-slate-200 text-center max-w-xl mx-auto shadow-sm space-y-1">
           <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-800">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>100% Commission-Free Direct Hiring for Roadside Hawkers</span>
+            <span>100% Commission-Free Direct Hiring on NAKA</span>
           </div>
           <p className="text-[11px] text-slate-500">
             Workers receive 100% of their daily wage. No platform deductions from worker earnings.

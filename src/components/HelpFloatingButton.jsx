@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { AlertCircle, X, PhoneCall, ShieldAlert, FileText, ChevronRight } from 'lucide-react';
+import { HelpfulAdvocateCharacter } from './Characters';
 
 export default function HelpFloatingButton({ onOpenReport, onOpenRights }) {
   const { language, t, SAMPLE_DATA_DISCLAIMER } = useApp();
@@ -27,9 +28,7 @@ export default function HelpFloatingButton({ onOpenReport, onOpenRights }) {
             
             <div className="flex items-center justify-between border-b-2 border-neutral-100 pb-3">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-[#FEE2E2] text-[#DC2626] border-2 border-[#DC2626] rounded-2xl">
-                  <ShieldAlert className="w-5 h-5 stroke-[2.5]" />
-                </div>
+                <HelpfulAdvocateCharacter className="w-13 h-13 flex-shrink-0" />
                 <div>
                   <h3 className="font-black text-[#0A0A0A] text-base leading-tight">
                     {language === 'mr' ? 'मदत व तक्रार केंद्र' : 'Emergency Help & Rights'}

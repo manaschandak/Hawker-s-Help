@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Star, X, Check, ThumbsUp } from 'lucide-react';
+import { StateCharacter } from './Characters';
 
 export default function RatingModal({ isOpen, onClose, targetName, targetRole, jobId }) {
   const { submitReview, language, t } = useApp();
@@ -47,13 +48,16 @@ export default function RatingModal({ isOpen, onClose, targetName, targetRole, j
       <div className="w-full max-w-[420px] bg-white rounded-t-[32px] sm:rounded-[32px] border-4 border-[#0A0A0A] shadow-2xl p-6 space-y-4">
         
         <div className="flex items-center justify-between border-b-2 border-neutral-100 pb-3">
-          <div>
-            <h3 className="font-black text-[#0A0A0A] text-lg leading-tight">
-              {t('rateExperience')}
-            </h3>
-            <p className="text-xs text-neutral-600 font-bold mt-0.5">
-              {targetName} यांच्यासोबतचा अनुभव कसा होता?
-            </p>
+          <div className="flex items-center gap-3">
+            <StateCharacter state="happy" className="w-12 h-12 flex-shrink-0" />
+            <div>
+              <h3 className="font-black text-[#0A0A0A] text-lg leading-tight">
+                {t('rateExperience')}
+              </h3>
+              <p className="text-xs text-neutral-600 font-bold mt-0.5">
+                {targetName} यांच्यासोबतचा अनुभव कसा होता?
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}

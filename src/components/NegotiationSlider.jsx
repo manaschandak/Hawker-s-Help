@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { CheckCircle2, AlertCircle, ArrowRightLeft, Sparkles, Plus, Minus } from 'lucide-react';
+import { StateCharacter } from './Characters';
 
 export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
   const { workerProfile, language, AREA_BENCHMARKS, t } = useApp();
@@ -106,18 +107,24 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
             </div>
           </div>
 
-          {/* Status Badge in Center */}
-          <div>
+          {/* Status Badge in Center with Expressive State Characters */}
+          <div className="flex flex-col items-center">
             {isMatched ? (
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#DCFCE7] text-[#15803D] text-xs font-black rounded-full border-2 border-[#15803D]">
-                <CheckCircle2 className="w-4 h-4 text-[#15803D] stroke-[2.5]" />
-                <span>{language === 'mr' ? 'दर पक्का झाला!' : 'Match!'}</span>
-              </span>
+              <div className="flex items-center gap-2">
+                <StateCharacter state="happy" className="w-11 h-11 flex-shrink-0" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#DCFCE7] text-[#15803D] text-xs font-black rounded-full border-2 border-[#15803D]">
+                  <CheckCircle2 className="w-4 h-4 text-[#15803D] stroke-[2.5]" />
+                  <span>{language === 'mr' ? 'दर पक्का झाला!' : 'Match!'}</span>
+                </span>
+              </div>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FDE047] text-[#0A0A0A] text-xs font-black rounded-full border-2 border-[#0A0A0A]">
-                <AlertCircle className="w-4 h-4 stroke-[2.5]" />
-                <span>{language === 'mr' ? `तफावत: ₹${gap}` : `Gap: ₹${gap}`}</span>
-              </span>
+              <div className="flex items-center gap-2">
+                <StateCharacter state="thinking" className="w-11 h-11 flex-shrink-0" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FDE047] text-[#0A0A0A] text-xs font-black rounded-full border-2 border-[#0A0A0A]">
+                  <AlertCircle className="w-4 h-4 stroke-[2.5]" />
+                  <span>{language === 'mr' ? `तफावत: ₹${gap}` : `Gap: ₹${gap}`}</span>
+                </span>
+              </div>
             )}
           </div>
 
@@ -199,9 +206,21 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
         </div>
       )}
 
-      {/* Ready to Commit Action */}
+      {/* Ready to Commit Action with Celebration */}
       {isMatched && (
-        <div className="pt-1">
+        <div className="pt-1 space-y-3">
+          <div className="bg-[#DCFCE7] border-2 border-[#15803D] rounded-2xl p-3 flex items-center gap-3">
+            <StateCharacter state="happy" className="w-12 h-12 flex-shrink-0" />
+            <div>
+              <div className="font-black text-sm text-[#15803D]">
+                {language === 'mr' ? 'दोन्ही बाजूंचे समाधान झाले!' : 'Great! Wage Agreement Reached'}
+              </div>
+              <div className="text-xs text-neutral-700">
+                {language === 'mr' ? 'आता काम पक्के करा व वेळेवर हजर राहा.' : 'Lock in the job and arrive at the site on time.'}
+              </div>
+            </div>
+          </div>
+
           <button
             onClick={() => onAcceptAgreedPay(workerAsk)}
             className="w-full min-h-[56px] py-3.5 px-5 bg-[#15803D] hover:bg-[#166534] text-white font-black rounded-full shadow-lg border-2 border-[#0A0A0A] flex items-center justify-center gap-2 active:scale-95 transition-transform text-base"
