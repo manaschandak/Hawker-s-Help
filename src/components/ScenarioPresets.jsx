@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Sparkles, ChevronDown, ChevronUp, PlayCircle, ArrowRightLeft, AlertTriangle, Clock, Shield, Smartphone, Monitor } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, PlayCircle, ArrowRightLeft, AlertTriangle, Clock, Shield, Smartphone, Monitor, MessageSquare } from 'lucide-react';
 
 export default function ScenarioPresets({ onSelectScenario, isMobileView, setIsMobileView }) {
   const { language } = useApp();
@@ -12,6 +12,12 @@ export default function ScenarioPresets({ onSelectScenario, isMobileView, setIsM
       title: language === 'mr' ? '1-क्लिक: मजुरी बोलणी व विश्वासू कार्ड' : '1-Click: Wage Negotiation & Trust Card',
       subtitle: language === 'mr' ? 'सुनिता जोशी (घरमालक) सोबत दर निश्चित करा' : 'Negotiate ₹700/day with homeowner Sunita',
       icon: <ArrowRightLeft className="w-5 h-5 text-[#FDE047] stroke-[2.5]" />
+    },
+    {
+      id: 'live_chat',
+      title: language === 'mr' ? '1-क्लिक: कामगार-मालक थेट चॅट व व्हॉईस' : '1-Click: Worker & Employer Live Chat',
+      subtitle: language === 'mr' ? 'व्हॉईस नोट्स, लोकेशन व मजुरी निश्चिती' : 'Voice notes, worksite location & wage cards',
+      icon: <MessageSquare className="w-5 h-5 text-amber-400 stroke-[2.5]" />
     },
     {
       id: 'scam_alert',

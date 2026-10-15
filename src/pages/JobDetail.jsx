@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import NegotiationSlider from '../components/NegotiationSlider';
 import {
@@ -15,11 +16,14 @@ import {
   Wrench,
   AlertCircle,
   FileText,
-  Star
+  Star,
+  MessageSquare,
+  ArrowRight
 } from 'lucide-react';
 import { StateCharacter, TradeCharacter } from '../components/Characters';
 
 export default function JobDetail({ job, onBack, onOpenReport }) {
+  const navigate = useNavigate();
   const { language, employers, acceptJob, workerProfile, speakText, t } = useApp();
 
   const employer = employers.find(e => e.id === job.employerId) || {
@@ -297,6 +301,32 @@ export default function JobDetail({ job, onBack, onOpenReport }) {
         )}
       </div>
 
+      {/* Direct Chat with Employer Banner */}
+      <div className="bg-[#0A0A0A] text-white rounded-[32px] border-3 border-[#0A0A0A] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-[#FDE047] text-[#0A0A0A] rounded-2xl shrink-0">
+            <MessageSquare className="w-5 h-5 stroke-[2.5]" />
+          </div>
+          <div>
+            <div className="text-xs font-black text-[#FDE047] uppercase tracking-wide">
+              {language === 'mr' ? 'थेट संवाद व पत्ता विचारणा' : 'Direct Chat with Employer'}
+            </div>
+            <div className="text-xs text-neutral-300 font-bold mt-0.5">
+              {language === 'mr' ? 'कामाचे ठिकाण, वेळ किंवा अवजारांबद्दल थेट मेसेज करा' : 'Message regarding address, tools or arrival timing'}
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate(`/chat?conv=conv_1&sender=worker`)}
+          className="min-h-[46px] px-5 rounded-full bg-[#FDE047] text-[#0A0A0A] hover:bg-yellow-300 font-black text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all shrink-0 border-2 border-[#0A0A0A] cursor-pointer"
+        >
+          <span>{language === 'mr' ? 'मालकांशी चॅट करा' : 'Chat with Employer'}</span>
+          <ArrowRight size={14} className="stroke-[2.5]" />
+        </button>
+      </div>
+
       {/* 5. Wage Negotiation Slider Component */}
       <NegotiationSlider
         job={job}
@@ -396,15 +426,28 @@ export default function JobDetail({ job, onBack, onOpenReport }) {
                     : 'Your status is now automatically marked Busy for this date to prevent conflicting bookings.'}
                 </div>
 
-                <button
-                  onClick={() => {
-                    setIsAgreementModalOpen(false);
-                    onBack();
-                  }}
-                  className="w-full min-h-[56px] bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] font-black rounded-full shadow-lg border-2 border-[#0A0A0A] active:scale-95 transition-transform text-sm"
-                >
-                  {language === 'mr' ? 'माझ्या कामांवर जा' : 'Done & Return to Feed'}
-                </button>
+                <div className="space-y-2 pt-1">
+                  <button
+                    onClick={() => {
+                      setIsAgreementModalOpen(false);
+                      navigate('/chat?conv=conv_1&sender=worker');
+                    }}
+                    className="w-full min-h-[56px] bg-[#0A0A0A] hover:bg-[#171717] text-[#FDE047] font-black rounded-full shadow-lg border-2 border-[#0A0A0A] active:scale-95 transition-transform text-sm flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <MessageSquare size={16} />
+                    <span>{language === 'mr' ? 'मालकांना मेसेज पाठवा' : 'Message Employer Now'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsAgreementModalOpen(false);
+                      onBack();
+                    }}
+                    className="w-full min-h-[52px] bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] font-black rounded-full border-2 border-[#0A0A0A] active:scale-95 transition-transform text-sm cursor-pointer"
+                  >
+                    {language === 'mr' ? 'माझ्या कामांवर जा' : 'Done & Return to Feed'}
+                  </button>
+                </div>
               </div>
             )}
 

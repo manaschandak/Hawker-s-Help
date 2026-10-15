@@ -16,7 +16,8 @@ import {
   Wrench,
   Clock,
   FileText,
-  Lock
+  Lock,
+  MessageSquare
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -51,8 +52,8 @@ export default function CardNav({
       },
       links: [
         { label: language === 'mr' ? 'सर्व उपलब्ध कामे' : language === 'hi' ? 'सभी उपलब्ध कार्य' : 'All Available Jobs', href: '/jobs?filter=all' },
-        { label: language === 'mr' ? 'आजचे तातडीचे काम' : language === 'hi' ? 'आज का तुरंत काम' : 'Urgent Today Jobs', href: '/jobs?filter=today' },
-        { label: language === 'mr' ? 'माझ्या अवजारांनुसार' : language === 'hi' ? 'मेरे औजार अनुसार' : 'Tool Matched Jobs', href: '/jobs?filter=tools' }
+        { label: language === 'mr' ? 'थेट चॅट व मेसेज' : language === 'hi' ? 'सीधी बातचीत व मैसेज' : 'Direct Chat & Messages', href: '/chat' },
+        { label: language === 'mr' ? 'आजचे तातडीचे काम' : language === 'hi' ? 'आज का तुरंत काम' : 'Urgent Today Jobs', href: '/jobs?filter=today' }
       ]
     },
     {
@@ -116,7 +117,7 @@ export default function CardNav({
       links: [
         { label: language === 'mr' ? 'नाक्यावरील उपलब्ध कारागीर' : language === 'hi' ? 'उपलब्ध कारीगर' : 'Nearby Available Workers', href: '/workers' },
         { label: language === 'mr' ? 'तयार कामगार संघ (Teams)' : language === 'hi' ? 'कारीगर टीमें' : 'Pre-formed Work Teams', href: '/workers' },
-        { label: language === 'mr' ? 'ट्रेड अनुसार शोधा' : language === 'hi' ? 'श्रेणी अनुसार खोजें' : 'Browse by Category', href: '/workers' }
+        { label: language === 'mr' ? 'कामगारांशी थेट चॅट' : language === 'hi' ? 'कारीगरों से सीधी चैट' : 'Live Chat with Workers', href: '/chat' }
       ]
     },
     {
@@ -406,6 +407,17 @@ export default function CardNav({
               <Globe size={14} className="text-[#0A0A0A]" />
               <span className="uppercase">{language}</span>
             </button>
+
+            {/* Live Chat Direct Action Pill */}
+            <Link
+              to="/chat"
+              onClick={closeMenu}
+              className="h-11 w-11 rounded-full bg-[#FFFFFF] border-2 border-[#0A0A0A] text-[#0A0A0A] hover:bg-neutral-100 flex items-center justify-center transition-all active:scale-95 shadow-xs relative no-underline cursor-pointer"
+              title={language === 'mr' ? 'थेट चॅट उघडा' : 'Open Live Chat'}
+            >
+              <MessageSquare size={16} className="text-[#0A0A0A]" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#15803D] rounded-full ring-2 ring-[#0A0A0A]" />
+            </Link>
 
             {/* Primary Action CTA (Pill Button 56px minimum tall on md) */}
             <button

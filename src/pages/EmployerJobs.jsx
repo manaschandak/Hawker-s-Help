@@ -15,7 +15,8 @@ import {
   Sparkles,
   Users,
   MapPin,
-  HardHat
+  HardHat,
+  MessageSquare
 } from 'lucide-react';
 import RatingModal from '../components/RatingModal';
 import { TradeCharacter, EmployerCharacter } from '../components/Characters';
@@ -237,13 +238,22 @@ export default function EmployerJobs({ onOpenPostJob, onGoToFindWorkers }) {
                   {/* State 2: Accepted (Simulate worker clock-in) */}
                   {job.status === 'accepted' && (
                     <div className="space-y-2">
-                      <div className="p-3 bg-[#FEF08A]/40 rounded-[20px] border border-[#0A0A0A] text-xs text-[#0A0A0A] font-bold flex items-center gap-2">
-                        <HardHat className="w-4 h-4 text-[#0A0A0A]" />
-                        <span><strong>Ramesh Shinde</strong> यांनी काम स्वीकारले आहे.</span>
+                      <div className="p-3 bg-[#FEF08A]/40 rounded-[20px] border border-[#0A0A0A] text-xs text-[#0A0A0A] font-bold flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <HardHat className="w-4 h-4 text-[#0A0A0A]" />
+                          <span><strong>Ramesh Shinde</strong> यांनी काम स्वीकारले आहे.</span>
+                        </div>
+                        <button
+                          onClick={() => navigate('/chat?conv=conv_1&sender=employer')}
+                          className="px-3 py-1 rounded-full bg-[#0A0A0A] text-[#FDE047] font-black text-xs flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs"
+                        >
+                          <MessageSquare size={13} />
+                          <span>{language === 'mr' ? 'चॅट' : 'Chat'}</span>
+                        </button>
                       </div>
                       <button
                         onClick={() => clockIn(job.id)}
-                        className="w-full min-h-[52px] bg-[#15803D] hover:bg-green-700 text-white font-black rounded-full text-xs touch-target active:scale-95 flex items-center justify-center gap-2 shadow-sm"
+                        className="w-full min-h-[52px] bg-[#15803D] hover:bg-green-700 text-white font-black rounded-full text-xs touch-target active:scale-95 flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                       >
                         <Clock className="w-4 h-4 stroke-[2.5]" />
                         <span>{language === 'mr' ? 'हजेरी नोंदवा (Clock In)' : 'Simulate Clock In'}</span>
@@ -255,12 +265,18 @@ export default function EmployerJobs({ onOpenPostJob, onGoToFindWorkers }) {
                   {job.status === 'in_progress' && (
                     <div className="space-y-2">
                       <div className="p-3 bg-[#DCFCE7] rounded-[20px] border border-[#15803D] text-xs text-[#15803D] font-black flex items-center justify-between">
-                        <span>कामगार सध्या कामावर हजर आहे</span>
-                        <span>सुरू: 9:00 AM</span>
+                        <span>कामगार सध्या कामावर हजर आहे (सुरू: 9:00 AM)</span>
+                        <button
+                          onClick={() => navigate('/chat?conv=conv_1&sender=employer')}
+                          className="px-3 py-1 rounded-full bg-[#0A0A0A] text-[#FDE047] font-black text-xs flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs"
+                        >
+                          <MessageSquare size={13} />
+                          <span>{language === 'mr' ? 'चॅट' : 'Chat'}</span>
+                        </button>
                       </div>
                       <button
                         onClick={() => clockOut(job.id, 8)}
-                        className="w-full min-h-[52px] bg-[#0A0A0A] hover:bg-neutral-800 text-[#FDE047] font-black rounded-full text-xs touch-target active:scale-95 flex items-center justify-center gap-2"
+                        className="w-full min-h-[52px] bg-[#0A0A0A] hover:bg-neutral-800 text-[#FDE047] font-black rounded-full text-xs touch-target active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                         <span>{language === 'mr' ? 'काम संपले (Clock Out / 8 तास)' : 'Simulate Clock Out (8 hrs)'}</span>

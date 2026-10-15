@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import {
   Search,
@@ -19,7 +20,8 @@ import {
   X,
   Volume2,
   Camera,
-  HardHat
+  HardHat,
+  MessageSquare
 } from 'lucide-react';
 import { formatDistance } from '../utils/distance';
 import { TradeCharacter, StateCharacter } from '../components/Characters';
@@ -37,6 +39,7 @@ const TRADE_CATEGORIES = [
 ];
 
 export default function FindWorkers({ onOfferJob }) {
+  const navigate = useNavigate();
   const { workers, teams, INITIAL_WORKERS, INITIAL_TEAMS, language, showToast, t, speakText } = useApp();
 
   // Safely fallback to INITIAL arrays if state is momentarily undefined
@@ -373,14 +376,22 @@ export default function FindWorkers({ onOfferJob }) {
                   <div className="pt-2 flex items-center gap-2">
                     <button
                       onClick={() => setSelectedWorkerDetail(worker)}
-                      className="flex-1 py-3 min-h-[48px] bg-white hover:bg-neutral-100 text-[#0A0A0A] border-2 border-[#0A0A0A] font-black rounded-full text-xs transition-colors flex items-center justify-center gap-1.5 active:scale-95"
+                      className="flex-1 py-3 min-h-[48px] bg-white hover:bg-neutral-100 text-[#0A0A0A] border-2 border-[#0A0A0A] font-black rounded-full text-xs transition-colors flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                     >
                       <span>{t('viewProfile')}</span>
                     </button>
 
                     <button
+                      onClick={() => navigate('/chat?conv=conv_1&sender=employer')}
+                      className="h-12 w-12 rounded-full bg-[#0A0A0A] hover:bg-[#171717] text-[#FDE047] border-2 border-[#0A0A0A] flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer shadow-xs"
+                      title={language === 'mr' ? 'कारागिराशी थेट चॅट करा' : 'Chat with Worker'}
+                    >
+                      <MessageSquare size={16} className="stroke-[2.5]" />
+                    </button>
+
+                    <button
                       onClick={() => handleSendOffer(worker)}
-                      className="flex-1 py-3 min-h-[48px] bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] border-2 border-[#0A0A0A] font-black rounded-full text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                      className="flex-1 py-3 min-h-[48px] bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] border-2 border-[#0A0A0A] font-black rounded-full text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
                     >
                       <Briefcase size={14} />
                       <span>{t('directHireBtn')}</span>

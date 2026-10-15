@@ -20,6 +20,7 @@ import RightsHub from './pages/RightsHub';
 import MyTeam from './pages/MyTeam';
 import MyWorkHours from './pages/MyWorkHours';
 import DocumentVault from './pages/DocumentVault';
+import ChatScreen from './pages/ChatScreen';
 import PostJobModal from './pages/PostJobModal';
 import ReportFlow from './pages/ReportFlow';
 
@@ -64,6 +65,7 @@ export default function App() {
     if (path.includes('/employer/jobs')) return 'employer_jobs';
     if (path.includes('/work-hours')) return 'work_hours';
     if (path.includes('/vault')) return 'vault';
+    if (path.includes('/chat')) return 'chat';
     if (path.includes('/team')) return 'team';
     if (path.includes('/rights')) return 'rights';
     if (path.includes('/profile')) return 'profile';
@@ -75,6 +77,7 @@ export default function App() {
     if (tab === 'jobs') navigate('/jobs');
     else if (tab === 'work_hours') navigate('/work-hours');
     else if (tab === 'vault') navigate('/vault');
+    else if (tab === 'chat') navigate('/chat');
     else if (tab === 'team') navigate('/team');
     else if (tab === 'rights') navigate('/rights');
     else if (tab === 'profile') navigate('/profile');
@@ -119,6 +122,15 @@ export default function App() {
         language === 'mr'
           ? 'प्रसंग 3: मालक डॅशबोर्ड व हिशोब मंजूरी'
           : 'Scenario 3 Loaded: Employer Hours Confirmation & Rating',
+        'info'
+      );
+    } else if (scenarioId === 'live_chat') {
+      setSelectedJob(null);
+      navigate('/chat?conv=conv_1&sender=worker');
+      showToast(
+        language === 'mr'
+          ? 'प्रसंग 5: कामगार-मालक थेट चॅट व व्हॉईस नोट्स'
+          : 'Scenario 5 Loaded: Worker & Employer Live Chat',
         'info'
       );
     } else if (scenarioId === 'welfare_checker') {
@@ -261,6 +273,9 @@ export default function App() {
 
             {/* Gov ID & Document Vault */}
             <Route path="/vault" element={<DocumentVault />} />
+
+            {/* Live Chat between Worker and Employer */}
+            <Route path="/chat" element={<ChatScreen />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/jobs" replace />} />
