@@ -62,7 +62,7 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
     );
   }
 
-  // Worker Navigation: 5 high-impact tabs
+  // Worker Navigation: 5 high-impact tabs with Team included
   return (
     <nav className="sticky bottom-0 bg-[#0A0A0A] border-t-2 border-[#262626] px-1 py-1.5 flex items-center justify-around z-30 shadow-2xl">
       <button
@@ -76,6 +76,19 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
       >
         <Briefcase className="w-4 h-4 mb-0.5" />
         <span className="text-[11px] leading-tight">{language === 'mr' ? 'कामे' : 'Jobs'}</span>
+      </button>
+
+      <button
+        onClick={() => setActiveTab('team')}
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
+          activeTab === 'team'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
+        }`}
+        aria-label={t('navMyTeam')}
+      >
+        <Users className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'माझा संघ' : 'My Team'}</span>
       </button>
 
       <button
@@ -105,19 +118,6 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
       </button>
 
       <button
-        onClick={() => setActiveTab('rights')}
-        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
-          activeTab === 'rights'
-            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
-            : 'text-neutral-400 font-semibold hover:text-white'
-        }`}
-        aria-label={t('navRights')}
-      >
-        <Shield className="w-4 h-4 mb-0.5" />
-        <span className="text-[11px] leading-tight">{t('navRights')}</span>
-      </button>
-
-      <button
         onClick={() => setActiveTab('profile')}
         className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
           activeTab === 'profile'
@@ -127,7 +127,7 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
         aria-label={t('navProfile')}
       >
         <User className="w-4 h-4 mb-0.5" />
-        <span className="text-[11px] leading-tight">{t('navProfile')}</span>
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'प्रोफाईल' : 'Profile'}</span>
       </button>
     </nav>
   );

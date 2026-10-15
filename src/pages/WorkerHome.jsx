@@ -1,15 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import AvailabilityCard from '../components/AvailabilityCard';
 import NakaBanner from '../components/NakaBanner';
 import JobCard from '../components/JobCard';
-import { Filter, Volume2, Sparkles, Zap, Calendar, Building, Wrench, Paintbrush, Hammer, HardHat, CheckCircle2 } from 'lucide-react';
+import { Filter, Volume2, Sparkles, Zap, Calendar, Building, Wrench, Paintbrush, Hammer, HardHat, CheckCircle2, Users, ArrowRight } from 'lucide-react';
 import { StateCharacter, TradeCharacter } from '../components/Characters';
 
 export default function WorkerHome({ onSelectJob }) {
-  const { jobs, workerProfile, language, speakText, t } = useApp();
+  const { jobs, workerProfile, language, speakText, t, teams } = useApp();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [timeFilter, setTimeFilter] = useState('all'); // all | today | tomorrow | long_term
   const [tradeFilter, setTradeFilter] = useState('all'); // all | plumber | electrician ...
@@ -73,6 +74,39 @@ export default function WorkerHome({ onSelectJob }) {
 
       {/* 2. Naka Mode Presence Banner */}
       <NakaBanner />
+
+      {/* 2.5 My Team Quick Access Banner */}
+      <div className="bg-[#0A0A0A] text-white rounded-[32px] p-4 border-2 border-[#0A0A0A] shadow-md flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-[#FDE047] text-[#0A0A0A] flex items-center justify-center shrink-0 border-2 border-[#0A0A0A] shadow-xs">
+            <Users className="w-6 h-6 stroke-[2.5]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black uppercase tracking-wider text-[#FDE047]">
+                {language === 'mr' ? 'माझा कामगार संघ' : 'My Worker Team'}
+              </span>
+              <span className="text-[10px] bg-[#15803D] text-white px-2 py-0.5 rounded-full font-black">
+                {language === 'mr' ? 'सक्रिय' : 'Active'}
+              </span>
+            </div>
+            <div className="text-sm font-black text-white truncate max-w-[170px] sm:max-w-xs">
+              {teams?.[0]?.name?.[language] || teams?.[0]?.name?.en || 'खोपोली प्लंबिंग गँग'}
+            </div>
+            <div className="text-[11px] text-neutral-300 font-bold">
+              4 {language === 'mr' ? 'सहकारी' : 'Members'} • ₹3,800/{language === 'mr' ? 'दिवस' : 'day'}
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={() => navigate('/team')}
+          className="min-h-[46px] px-3.5 sm:px-4 py-2 bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] font-black text-xs rounded-full border-2 border-[#0A0A0A] flex items-center gap-1 active:scale-95 transition-all shrink-0 cursor-pointer shadow-xs"
+        >
+          <span>{language === 'mr' ? 'संघ पहा' : 'View Team'}</span>
+          <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+        </button>
+      </div>
 
       {/* 3. Filter Bar & Quick Tools Match */}
       <div id="job-feed-list" className="space-y-3 pt-2 scroll-mt-24">

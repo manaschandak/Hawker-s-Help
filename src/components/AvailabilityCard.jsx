@@ -26,7 +26,7 @@ export default function AvailabilityCard() {
               <span>{isAvailable ? t('available') : t('busy')}</span>
               {isAvailable ? (
                 <span className="text-xs font-black text-[#15803D] bg-[#DCFCE7] px-2.5 py-0.5 rounded-full border border-[#15803D]">
-                  {language === 'mr' ? 'कामे दिसतील' : 'Ready for calls'}
+                  {language === 'mr' ? 'आज मोकळा (Available)' : 'Free Today'}
                 </span>
               ) : (
                 <span className="text-xs font-black text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-400">
@@ -50,6 +50,23 @@ export default function AvailabilityCard() {
           {isAvailable ? (language === 'mr' ? 'व्यस्त करा' : 'Mark Busy') : (language === 'mr' ? 'उपलब्ध करा' : 'Mark Free')}
         </button>
       </div>
+
+      {/* Tomorrow Booking Banner if worker booked a job for tomorrow */}
+      {workerProfile.bookedTomorrow && (
+        <div className="p-3 bg-[#DCFCE7]/60 border-2 border-[#15803D] rounded-2xl flex items-center justify-between text-xs font-bold text-[#15803D] gap-2">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 stroke-[2.5] shrink-0" />
+            <span className="truncate">
+              {language === 'mr'
+                ? `उद्याचे काम आरक्षित: ${workerProfile.bookedTomorrow.title || 'काम'}`
+                : `Booked for Tomorrow: ${workerProfile.bookedTomorrow.title || 'Work'}`}
+            </span>
+          </div>
+          <span className="px-2.5 py-0.5 bg-[#15803D] text-white rounded-full text-[10px] font-black uppercase shrink-0">
+            {language === 'mr' ? 'आज मोकळा' : 'Free Today'}
+          </span>
+        </div>
+      )}
 
       {/* Free From Date Selector */}
       <div className="pt-3 border-t-2 border-neutral-100 flex items-center justify-between gap-2 text-sm">

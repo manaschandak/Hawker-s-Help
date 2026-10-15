@@ -52,6 +52,7 @@ export default function CardNav({
       },
       links: [
         { label: language === 'mr' ? 'सर्व उपलब्ध कामे' : language === 'hi' ? 'सभी उपलब्ध कार्य' : 'All Available Jobs', href: '/jobs?filter=all' },
+        { label: language === 'mr' ? 'माझा कामगार संघ (My Team)' : language === 'hi' ? 'मेरी कामगार टीम (My Team)' : 'My Worker Team', href: '/team' },
         { label: language === 'mr' ? 'थेट चॅट व मेसेज' : language === 'hi' ? 'सीधी बातचीत व मैसेज' : 'Direct Chat & Messages', href: '/chat' },
         { label: language === 'mr' ? 'आजचे तातडीचे काम' : language === 'hi' ? 'आज का तुरंत काम' : 'Urgent Today Jobs', href: '/jobs?filter=today' }
       ]
@@ -96,6 +97,7 @@ export default function CardNav({
         navigate('/profile');
       },
       links: [
+        { label: language === 'mr' ? 'माझा कामगार संघ (My Team)' : language === 'hi' ? 'मेरी टीम व सदस्य' : 'My Worker Team & Squad', href: '/team' },
         { label: language === 'mr' ? 'काम फोटो व अनुभव' : language === 'hi' ? 'काम के फोटो' : 'Work Photos & Gallery', href: '/profile' },
         { label: language === 'mr' ? 'दस्तऐवज तिजोरी (Vault)' : language === 'hi' ? 'आईडी प्रूफ वॉल्ट' : 'Gov ID Proof Vault', href: '/vault' },
         { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Switch Account', href: '/onboarding/login' },

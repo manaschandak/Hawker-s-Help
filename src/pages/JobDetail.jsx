@@ -420,10 +420,14 @@ export default function JobDetail({ job, onBack, onOpenReport }) {
                   </div>
                 </div>
 
-                <div className="p-3.5 bg-neutral-100 border-2 border-[#0A0A0A] rounded-2xl text-xs text-neutral-800 font-bold">
-                  {language === 'mr'
-                    ? 'तुमची उपलब्धता आपोआप "व्यस्त" करण्यात आली आहे, जेणेकरून वेळेचा गोंधळ होणार नाही.'
-                    : 'Your status is now automatically marked Busy for this date to prevent conflicting bookings.'}
+                <div className="p-3.5 bg-neutral-100 border-2 border-[#0A0A0A] rounded-2xl text-xs text-neutral-800 font-bold leading-relaxed">
+                  {job.startDate === 'Tomorrow'
+                    ? (language === 'mr'
+                        ? 'उद्याचे काम निश्चित झाले आहे! आज तुम्ही नाक्यावर इतर कामे स्वीकारण्यासाठी मोकळे (Free & Available) आहात.'
+                        : 'Tomorrow’s job confirmed! You remain Free & Available for other work today.')
+                    : (language === 'mr'
+                        ? 'आजचे काम निश्चित झाले आहे. तुमची आजची उपलब्धता आपोआप "कामावर/व्यस्त" करण्यात आली आहे.'
+                        : 'Today’s job confirmed. Your status is now marked Busy for today.')}
                 </div>
 
                 <div className="space-y-2 pt-1">
