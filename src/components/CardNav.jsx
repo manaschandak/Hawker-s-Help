@@ -13,7 +13,8 @@ import {
   CheckCircle2,
   LogIn,
   LogOut,
-  Wrench
+  Wrench,
+  Clock
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -35,42 +36,62 @@ export default function CardNav({
   const workerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कामाचे शोध' : language === 'hi' ? 'काम खोजें' : 'Find Jobs',
+      href: '/jobs',
       bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
       icon: <Briefcase className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/jobs');
+        setTimeout(() => {
+          const el = document.getElementById('job-feed-list');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      },
       links: [
-        { label: language === 'mr' ? 'सर्व उपलब्ध कामे' : language === 'hi' ? 'सभी उपलब्ध कार्य' : 'All Available Jobs', href: '/jobs' },
+        { label: language === 'mr' ? 'सर्व उपलब्ध कामे' : language === 'hi' ? 'सभी उपलब्ध कार्य' : 'All Available Jobs', href: '/jobs?filter=all' },
         { label: language === 'mr' ? 'आजचे तातडीचे काम' : language === 'hi' ? 'आज का तुरंत काम' : 'Urgent Today Jobs', href: '/jobs?filter=today' },
         { label: language === 'mr' ? 'माझ्या अवजारांनुसार' : language === 'hi' ? 'मेरे औजार अनुसार' : 'Tool Matched Jobs', href: '/jobs?filter=tools' }
       ]
     },
     {
       label: language === 'mr' ? 'माझे काम व तास' : language === 'hi' ? 'मेरा काम व हाजिरी' : 'My Work & Hours',
+      href: '/work-hours',
       bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <CheckCircle2 className="w-5 h-5 text-[#22C55E]" />,
+      icon: <Clock className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/work-hours');
+      },
       links: [
-        { label: language === 'mr' ? 'काम हजेरी (Clock In)' : language === 'hi' ? 'हाजिरी व समय' : 'Clock In / Shift', href: '/jobs' },
-        { label: language === 'mr' ? 'माझा कामगार संघ' : language === 'hi' ? 'मेरी टीम' : 'My Worker Collective', href: '/team' },
-        { label: language === 'mr' ? 'मजुरी बोलणी इतिहास' : language === 'hi' ? 'मजदूरी बातचीत' : 'Wage Negotiations', href: '/jobs' }
+        { label: language === 'mr' ? 'काम हजेरी (Clock In / Shift)' : language === 'hi' ? 'हाजिरी व समय' : 'Clock In / Active Shift', href: '/work-hours' },
+        { label: language === 'mr' ? 'मागील हजेरी व मजुरी नोंद' : language === 'hi' ? 'हाजिरी रजिस्टर' : 'Attendance Muster Log', href: '/work-hours' },
+        { label: language === 'mr' ? '९०-दिवस कल्याण प्रमाणपत्र' : language === 'hi' ? '९० दिन प्रमाण पत्र' : 'BOCW 90-Day Proof', href: '/work-hours' }
       ]
     },
     {
       label: language === 'mr' ? 'हक्क व योजना' : language === 'hi' ? 'हक व योजनाएं' : 'Welfare & Rights',
+      href: '/rights',
       bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
       icon: <Shield className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/rights');
+      },
       links: [
         { label: language === 'mr' ? 'BOCW / ई-श्रम योजना' : language === 'hi' ? 'ई-श्रम व पेंशन' : 'e-Shram & BOCW Grants', href: '/rights' },
         { label: language === 'mr' ? 'पात्रता तपासणी (3 प्रश्न)' : language === 'hi' ? 'पात्रता जांचें' : 'Scheme Eligibility Test', href: '/rights' },
-        { label: language === 'mr' ? 'तक्रार व मदत कक्ष' : language === 'hi' ? 'शिकायत व मदद' : 'Grievance / Dispute Cell', href: '/rights?tab=report' }
+        { label: language === 'mr' ? 'तक्रार व मदत कक्ष' : language === 'hi' ? 'शिकायत व मदद' : 'Grievance / Dispute Cell', href: '/rights' }
       ]
     },
     {
       label: language === 'mr' ? 'माझे प्रोफाईल व खाते' : language === 'hi' ? 'मेरी प्रोफाइल व खाता' : 'My Profile & Account',
+      href: '/profile',
       bgColor: '#171717',
       textColor: '#FFFFFF',
       icon: <User className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/profile');
+      },
       links: [
         { label: language === 'mr' ? 'काम फोटो व अनुभव' : language === 'hi' ? 'काम के फोटो' : 'Work Photos & Gallery', href: '/profile' },
         { label: language === 'mr' ? 'उपलब्धता बदला' : language === 'hi' ? 'उपलब्धता दर्ज करें' : 'Set Availability', href: '/profile' },
@@ -83,20 +104,28 @@ export default function CardNav({
   const employerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कारागीर शोधा' : language === 'hi' ? 'कारीगर खोजें' : 'Find Workers',
+      href: '/workers',
       bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
       icon: <User className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/workers');
+      },
       links: [
         { label: language === 'mr' ? 'नाक्यावरील उपलब्ध कारागीर' : language === 'hi' ? 'उपलब्ध कारीगर' : 'Nearby Available Workers', href: '/workers' },
-        { label: language === 'mr' ? 'तयार कामगार संघ (Teams)' : language === 'hi' ? 'कारीगर टीमें' : 'Pre-formed Work Teams', href: '/workers?tab=teams' },
+        { label: language === 'mr' ? 'तयार कामगार संघ (Teams)' : language === 'hi' ? 'कारीगर टीमें' : 'Pre-formed Work Teams', href: '/workers' },
         { label: language === 'mr' ? 'ट्रेड अनुसार शोधा' : language === 'hi' ? 'श्रेणी अनुसार खोजें' : 'Browse by Category', href: '/workers' }
       ]
     },
     {
       label: language === 'mr' ? 'माझी दिलेली कामे' : language === 'hi' ? 'मेरे पोस्ट किए काम' : 'My Jobs & Posts',
+      href: '/employer/jobs',
       bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <Briefcase className="w-5 h-5 text-[#22C55E]" />,
+      icon: <Briefcase className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/employer/jobs');
+      },
       links: [
         { label: language === 'mr' ? 'सक्रिय कामे व हजेरी' : language === 'hi' ? 'सक्रिय कार्य' : 'Active Worksites', href: '/employer/jobs' },
         { label: language === 'mr' ? 'कामाचे तास मंजूर करा' : language === 'hi' ? 'घंटे मंजूर करें' : 'Approve Hours & Pay', href: '/employer/jobs' },
@@ -105,9 +134,13 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'कंत्राटदार योजना' : language === 'hi' ? 'हायरिंग प्लान' : 'Hiring Plans',
+      href: '/plans',
       bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
       icon: <Sparkles className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/plans');
+      },
       links: [
         { label: language === 'mr' ? 'कंत्राटदार प्रो योजना' : language === 'hi' ? 'ठेकेदार प्रो' : 'Contractor Pro Plan', href: '/plans' },
         { label: language === 'mr' ? '10 मोफत ट्रायल नेमणुका' : language === 'hi' ? '10 ट्रायल हायरिंग' : '10 Free Trial Hires', href: '/plans' },
@@ -116,92 +149,65 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'खाते व लॉगिन' : language === 'hi' ? 'खाता व लॉगिन' : 'Account & Login',
+      href: '/onboarding/login',
       bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <Shield className="w-5 h-5 text-[#FDE047]" />,
+      icon: <User className="w-5 h-5 text-[#FDE047]" />,
+      onClick: () => {
+        navigate('/onboarding/login');
+      },
       links: [
-        { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Verify Phone', href: '/onboarding/login' },
-        { label: language === 'mr' ? 'नवीन काम पोस्ट करा' : language === 'hi' ? 'नया काम पोस्ट करें' : 'Post New Job', href: '#post-job', onClick: () => onOpenPostJob && onOpenPostJob() },
-        { label: language === 'mr' ? 'भाषा बदला' : language === 'hi' ? 'भाषा बदलें' : 'Change Language', href: '/onboarding/language' },
-        { label: language === 'mr' ? 'कामगार मोडमध्ये जा' : language === 'hi' ? 'कारीगर मोड चुनें' : 'Switch to Worker Mode', href: '#switch-role', onClick: () => { setRole('worker'); navigate('/jobs'); } }
+        { label: language === 'mr' ? 'कामगार मोडमध्ये जा' : language === 'hi' ? 'कामगार मोड चुनें' : 'Switch to Worker Mode', href: '#switch-role', onClick: () => { setRole('worker'); navigate('/jobs'); } },
+        { label: language === 'mr' ? 'मदत व ग्राहक कक्ष' : language === 'hi' ? 'हेल्पलाइन' : 'Customer Support Cell', href: 'tel:18001801551' }
       ]
     }
-  ], [language, onOpenPostJob, setRole, navigate]);
+  ], [language, setRole, navigate]);
 
   const items = role === 'employer' ? employerItems : workerItems;
 
-  const calculateHeight = () => {
-    const navEl = navRef.current;
-    if (!navEl) return 340;
+  const tlRef = useRef(null);
 
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (isMobile) {
-      const contentEl = navEl.querySelector('.card-nav-content');
-      if (contentEl) {
-        return Math.max(380, 68 + contentEl.scrollHeight + 20);
-      }
-      return 420;
-    }
-    return 340;
-  };
-
-  // State-driven GSAP animation
   useLayoutEffect(() => {
-    const navEl = navRef.current;
-    if (!navEl) return;
+    const ctx = gsap.context(() => {
+      const navEl = navRef.current;
+      if (!navEl) return;
 
-    const validCards = cardsRef.current.filter(Boolean);
+      gsap.set(navEl, { height: 68, overflow: 'hidden' });
 
-    if (isExpanded) {
-      const targetHeight = calculateHeight();
-      gsap.killTweensOf(navEl);
-      gsap.killTweensOf(validCards);
+      const tl = gsap.timeline({ paused: true });
 
-      gsap.to(navEl, {
-        height: targetHeight,
-        duration: 0.4,
-        ease: 'power3.out'
-      });
-
-      gsap.fromTo(
-        validCards,
-        { y: 25, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.35,
-          ease: 'power3.out',
-          stagger: 0.06,
-          delay: 0.08
-        }
-      );
-    } else {
-      gsap.killTweensOf(navEl);
-      gsap.killTweensOf(validCards);
-
-      gsap.to(validCards, {
-        y: 15,
-        opacity: 0,
-        duration: 0.2,
-        ease: 'power2.in'
-      });
-
-      gsap.to(navEl, {
-        height: 68,
-        duration: 0.35,
+      tl.to(navEl, {
+        height: 'auto',
+        duration: 0.45,
         ease: 'power3.inOut'
       });
-    }
-  }, [isExpanded, items]);
+
+      tl.from(
+        cardsRef.current.filter(Boolean),
+        {
+          y: 20,
+          opacity: 0,
+          duration: 0.35,
+          stagger: 0.05,
+          ease: 'power2.out'
+        },
+        '-=0.2'
+      );
+
+      tlRef.current = tl;
+    });
+
+    return () => ctx.revert();
+  }, [items]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (!navRef.current || !isExpanded) return;
-      const newHeight = calculateHeight();
-      gsap.to(navRef.current, { height: newHeight, duration: 0.25 });
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    if (tlRef.current) {
+      if (isExpanded) {
+        tlRef.current.play();
+      } else {
+        tlRef.current.reverse();
+      }
+    }
   }, [isExpanded]);
 
   const toggleMenu = () => {
@@ -232,6 +238,12 @@ export default function CardNav({
       if (onOpenPostJob) onOpenPostJob();
     } else {
       navigate('/jobs');
+      setTimeout(() => {
+        const el = document.getElementById('job-feed-list');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }
   };
 
@@ -261,7 +273,7 @@ export default function CardNav({
               )}
             </button>
 
-            {/* Solid White Location Badge (No see-through glass) */}
+            {/* Solid White Location Badge */}
             <button
               onClick={onOpenLocationModal}
               className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#FFFFFF] border-2 border-[#0A0A0A] text-sm font-black text-[#0A0A0A] transition-colors cursor-pointer shadow-xs active:scale-95"
@@ -285,7 +297,7 @@ export default function CardNav({
             </Link>
           </div>
 
-          {/* Right Actions: Pill Buttons with Black text on yellow / Yellow on Black */}
+          {/* Right Actions: Pill Buttons */}
           <div className="flex items-center gap-1.5 sm:gap-2">
             {/* LOGIN / ACCOUNT PILL */}
             {auth?.isLoggedIn && !auth?.isGuest ? (
@@ -357,10 +369,23 @@ export default function CardNav({
               ref={setCardRef(idx)}
               className="nav-card relative flex flex-col gap-3 p-5 rounded-[28px] sm:rounded-[32px] min-w-0 flex-[1_1_auto] md:flex-1 shadow-xl border-3 border-[#0A0A0A] group/card transition-transform duration-200 hover:-translate-y-1 bg-[#0A0A0A] text-white"
             >
-              <div className="flex items-center gap-2 font-black tracking-tight text-lg text-[#FDE047]">
-                {item.icon}
-                <span>{item.label}</span>
-              </div>
+              {/* Clickable Card Header */}
+              <button
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  if (item.onClick) item.onClick();
+                  else if (item.href) navigate(item.href);
+                  else if (item.links[0]?.href) navigate(item.links[0].href);
+                }}
+                className="flex items-center justify-between w-full font-black tracking-tight text-lg text-[#FDE047] hover:underline text-left cursor-pointer group-hover/card:text-yellow-300 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  {item.icon}
+                  <span>{item.label}</span>
+                </div>
+                <ArrowUpRight size={18} className="text-[#FDE047] shrink-0 stroke-[2.5]" />
+              </button>
 
               <div className="nav-card-links mt-auto flex flex-col gap-2 pt-3 border-t-2 border-neutral-800">
                 {item.links.map((lnk, i) => {

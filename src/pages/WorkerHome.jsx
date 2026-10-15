@@ -1,17 +1,41 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import AvailabilityCard from '../components/AvailabilityCard';
 import NakaBanner from '../components/NakaBanner';
 import JobCard from '../components/JobCard';
-import { Filter, Volume2, Sparkles, Zap, Calendar, Building, Wrench, Paintbrush, Hammer, HardHat } from 'lucide-react';
+import { Filter, Volume2, Sparkles, Zap, Calendar, Building, Wrench, Paintbrush, Hammer, HardHat, CheckCircle2 } from 'lucide-react';
 import { StateCharacter, TradeCharacter } from '../components/Characters';
 
 export default function WorkerHome({ onSelectJob }) {
   const { jobs, workerProfile, language, speakText, t } = useApp();
+  const [searchParams] = useSearchParams();
 
   const [timeFilter, setTimeFilter] = useState('all'); // all | today | tomorrow | long_term
   const [tradeFilter, setTradeFilter] = useState('all'); // all | plumber | electrician ...
   const [toolsOnlyFilter, setToolsOnlyFilter] = useState(false);
+
+  // Read search params on load or change (e.g. from CardNav "Urgent Today Jobs" or "Tool Matched Jobs")
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+    if (filterParam === 'today') {
+      setTimeFilter('today');
+    } else if (filterParam === 'tools') {
+      setToolsOnlyFilter(true);
+    } else if (filterParam === 'tomorrow') {
+      setTimeFilter('tomorrow');
+    } else if (filterParam === 'all') {
+      setTimeFilter('all');
+      setToolsOnlyFilter(false);
+    }
+
+    if (filterParam || window.location.hash === '#job-feed-list') {
+      setTimeout(() => {
+        const el = document.getElementById('job-feed-list');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [searchParams]);
 
   // Filter jobs logic
   const filteredJobs = useMemo(() => {
@@ -51,7 +75,7 @@ export default function WorkerHome({ onSelectJob }) {
       <NakaBanner />
 
       {/* 3. Filter Bar & Quick Tools Match */}
-      <div className="space-y-3 pt-1">
+      <div id="job-feed-list" className="space-y-3 pt-2 scroll-mt-24">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-[#0A0A0A] stroke-[2.5]" />
@@ -104,7 +128,7 @@ export default function WorkerHome({ onSelectJob }) {
                 : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            <Calendar className="w-3.5 h-3.5 stroke-[2.5]" />
+            <Calendar className="w-3.5 h-3.5 stroke-[2.5] text-blue-500" />
             <span>{t('filterTomorrow')}</span>
           </button>
           <button
@@ -115,22 +139,22 @@ export default function WorkerHome({ onSelectJob }) {
                 : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            <Building className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>{language === 'mr' ? 'मोठी कामे (2+ दिवस)' : 'Long Term'}</span>
+            <Building className="w-3.5 h-3.5 stroke-[2.5] text-purple-500" />
+            <span>{t('filterLongTerm')}</span>
           </button>
         </div>
 
-        {/* Trade Filter Chips with Trade Character Avatars */}
-        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+        {/* Trade Category Horizontal Pill Selector with Trade Characters */}
+        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
           <button
             onClick={() => setTradeFilter('all')}
-            className={`min-h-[44px] px-4 py-1.5 rounded-full font-black whitespace-nowrap border-2 active:scale-95 ${
+            className={`min-h-[44px] px-3.5 py-1.5 rounded-full text-xs font-black whitespace-nowrap border-2 transition-all active:scale-95 ${
               tradeFilter === 'all'
-                ? 'bg-[#FDE047] text-[#0A0A0A] border-[#0A0A0A] shadow-xs'
-                : 'bg-white text-[#0A0A0A] border-neutral-300'
+                ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A]'
+                : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            {language === 'mr' ? 'सर्व व्यवसाय' : 'All Trades'}
+            {language === 'mr' ? 'सर्व ट्रेड' : 'All Trades'}
           </button>
           {[
             { id: 'plumber', label: language === 'mr' ? 'प्लंबर' : 'Plumber' },
@@ -139,14 +163,15 @@ export default function WorkerHome({ onSelectJob }) {
             { id: 'painter', label: language === 'mr' ? 'पेंटर' : 'Painter' },
             { id: 'mason', label: language === 'mr' ? 'गवंडी' : 'Mason' },
             { id: 'helper', label: language === 'mr' ? 'हेल्पर' : 'Helper' },
+            { id: 'sweeper', label: language === 'mr' ? 'सफाई' : 'Cleaner' }
           ].map(tradeItem => (
             <button
               key={tradeItem.id}
               onClick={() => setTradeFilter(tradeItem.id)}
-              className={`min-h-[44px] px-3.5 py-1.5 rounded-full font-black whitespace-nowrap border-2 active:scale-95 flex items-center gap-2 ${
+              className={`min-h-[44px] px-3 py-1 rounded-full text-xs font-black whitespace-nowrap border-2 flex items-center gap-1.5 transition-all active:scale-95 ${
                 tradeFilter === tradeItem.id
-                  ? 'bg-[#FDE047] text-[#0A0A0A] border-[#0A0A0A] shadow-xs'
-                  : 'bg-white text-[#0A0A0A] border-neutral-300'
+                  ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A]'
+                  : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
               }`}
             >
               <TradeCharacter trade={tradeItem.id} className="w-6 h-6 flex-shrink-0" />

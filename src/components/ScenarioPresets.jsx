@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Sparkles, ChevronDown, ChevronUp, PlayCircle, ArrowRightLeft, AlertTriangle, Clock, Shield } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, PlayCircle, ArrowRightLeft, AlertTriangle, Clock, Shield, Smartphone, Monitor } from 'lucide-react';
 
-export default function ScenarioPresets({ onSelectScenario }) {
+export default function ScenarioPresets({ onSelectScenario, isMobileView, setIsMobileView }) {
   const { language } = useApp();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,20 +35,45 @@ export default function ScenarioPresets({ onSelectScenario }) {
 
   return (
     <div className="bg-[#0A0A0A] text-white px-3 py-2 text-xs border-b-2 border-neutral-800">
-      <div
-        className="flex items-center justify-between cursor-pointer select-none min-h-[40px]"
-        onClick={() => setIsOpen(!isOpen)}
-        role="button"
-        tabIndex={0}
-      >
-        <div className="flex items-center gap-2 font-black text-[#FDE047]">
+      <div className="flex items-center justify-between min-h-[40px]">
+        {/* Left: Accordion Title */}
+        <div
+          className="flex items-center gap-2 font-black text-[#FDE047] cursor-pointer select-none"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <Sparkles className="w-4 h-4 text-[#FDE047] stroke-[2.5]" />
-          <span className="tracking-wide">{language === 'mr' ? 'परीक्षकांसाठी डेमो प्रसंग (Demo Scenarios)' : 'Hackathon Judge Demo Scenarios'}</span>
+          <span className="tracking-wide">{language === 'mr' ? 'परीक्षकांसाठी प्रसंग (Presets)' : 'Hackathon Presets'}</span>
+          <button className="w-6 h-6 rounded-full bg-neutral-800 text-[#FDE047] flex items-center justify-center hover:bg-neutral-700 ml-1" aria-label="Toggle demo scenarios">
+            {isOpen ? <ChevronUp className="w-3.5 h-3.5 stroke-[2.5]" /> : <ChevronDown className="w-3.5 h-3.5 stroke-[2.5]" />}
+          </button>
         </div>
 
-        <button className="w-7 h-7 rounded-full bg-neutral-800 text-[#FDE047] flex items-center justify-center hover:bg-neutral-700" aria-label="Toggle demo scenarios">
-          {isOpen ? <ChevronUp className="w-4 h-4 stroke-[2.5]" /> : <ChevronDown className="w-4 h-4 stroke-[2.5]" />}
-        </button>
+        {/* Right: Quick Mobile Phone Interface Toggle */}
+        {setIsMobileView && (
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setIsMobileView(!isMobileView)}
+              className={`px-3 py-1.5 rounded-full text-xs font-black transition-all flex items-center gap-1.5 border-2 ${
+                isMobileView
+                  ? 'bg-[#FDE047] text-[#0A0A0A] border-[#FDE047] shadow-sm'
+                  : 'bg-[#171717] text-neutral-300 border-neutral-700 hover:text-white'
+              }`}
+              title="Toggle Mobile Phone Mockup (390px)"
+            >
+              {isMobileView ? (
+                <>
+                  <Smartphone size={13} className="text-[#0A0A0A] stroke-[2.5]" />
+                  <span>390px Mobile View: ON</span>
+                </>
+              ) : (
+                <>
+                  <Monitor size={13} className="text-neutral-400" />
+                  <span>Switch to 390px Phone</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {isOpen && (

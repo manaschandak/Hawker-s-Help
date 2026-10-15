@@ -7,6 +7,7 @@ import BottomNav from './components/BottomNav';
 import LocationModal from './components/LocationModal';
 import ScenarioPresets from './components/ScenarioPresets';
 import HelpFloatingButton from './components/HelpFloatingButton';
+import PhoneMockupFrame from './components/PhoneMockupFrame';
 
 // Pages
 import WorkerHome from './pages/WorkerHome';
@@ -17,6 +18,7 @@ import FindWorkers from './pages/FindWorkers';
 import Plans from './pages/Plans';
 import RightsHub from './pages/RightsHub';
 import MyTeam from './pages/MyTeam';
+import MyWorkHours from './pages/MyWorkHours';
 import PostJobModal from './pages/PostJobModal';
 import ReportFlow from './pages/ReportFlow';
 
@@ -30,6 +32,17 @@ export default function App() {
   const navigate = useNavigate();
   const routerLocation = useRouterLocation();
   const locationState = useLocation();
+
+  // Mobile Phone Mockup View Option state (Persisted in localStorage)
+  const [isMobileView, setIsMobileView] = useState(() => {
+    const saved = localStorage.getItem('naka_mobile_frame_view');
+    if (saved !== null) return saved === 'true';
+    return true; // Default to mobile phone interface view on desktop
+  });
+
+  useEffect(() => {
+    localStorage.setItem('naka_mobile_frame_view', isMobileView);
+  }, [isMobileView]);
 
   // Selected job for detail view
   const [selectedJob, setSelectedJob] = useState(null);
@@ -48,6 +61,7 @@ export default function App() {
     const path = routerLocation.pathname;
     if (path.includes('/workers')) return 'find_workers';
     if (path.includes('/employer/jobs')) return 'employer_jobs';
+    if (path.includes('/work-hours')) return 'work_hours';
     if (path.includes('/team')) return 'team';
     if (path.includes('/rights')) return 'rights';
     if (path.includes('/profile')) return 'profile';
@@ -57,6 +71,7 @@ export default function App() {
   const handleBottomNavClick = (tab) => {
     setSelectedJob(null);
     if (tab === 'jobs') navigate('/jobs');
+    else if (tab === 'work_hours') navigate('/work-hours');
     else if (tab === 'team') navigate('/team');
     else if (tab === 'rights') navigate('/rights');
     else if (tab === 'profile') navigate('/profile');
@@ -117,168 +132,177 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans flex flex-col selection:bg-amber-200 selection:text-amber-950">
-      
-      {/* Floating Toast Notification */}
-      {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-full px-4 animate-slide-down pointer-events-none">
-          <div
-            className={`px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-between text-xs font-black border text-white pointer-events-auto ${
-              toast.type === 'danger'
-                ? 'bg-red-900 border-red-700'
-                : toast.type === 'success'
-                ? 'bg-emerald-900 border-emerald-700'
-                : 'bg-slate-900 border-slate-700'
-            }`}
-          >
-            <span>{toast.message}</span>
+    <PhoneMockupFrame isMobileView={isMobileView} setIsMobileView={setIsMobileView}>
+      <div className="min-h-full bg-[#FAF8F5] text-slate-900 font-sans flex flex-col selection:bg-amber-200 selection:text-amber-950 relative w-full">
+        
+        {/* Floating Toast Notification */}
+        {toast && (
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] max-w-md w-full px-4 animate-slide-down pointer-events-none">
+            <div
+              className={`px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-between text-xs font-black border text-white pointer-events-auto ${
+                toast.type === 'danger'
+                  ? 'bg-red-900 border-red-700'
+                  : toast.type === 'success'
+                  ? 'bg-emerald-900 border-emerald-700'
+                  : 'bg-slate-900 border-slate-700'
+              }`}
+            >
+              <span>{toast.message}</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* 1-Click Hackathon Judge Evaluator Toolbar (Always Accessible) */}
-      <ScenarioPresets onSelectScenario={handleSelectScenario} />
-
-      {/* Top GSAP-Powered Expandable CardNav (Hidden only on clean onboarding routes) */}
-      {!isOnboardingRoute && (
-        <header className="sticky top-0 z-40">
-          <CardNav
-            locationName={locationState.nearestPickup ? (locationState.nearestPickup.name[language] || locationState.nearestPickup.name.en) : locationState.areaName}
-            nearestDistance={locationState.nearestPickup ? `${locationState.nearestPickup.distanceKm} km` : '0.9 km'}
-            onOpenLocationModal={() => setIsLocationModalOpen(true)}
-            onOpenPostJob={() => setIsPostJobModalOpen(true)}
-          />
-        </header>
-      )}
-
-      {/* Main Content Area: Responsive Multi-Column Layout */}
-      <main className="flex-1 w-full overflow-x-hidden">
-        <Routes>
-          {/* Default Route */}
-          <Route
-            path="/"
-            element={
-              <Navigate
-                to={role === 'employer' ? '/employer/jobs' : '/jobs'}
-                replace
-              />
-            }
-          />
-
-          {/* Onboarding Routes */}
-          <Route path="/onboarding/language" element={<LanguageSelect />} />
-          <Route path="/onboarding/role" element={<RoleSelect />} />
-          <Route path="/onboarding/login" element={<Login />} />
-
-          {/* Worker Home / Feed or Job Detail */}
-          <Route
-            path="/jobs"
-            element={
-              selectedJob ? (
-                <JobDetail
-                  job={selectedJob}
-                  onBack={() => setSelectedJob(null)}
-                  onOpenReport={(jobId) => handleTriggerReport(jobId)}
-                />
-              ) : (
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                  <WorkerHome
-                    onSelectJob={(job) => {
-                      setSelectedJob(job);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                  />
-                </div>
-              )
-            }
-          />
-
-          {/* Find Workers (Fixed bug, progressive disclosure) */}
-          <Route
-            path="/workers"
-            element={
-              <FindWorkers
-                onOfferJob={() => {
-                  navigate('/employer/jobs');
-                }}
-              />
-            }
-          />
-
-          {/* Employer Jobs Tracker */}
-          <Route
-            path="/employer/jobs"
-            element={
-              <EmployerJobs
-                onOpenPostJob={() => setIsPostJobModalOpen(true)}
-                onGoToFindWorkers={() => navigate('/workers')}
-              />
-            }
-          />
-
-          {/* Plans & Pricing Section */}
-          <Route path="/plans" element={<Plans />} />
-
-          {/* My Team */}
-          <Route path="/team" element={<MyTeam />} />
-
-          {/* Rights Hub */}
-          <Route
-            path="/rights"
-            element={
-              <RightsHub
-                onOpenReport={() => handleTriggerReport(null)}
-              />
-            }
-          />
-
-          {/* Worker Profile */}
-          <Route path="/profile" element={<WorkerProfile />} />
-
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/jobs" replace />} />
-        </Routes>
-      </main>
-
-      {/* Mobile Sticky Bottom Navigation (Hidden on desktop md:) */}
-      {!isOnboardingRoute && (
-        <div className="block md:hidden sticky bottom-0 z-30">
-          <BottomNav
-            activeTab={getActiveTab()}
-            setActiveTab={handleBottomNavClick}
-            onOpenPostJob={() => setIsPostJobModalOpen(true)}
-          />
-        </div>
-      )}
-
-      {/* Floating Help / Grievance Button for Worker */}
-      {!isOnboardingRoute && role === 'worker' && (
-        <HelpFloatingButton
-          onOpenReport={() => handleTriggerReport(null)}
-          onOpenRights={() => navigate('/rights')}
+        {/* 1-Click Hackathon Judge Evaluator Toolbar (Always Accessible) */}
+        <ScenarioPresets
+          onSelectScenario={handleSelectScenario}
+          isMobileView={isMobileView}
+          setIsMobileView={setIsMobileView}
         />
-      )}
 
-      {/* Location Modal */}
-      <LocationModal
-        isOpen={isLocationModalOpen}
-        onClose={() => setIsLocationModalOpen(false)}
-        locationState={locationState}
-      />
+        {/* Top GSAP-Powered Expandable CardNav (Hidden only on clean onboarding routes) */}
+        {!isOnboardingRoute && (
+          <header className="sticky top-0 z-40">
+            <CardNav
+              locationName={locationState.nearestPickup ? (locationState.nearestPickup.name[language] || locationState.nearestPickup.name.en) : locationState.areaName}
+              nearestDistance={locationState.nearestPickup ? `${locationState.nearestPickup.distanceKm} km` : '0.9 km'}
+              onOpenLocationModal={() => setIsLocationModalOpen(true)}
+              onOpenPostJob={() => setIsPostJobModalOpen(true)}
+            />
+          </header>
+        )}
 
-      {/* Employer Post Job Modal */}
-      <PostJobModal
-        isOpen={isPostJobModalOpen}
-        onClose={() => setIsPostJobModalOpen(false)}
-      />
+        {/* Main Content Area */}
+        <main className="flex-1 w-full overflow-x-hidden">
+          <Routes>
+            {/* Default Route */}
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to={role === 'employer' ? '/employer/jobs' : '/jobs'}
+                  replace
+                />
+              }
+            />
 
-      {/* Grievance Report Modal */}
-      <ReportFlow
-        isOpen={isReportFlowOpen}
-        onClose={() => setIsReportFlowOpen(false)}
-        defaultJobId={reportTargetJobId}
-      />
+            {/* Onboarding Routes */}
+            <Route path="/onboarding/language" element={<LanguageSelect />} />
+            <Route path="/onboarding/role" element={<RoleSelect />} />
+            <Route path="/onboarding/login" element={<Login />} />
 
-    </div>
+            {/* Worker Home / Feed or Job Detail */}
+            <Route
+              path="/jobs"
+              element={
+                selectedJob ? (
+                  <JobDetail
+                    job={selectedJob}
+                    onBack={() => setSelectedJob(null)}
+                    onOpenReport={(jobId) => handleTriggerReport(jobId)}
+                  />
+                ) : (
+                  <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-4">
+                    <WorkerHome
+                      onSelectJob={(job) => {
+                        setSelectedJob(job);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    />
+                  </div>
+                )
+              }
+            />
+
+            {/* My Work & Hours (New Dedicated Screen) */}
+            <Route path="/work-hours" element={<MyWorkHours />} />
+
+            {/* Find Workers (Employer Screen) */}
+            <Route
+              path="/workers"
+              element={
+                <FindWorkers
+                  onOfferJob={() => {
+                    navigate('/employer/jobs');
+                  }}
+                />
+              }
+            />
+
+            {/* Employer Jobs Tracker */}
+            <Route
+              path="/employer/jobs"
+              element={
+                <EmployerJobs
+                  onOpenPostJob={() => setIsPostJobModalOpen(true)}
+                  onGoToFindWorkers={() => navigate('/workers')}
+                />
+              }
+            />
+
+            {/* Plans & Pricing Section */}
+            <Route path="/plans" element={<Plans />} />
+
+            {/* My Team */}
+            <Route path="/team" element={<MyTeam />} />
+
+            {/* Rights Hub */}
+            <Route
+              path="/rights"
+              element={
+                <RightsHub
+                  onOpenReport={() => handleTriggerReport(null)}
+                />
+              }
+            />
+
+            {/* Worker Profile */}
+            <Route path="/profile" element={<WorkerProfile />} />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/jobs" replace />} />
+          </Routes>
+        </main>
+
+        {/* Sticky Bottom Navigation */}
+        {!isOnboardingRoute && (
+          <div className="sticky bottom-0 z-30 w-full">
+            <BottomNav
+              activeTab={getActiveTab()}
+              setActiveTab={handleBottomNavClick}
+              onOpenPostJob={() => setIsPostJobModalOpen(true)}
+            />
+          </div>
+        )}
+
+        {/* Floating Help / Grievance Button for Worker */}
+        {!isOnboardingRoute && role === 'worker' && (
+          <HelpFloatingButton
+            onOpenReport={() => handleTriggerReport(null)}
+            onOpenRights={() => navigate('/rights')}
+          />
+        )}
+
+        {/* Location Modal */}
+        <LocationModal
+          isOpen={isLocationModalOpen}
+          onClose={() => setIsLocationModalOpen(false)}
+          locationState={locationState}
+        />
+
+        {/* Employer Post Job Modal */}
+        <PostJobModal
+          isOpen={isPostJobModalOpen}
+          onClose={() => setIsPostJobModalOpen(false)}
+        />
+
+        {/* Grievance Report Modal */}
+        <ReportFlow
+          isOpen={isReportFlowOpen}
+          onClose={() => setIsReportFlowOpen(false)}
+          defaultJobId={reportTargetJobId}
+        />
+
+      </div>
+    </PhoneMockupFrame>
   );
 }
