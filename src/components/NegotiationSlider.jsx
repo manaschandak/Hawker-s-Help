@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { CheckCircle2, AlertCircle, ArrowRightLeft, Sparkles, Plus, Minus } from 'lucide-react';
+import { StateCharacter } from './Characters';
 
 export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
   const { workerProfile, language, AREA_BENCHMARKS, t } = useApp();
@@ -65,18 +66,18 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-slate-200 p-4 shadow-sm space-y-4">
+    <div className="bg-white rounded-[32px] border-2 border-[#0A0A0A] p-5 shadow-sm space-y-4">
       {/* Title & Help */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-amber-100 text-[#B45309] rounded-xl font-bold">
-            <ArrowRightLeft className="w-5 h-5" />
+        <div className="flex items-center gap-2.5">
+          <div className="p-2.5 bg-[#FDE047] border-2 border-[#0A0A0A] text-[#0A0A0A] rounded-2xl font-black">
+            <ArrowRightLeft className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div>
-            <h3 className="font-extrabold text-slate-900 text-sm">
+            <h3 className="font-black text-[#0A0A0A] text-base leading-tight">
               {t('startNegotiation')}
             </h3>
-            <p className="text-[11px] text-slate-500 font-medium">
+            <p className="text-xs text-neutral-600 font-bold">
               {language === 'mr' ? 'दोन्ही बाजूंचे दर स्पष्ट दिसतात' : 'Transparent wage agreement'}
             </p>
           </div>
@@ -84,10 +85,10 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
 
         {/* Naka Benchmark Badge */}
         <div className="text-right">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+          <div className="text-[11px] font-black text-neutral-500 uppercase tracking-wide">
             {language === 'mr' ? 'नाका सरासरी' : 'Naka Median'}
           </div>
-          <div className="text-xs font-black text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+          <div className="text-xs font-black text-[#FDE047] bg-[#0A0A0A] px-3 py-1 rounded-full border border-[#0A0A0A]">
             ₹{benchmark} / {language === 'mr' ? 'दिवस' : 'day'}
           </div>
         </div>
@@ -95,48 +96,54 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
 
       {/* Visual Comparison Bar */}
       <div className="space-y-2 pt-2">
-        <div className="flex items-center justify-between text-xs font-black">
+        <div className="flex items-center justify-between font-black">
           {/* Employer Marker */}
           <div className="text-left">
-            <div className="text-[11px] font-bold text-slate-500">
+            <div className="text-xs font-black text-neutral-500">
               {t('employerOffer')}
             </div>
-            <div className="text-base font-black text-slate-900">
+            <div className="text-2xl font-black text-[#0A0A0A]">
               ₹{employerOffer}
             </div>
           </div>
 
-          {/* Status Badge in Center */}
-          <div>
+          {/* Status Badge in Center with Expressive State Characters */}
+          <div className="flex flex-col items-center">
             {isMatched ? (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-900 text-xs font-black rounded-full border border-emerald-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                <span>{language === 'mr' ? 'दर पक्का झाला!' : 'Match!'}</span>
-              </span>
+              <div className="flex items-center gap-2">
+                <StateCharacter state="happy" className="w-11 h-11 flex-shrink-0" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#DCFCE7] text-[#15803D] text-xs font-black rounded-full border-2 border-[#15803D]">
+                  <CheckCircle2 className="w-4 h-4 text-[#15803D] stroke-[2.5]" />
+                  <span>{language === 'mr' ? 'दर पक्का झाला!' : 'Match!'}</span>
+                </span>
+              </div>
             ) : (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-[#B45309] text-[11px] font-bold rounded-full border border-amber-300">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>{language === 'mr' ? `तफावत: ₹${gap}` : `Gap: ₹${gap}`}</span>
-              </span>
+              <div className="flex items-center gap-2">
+                <StateCharacter state="thinking" className="w-11 h-11 flex-shrink-0" />
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FDE047] text-[#0A0A0A] text-xs font-black rounded-full border-2 border-[#0A0A0A]">
+                  <AlertCircle className="w-4 h-4 stroke-[2.5]" />
+                  <span>{language === 'mr' ? `तफावत: ₹${gap}` : `Gap: ₹${gap}`}</span>
+                </span>
+              </div>
             )}
           </div>
 
           {/* Worker Ask Marker */}
           <div className="text-right">
-            <div className="text-[11px] font-bold text-slate-500">
+            <div className="text-xs font-black text-neutral-500">
               {t('workerAsk')}
             </div>
-            <div className="text-base font-black text-[#B45309]">
+            <div className="text-2xl font-black text-[#0A0A0A]">
               ₹{workerAsk}
             </div>
           </div>
         </div>
 
         {/* Interactive Bar */}
-        <div className="relative h-4 bg-slate-200 rounded-full overflow-hidden flex">
+        <div className="relative h-4 bg-neutral-200 rounded-full overflow-hidden flex border border-[#0A0A0A]">
           <div
             className={`h-full transition-all duration-300 ${
-              isMatched ? 'bg-emerald-600 w-full' : 'bg-amber-500'
+              isMatched ? 'bg-[#15803D] w-full' : 'bg-[#FDE047]'
             }`}
             style={{ width: isMatched ? '100%' : `${Math.min(90, Math.max(10, (employerOffer / workerAsk) * 100))}%` }}
           />
@@ -144,28 +151,28 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
       </div>
 
       {/* Nudge Stepper Buttons for Worker */}
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
-        <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+      <div className="bg-neutral-100 border-2 border-[#0A0A0A] rounded-[24px] p-4 space-y-2.5">
+        <div className="flex items-center justify-between text-xs font-black text-[#0A0A0A]">
           <span>{language === 'mr' ? 'तुमची मागणी बदला (₹50 ने कमी-जास्त करा):' : 'Adjust your ask (by ₹50):'}</span>
-          <span className="text-[#B45309] font-black">₹{workerAsk}</span>
+          <span className="text-base font-black text-[#0A0A0A]">₹{workerAsk}</span>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleNudgeAsk(-50)}
-            className="flex-1 py-2.5 px-3 bg-white border-2 border-slate-300 rounded-xl font-black text-slate-800 flex items-center justify-center gap-1 active:scale-95 touch-target"
+            className="flex-1 min-h-[56px] py-2.5 px-4 bg-white border-2 border-[#0A0A0A] rounded-full font-black text-base text-[#0A0A0A] flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
             aria-label="Decrease wage ask by 50"
           >
-            <Minus className="w-4 h-4 text-slate-600" />
+            <Minus className="w-5 h-5 text-[#0A0A0A] stroke-[2.5]" />
             <span>- ₹50</span>
           </button>
 
           <button
             onClick={() => handleNudgeAsk(50)}
-            className="flex-1 py-2.5 px-3 bg-white border-2 border-slate-300 rounded-xl font-black text-slate-800 flex items-center justify-center gap-1 active:scale-95 touch-target"
+            className="flex-1 min-h-[56px] py-2.5 px-4 bg-white border-2 border-[#0A0A0A] rounded-full font-black text-base text-[#0A0A0A] flex items-center justify-center gap-1.5 active:scale-95 shadow-xs"
             aria-label="Increase wage ask by 50"
           >
-            <Plus className="w-4 h-4 text-slate-600" />
+            <Plus className="w-5 h-5 text-[#0A0A0A] stroke-[2.5]" />
             <span>+ ₹50</span>
           </button>
         </div>
@@ -173,13 +180,13 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
 
       {/* Action Shortcuts */}
       {!isMatched && (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {/* Shortcut 1: Split Difference */}
           <button
             onClick={handleSplitDifference}
-            className="w-full py-2.5 px-3 bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-950 font-black rounded-xl text-xs flex items-center justify-center gap-1.5 touch-target active:scale-95 transition-all"
+            className="w-full min-h-[56px] py-3 px-4 bg-[#FDE047] hover:bg-yellow-300 border-2 border-[#0A0A0A] text-[#0A0A0A] font-black rounded-full text-sm flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md"
           >
-            <Sparkles className="w-4 h-4 text-[#B45309]" />
+            <Sparkles className="w-5 h-5 text-[#0A0A0A] stroke-[2.5]" />
             <span>
               {language === 'mr'
                 ? `दोघांच्या मध्यभागी मान्य करा: ₹${midpoint} / दिवस`
@@ -190,7 +197,7 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
           {/* Shortcut 2: Match employer's offer directly */}
           <button
             onClick={handleAcceptEmployerView}
-            className="w-full py-2 px-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-xs touch-target"
+            className="w-full min-h-[52px] py-2.5 px-4 bg-white border-2 border-[#0A0A0A] hover:bg-neutral-100 text-[#0A0A0A] font-bold rounded-full text-xs active:scale-95 transition-all"
           >
             {language === 'mr'
               ? `मालकाचा दर ₹${employerOffer} मान्य करा`
@@ -199,14 +206,26 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
         </div>
       )}
 
-      {/* Ready to Commit Action */}
+      {/* Ready to Commit Action with Celebration */}
       {isMatched && (
-        <div className="pt-1">
+        <div className="pt-1 space-y-3">
+          <div className="bg-[#DCFCE7] border-2 border-[#15803D] rounded-2xl p-3 flex items-center gap-3">
+            <StateCharacter state="happy" className="w-12 h-12 flex-shrink-0" />
+            <div>
+              <div className="font-black text-sm text-[#15803D]">
+                {language === 'mr' ? 'दोन्ही बाजूंचे समाधान झाले!' : 'Great! Wage Agreement Reached'}
+              </div>
+              <div className="text-xs text-neutral-700">
+                {language === 'mr' ? 'आता काम पक्के करा व वेळेवर हजर राहा.' : 'Lock in the job and arrive at the site on time.'}
+              </div>
+            </div>
+          </div>
+
           <button
             onClick={() => onAcceptAgreedPay(workerAsk)}
-            className="w-full py-3.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black rounded-2xl shadow-lg flex items-center justify-center gap-2 touch-target active:scale-95 transition-transform text-sm"
+            className="w-full min-h-[56px] py-3.5 px-5 bg-[#15803D] hover:bg-[#166534] text-white font-black rounded-full shadow-lg border-2 border-[#0A0A0A] flex items-center justify-center gap-2 active:scale-95 transition-transform text-base"
           >
-            <CheckCircle2 className="w-5 h-5" />
+            <CheckCircle2 className="w-5 h-5 stroke-[2.5]" />
             <span>
               {language === 'mr'
                 ? `₹${workerAsk} दराने काम पक्के करा`
@@ -217,14 +236,14 @@ export default function NegotiationSlider({ job, onAcceptAgreedPay }) {
       )}
 
       {/* Negotiation History Log */}
-      <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
-        <div className="font-bold text-slate-700 text-xs">
+      <div className="pt-3 border-t-2 border-neutral-100 text-xs text-neutral-600 space-y-1.5">
+        <div className="font-black text-[#0A0A0A] text-xs">
           {language === 'mr' ? 'बोलणीचा इतिहास:' : 'Negotiation trail:'}
         </div>
         {negotiationLog.map((log, index) => (
-          <div key={index} className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-            <span>{log.text}</span>
+          <div key={index} className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0A0A0A]" />
+            <span className="font-medium text-neutral-800">{log.text}</span>
           </div>
         ))}
       </div>

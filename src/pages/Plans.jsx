@@ -22,9 +22,9 @@ export default function Plans() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all touch-target shadow-sm"
+          className="inline-flex items-center gap-2 px-5 min-h-[48px] rounded-full bg-white border-2 border-[#0A0A0A] text-xs font-black text-[#0A0A0A] hover:bg-neutral-100 transition-all touch-target shadow-sm active:scale-95"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16} className="stroke-[2.5]" />
           <span>{t('backBtn')}</span>
         </button>
       </div>

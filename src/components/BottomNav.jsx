@@ -1,112 +1,133 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Briefcase, Users, Shield, User, Search, PlusCircle } from 'lucide-react';
+import { Briefcase, Users, Shield, User, Search, PlusCircle, Clock, Lock } from 'lucide-react';
 
 export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
   const { role, t, language } = useApp();
 
   if (role === 'employer') {
     return (
-      <nav className="sticky bottom-0 bg-white border-t-2 border-slate-200 px-2 py-1.5 flex items-center justify-around z-30 shadow-lg">
+      <nav className="sticky bottom-0 bg-[#0A0A0A] border-t-2 border-[#262626] px-2 py-2 flex items-center justify-around z-30 shadow-2xl">
         <button
           onClick={() => setActiveTab('employer_jobs')}
-          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all touch-target ${
+          className={`flex flex-col items-center justify-center min-h-[56px] px-3.5 py-1.5 rounded-full transition-all active:scale-95 ${
             activeTab === 'employer_jobs'
-              ? 'text-[#B45309] font-bold bg-amber-50'
-              : 'text-slate-600 font-medium hover:text-slate-900'
+              ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+              : 'text-neutral-400 font-semibold hover:text-white'
           }`}
+          aria-label={t('navEmployerJobs')}
         >
-          <Briefcase className="w-5 h-5 mb-1" />
+          <Briefcase className="w-5 h-5 mb-0.5" />
           <span className="text-[12px]">{t('navEmployerJobs')}</span>
         </button>
 
         {/* Big Post Job Action for Employer */}
         <button
           onClick={onOpenPostJob}
-          className="flex flex-col items-center justify-center -mt-4 bg-[#B45309] hover:bg-[#92400E] text-white p-3 rounded-2xl shadow-lg border-2 border-white active:scale-95 transition-transform"
+          className="flex flex-col items-center justify-center -mt-5 bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] min-h-[56px] px-4 py-2 rounded-full shadow-2xl border-2 border-[#0A0A0A] ring-4 ring-[#0A0A0A] active:scale-95 transition-all cursor-pointer"
+          aria-label="Post Job"
         >
-          <PlusCircle className="w-6 h-6" />
-          <span className="text-[11px] font-bold mt-0.5">
+          <PlusCircle className="w-6 h-6 stroke-[2.5]" />
+          <span className="text-[12px] font-black mt-0.5">
             {language === 'mr' ? 'काम द्या' : language === 'hi' ? 'काम दें' : 'Post Job'}
           </span>
         </button>
 
         <button
           onClick={() => setActiveTab('find_workers')}
-          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all touch-target ${
+          className={`flex flex-col items-center justify-center min-h-[56px] px-3.5 py-1.5 rounded-full transition-all active:scale-95 ${
             activeTab === 'find_workers'
-              ? 'text-[#B45309] font-bold bg-amber-50'
-              : 'text-slate-600 font-medium hover:text-slate-900'
+              ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+              : 'text-neutral-400 font-semibold hover:text-white'
           }`}
+          aria-label={t('navFindWorkers')}
         >
-          <Search className="w-5 h-5 mb-1" />
+          <Search className="w-5 h-5 mb-0.5" />
           <span className="text-[12px]">{t('navFindWorkers')}</span>
         </button>
 
         <button
-          onClick={() => setActiveTab('profile')}
-          className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all touch-target ${
-            activeTab === 'profile'
-              ? 'text-[#B45309] font-bold bg-amber-50'
-              : 'text-slate-600 font-medium hover:text-slate-900'
+          onClick={() => setActiveTab('vault')}
+          className={`flex flex-col items-center justify-center min-h-[56px] px-3.5 py-1.5 rounded-full transition-all active:scale-95 ${
+            activeTab === 'vault'
+              ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+              : 'text-neutral-400 font-semibold hover:text-white'
           }`}
+          aria-label="Document Vault"
         >
-          <User className="w-5 h-5 mb-1" />
-          <span className="text-[12px]">{t('navProfile')}</span>
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span className="text-[12px]">{language === 'mr' ? 'तिजोरी' : 'Vault'}</span>
         </button>
       </nav>
     );
   }
 
-  // Worker Navigation
+  // Worker Navigation: 5 high-impact tabs with Team included
   return (
-    <nav className="sticky bottom-0 bg-white border-t-2 border-slate-200 px-1 py-1 flex items-center justify-around z-30 shadow-lg">
+    <nav className="sticky bottom-0 bg-[#0A0A0A] border-t-2 border-[#262626] px-1 py-1.5 flex items-center justify-around z-30 shadow-2xl">
       <button
         onClick={() => setActiveTab('jobs')}
-        className={`flex-1 flex flex-col items-center justify-center py-1.5 rounded-xl transition-all min-h-[52px] ${
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
           activeTab === 'jobs'
-            ? 'text-[#B45309] font-bold bg-amber-50'
-            : 'text-slate-600 font-medium hover:text-slate-900'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
         }`}
+        aria-label={t('navJobs')}
       >
-        <Briefcase className="w-5 h-5 mb-0.5" />
-        <span className="text-[11px]">{t('navJobs')}</span>
+        <Briefcase className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'कामे' : 'Jobs'}</span>
       </button>
 
       <button
         onClick={() => setActiveTab('team')}
-        className={`flex-1 flex flex-col items-center justify-center py-1.5 rounded-xl transition-all min-h-[52px] ${
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
           activeTab === 'team'
-            ? 'text-[#B45309] font-bold bg-amber-50'
-            : 'text-slate-600 font-medium hover:text-slate-900'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
         }`}
+        aria-label={t('navMyTeam')}
       >
-        <Users className="w-5 h-5 mb-0.5" />
-        <span className="text-[11px]">{t('navMyTeam')}</span>
+        <Users className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'माझा संघ' : 'My Team'}</span>
       </button>
 
       <button
-        onClick={() => setActiveTab('rights')}
-        className={`flex-1 flex flex-col items-center justify-center py-1.5 rounded-xl transition-all min-h-[52px] ${
-          activeTab === 'rights'
-            ? 'text-[#B45309] font-bold bg-amber-50'
-            : 'text-slate-600 font-medium hover:text-slate-900'
+        onClick={() => setActiveTab('work_hours')}
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
+          activeTab === 'work_hours'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
         }`}
+        aria-label={language === 'mr' ? 'हजेरी' : 'Work & Hours'}
       >
-        <Shield className="w-5 h-5 mb-0.5" />
-        <span className="text-[11px]">{t('navRights')}</span>
+        <Clock className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'हजेरी' : 'Hours'}</span>
+      </button>
+
+      <button
+        onClick={() => setActiveTab('vault')}
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
+          activeTab === 'vault'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
+        }`}
+        aria-label="Gov ID Vault"
+      >
+        <Lock className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'तिजोरी' : 'Vault'}</span>
       </button>
 
       <button
         onClick={() => setActiveTab('profile')}
-        className={`flex-1 flex flex-col items-center justify-center py-1.5 rounded-xl transition-all min-h-[52px] ${
+        className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
           activeTab === 'profile'
-            ? 'text-[#B45309] font-bold bg-amber-50'
-            : 'text-slate-600 font-medium hover:text-slate-900'
+            ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
+            : 'text-neutral-400 font-semibold hover:text-white'
         }`}
+        aria-label={t('navProfile')}
       >
-        <User className="w-5 h-5 mb-0.5" />
-        <span className="text-[11px]">{t('navProfile')}</span>
+        <User className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'प्रोफाईल' : 'Profile'}</span>
       </button>
     </nav>
   );

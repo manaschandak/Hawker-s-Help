@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import { ArrowRight, CheckCircle2, Globe, Volume2 } from 'lucide-react';
+import { Volume2, CheckCircle2, ArrowRight } from 'lucide-react';
+import { StateCharacter } from '../../components/Characters';
 
 export default function LanguageSelect() {
-  const { language, setLanguage, t, speakText } = useApp();
+  const { language, setLanguage, speakText, t } = useApp();
   const navigate = useNavigate();
 
   const languages = [
@@ -13,21 +14,21 @@ export default function LanguageSelect() {
       name: 'मराठी',
       englishName: 'Marathi',
       tagline: 'महाराष्ट्र नाका कामगार व मालकांसाठी प्राधान्य',
-      sampleGreeting: 'नमस्कार! हॉकर्स हेल्पमध्ये आपले स्वागत आहे.'
+      sampleGreeting: 'नमस्कार! नाका ॲपमध्ये आपले स्वागत आहे.'
     },
     {
       code: 'hi',
       name: 'हिन्दी',
       englishName: 'Hindi',
       tagline: 'दैनिक मजदूर और नियोक्ताओं के लिए सरल इंटरफ़ेस',
-      sampleGreeting: 'नमस्ते! हॉकर्स हेल्प में आपका स्वागत है।'
+      sampleGreeting: 'नमस्ते! नाका में आपका स्वागत है।'
     },
     {
       code: 'en',
       name: 'English',
       englishName: 'English',
       tagline: 'Standard interface for contractors & urban employers',
-      sampleGreeting: 'Welcome to Hawker\'s Help. Work finds you.'
+      sampleGreeting: 'Welcome to NAKA. Work finds you.'
     }
   ];
 
@@ -44,97 +45,104 @@ export default function LanguageSelect() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-8 bg-[#FAF8F5]">
-      <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200/90 space-y-6">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-8 bg-[#0A0A0A]">
+      <div className="w-full max-w-md bg-white rounded-[32px] border-4 border-[#0A0A0A] overflow-hidden shadow-2xl">
         
-        {/* Brand Icon & Heading */}
-        <div className="text-center space-y-2">
-          <div className="w-16 h-16 rounded-2xl bg-amber-100 border-2 border-amber-300 flex items-center justify-center mx-auto text-3xl shadow-sm">
-            🔨
+        {/* Flat Cyber Yellow Hero with Waving Worker Character */}
+        <div className="bg-[#FDE047] p-6 text-center text-[#0A0A0A] border-b-3 border-[#0A0A0A]">
+          <div className="flex justify-center mb-2">
+            <StateCharacter state="waving" className="w-28 h-28 drop-shadow-md" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <div className="inline-block bg-[#0A0A0A] text-[#FDE047] px-3.5 py-1 rounded-full text-xs font-black tracking-wider uppercase mb-2">
+            NAKA • नाका
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#0A0A0A] tracking-tight">
             {t('onboardingTitle')}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium">
+          <p className="text-sm text-neutral-800 font-bold mt-1">
             {t('onboardingSub')}
           </p>
         </div>
 
-        {/* Language Cards */}
-        <div className="space-y-3">
-          {languages.map((lang) => {
-            const isSelected = language === lang.code;
-            return (
-              <button
-                key={lang.code}
-                onClick={() => handleSelect(lang.code)}
-                className={`w-full p-4 rounded-2xl text-left border-2 transition-all flex items-center justify-between group touch-target ${
-                  isSelected
-                    ? 'border-[#B45309] bg-amber-50/70 shadow-md ring-2 ring-amber-200'
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-3.5">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black transition-colors ${
-                      isSelected ? 'bg-[#B45309] text-white' : 'bg-slate-100 text-slate-700'
-                    }`}
-                  >
-                    {lang.code.toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-black text-slate-900">
-                        {lang.name}
-                      </span>
-                      <span className="text-xs font-semibold text-slate-400">
-                        ({lang.englishName})
-                      </span>
+        {/* Content Body */}
+        <div className="p-6 space-y-5">
+          {/* Language Cards */}
+          <div className="space-y-3">
+            {languages.map((lang) => {
+              const isSelected = language === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  onClick={() => handleSelect(lang.code)}
+                  className={`w-full min-h-[56px] p-4 rounded-[24px] text-left border-2 transition-all flex items-center justify-between active:scale-[0.99] ${
+                    isSelected
+                      ? 'border-[#0A0A0A] bg-[#FDE047] text-[#0A0A0A] shadow-md ring-2 ring-[#0A0A0A]'
+                      : 'border-[#0A0A0A] bg-white text-[#0A0A0A] hover:bg-neutral-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div
+                      className={`w-11 h-11 rounded-2xl border-2 border-[#0A0A0A] flex items-center justify-center text-sm font-black transition-colors ${
+                        isSelected ? 'bg-[#0A0A0A] text-[#FDE047]' : 'bg-neutral-100 text-[#0A0A0A]'
+                      }`}
+                    >
+                      {lang.code.toUpperCase()}
                     </div>
-                    <p className="text-[11px] text-slate-500 font-medium">
-                      {lang.tagline}
-                    </p>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-black text-[#0A0A0A]">
+                          {lang.name}
+                        </span>
+                        <span className="text-xs font-bold text-neutral-600">
+                          ({lang.englishName})
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-700 font-semibold mt-0.5">
+                        {lang.tagline}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      speakText(lang.sampleGreeting);
-                    }}
-                    className="p-2 rounded-lg text-slate-400 hover:text-[#B45309] hover:bg-white"
-                    title="Listen pronunciation"
-                  >
-                    <Volume2 size={18} />
-                  </button>
-                  {isSelected ? (
-                    <CheckCircle2 className="w-6 h-6 text-[#B45309]" />
-                  ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
-                  )}
-                </div>
-              </button>
-            );
-          })}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        speakText(lang.sampleGreeting);
+                      }}
+                      className="w-10 h-10 rounded-full border border-neutral-300 hover:border-[#0A0A0A] bg-white text-[#0A0A0A] flex items-center justify-center"
+                      title="Listen pronunciation"
+                      aria-label={`Listen ${lang.name} greeting`}
+                    >
+                      <Volume2 size={18} className="stroke-[2.5]" />
+                    </button>
+                    {isSelected ? (
+                      <CheckCircle2 className="w-6 h-6 text-[#0A0A0A] stroke-[2.5]" />
+                    ) : (
+                      <div className="w-5 h-5 rounded-full border-2 border-[#0A0A0A]" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Continue Button: Pill button min 56px */}
+          <div className="pt-2">
+            <button
+              onClick={handleProceed}
+              className="w-full min-h-[56px] py-4 px-6 rounded-full font-black text-base text-[#0A0A0A] bg-[#FDE047] hover:bg-yellow-300 border-2 border-[#0A0A0A] shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              <span>{t('continueBtn')}</span>
+              <ArrowRight size={20} className="stroke-[2.5]" />
+            </button>
+          </div>
+
+          {/* Helper Note */}
+          <p className="text-xs text-center text-neutral-500 font-bold">
+            You can change the language anytime from the top bar.
+          </p>
         </div>
-
-        {/* Continue Button */}
-        <div className="pt-2">
-          <button
-            onClick={handleProceed}
-            className="w-full py-4 px-6 rounded-2xl font-black text-sm text-white bg-[#B45309] hover:bg-[#92400E] shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 touch-target"
-          >
-            <span>{t('continueBtn')}</span>
-            <ArrowRight size={18} />
-          </button>
-        </div>
-
-        {/* Helper Note */}
-        <p className="text-[11px] text-center text-slate-400 font-medium">
-          You can change the language anytime from the menu top bar.
-        </p>
 
       </div>
     </div>

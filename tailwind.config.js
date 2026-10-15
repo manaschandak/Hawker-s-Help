@@ -22,26 +22,33 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        brand: {
-          DEFAULT: '#B45309', // High contrast WCAG AA warm ochre/terracotta for buttons and active text
-          hover: '#92400E',
-          light: '#FEF3C7',
-          deco: '#D97706',   // Decorative/badge accent only
-          bg: '#FAF8F5',     // Warm, soft cream background
+        // Cyber Yellow & High-Contrast Bold Palette
+        cyber: {
+          yellow: '#FDE047', // Main Cyber Yellow (Flat)
+          black: '#0A0A0A',  // Deep Jet Black
+          dark: '#171717',   // Dark Section Card Surface
+          muted: '#262626',  // Secondary Dark
+          border: '#404040', // Dark Border
+          lightBorder: '#E5E7EB',
           surface: '#FFFFFF',
-          dark: '#0F172A',   // Deep slate for maximum outdoor legibility
-          muted: '#475569',
-          border: '#E2E8F0',
+          cream: '#FFFBEB',
+        },
+        brand: {
+          DEFAULT: '#FDE047', // Cyber Yellow
+          textOnYellow: '#0A0A0A',
+          dark: '#0A0A0A',
+          darkSurface: '#171717',
+          // Accessible Semantic Colors
           success: '#15803D',
-          warning: '#B45309',
+          successBright: '#22C55E',
+          warning: '#F59E0B',
+          warningDark: '#B45309',
           danger: '#DC2626',
-          indigo: '#312E81',
-          teal: '#0F766E'
         }
       },
       fontFamily: {
         sans: [
-          '"Plus Jakarta Sans"',
+          'Inter',
           '"Noto Sans Devanagari"',
           'system-ui',
           '-apple-system',
@@ -49,9 +56,14 @@ export default {
           'sans-serif'
         ],
       },
+      borderRadius: {
+        'card-lg': '32px',
+        'card-xl': '36px',
+        'pill': '9999px',
+      },
       minHeight: {
         'touch': '48px',
-        'touch-lg': '56px'
+        'touch-lg': '56px',
       }
     },
   },

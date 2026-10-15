@@ -261,32 +261,63 @@ export const AppProvider = ({ children }) => {
 
   // Accept a job
   const acceptJob = (jobId, agreedPay) => {
+    const targetJob = jobs.find(j => j.id === jobId);
+    const jobDate = targetJob?.startDate || 'Today';
+    const jobTitle = targetJob?.title?.[language] || targetJob?.title?.en || targetJob?.title || '';
+
     setJobs(prevJobs =>
-      prevJobs.map(job =>
-        job.id === jobId
-          ? {
-              ...job,
-              status: 'accepted',
-              statusLabel: 'Accepted',
-              agreedPay: agreedPay || job.payOffer
-            }
-          : job
-      )
+      prevJobs.map(job => {
+        if (job.id === jobId) {
+          return {
+            ...job,
+            status: 'accepted',
+            statusLabel: 'Accepted',
+            agreedPay: agreedPay || job.payOffer
+          };
+        }
+        return job;
+      })
     );
 
-    // Automatically mark worker busy for the job's date
-    setWorkerProfile(prev => ({
-      ...prev,
-      availableStatus: 'busy',
-      freeFrom: 'After Job Completion'
-    }));
+    // If job is for Tomorrow, worker remains FREE (AVAILABLE) today!
+    if (jobDate === 'Tomorrow') {
+      setWorkerProfile(prev => ({
+        ...prev,
+        availableStatus: 'available',
+        freeFrom: 'Today',
+        bookedTomorrow: {
+          jobId,
+          title: jobTitle,
+          status: 'booked'
+        }
+      }));
 
-    showToast(
-      language === 'mr'
-        ? `काम पक्के झाले! ₹${agreedPay || ''} मजुरी मान्य.`
-        : `Job accepted at ₹${agreedPay || ''}! You are booked.`,
-      'success'
-    );
+      showToast(
+        language === 'mr'
+          ? 'उद्याचे काम बुक झाले! आज तुम्ही इतर कामांसाठी मोकळे (Available) आहात.'
+          : 'Tomorrow’s job confirmed! You remain Free & Available for work today.',
+        'success'
+      );
+    } else {
+      // Job is for Today: Worker is busy today
+      setWorkerProfile(prev => ({
+        ...prev,
+        availableStatus: 'busy',
+        freeFrom: 'After Job Completion',
+        bookedToday: {
+          jobId,
+          title: jobTitle,
+          status: 'booked'
+        }
+      }));
+
+      showToast(
+        language === 'mr'
+          ? `आजचे काम पक्के झाले! ₹${agreedPay || ''} मजुरी मान्य. तुमची आजची स्थिती "कामावर/व्यस्त" झाली.`
+          : `Today’s job accepted at ₹${agreedPay || ''}! Status updated to Busy for today.`,
+        'success'
+      );
+    }
   };
 
   // Clock In / Start Work

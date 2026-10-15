@@ -962,7 +962,7 @@ export const WELFARE_SCHEMES = [
 // TRI-LINGUAL UI DICTIONARY
 export const DICTIONARY = {
   en: {
-    appTitle: "Hawker's Help",
+    appTitle: "NAKA",
     tagline: "Work finds you. You don't have to wait.",
     nakaModeText: "At Khopoli Naka",
     workersActiveHere: "14 workers available here today",
@@ -1015,7 +1015,7 @@ export const DICTIONARY = {
     rateExperience: "Rate Your Experience",
     speakReadAloud: "Listen Aloud",
     workPhotosTitle: "My Work Photos",
-    totalHoursWorked: "Total Hours on Hawker's Help",
+    totalHoursWorked: "Total Hours on NAKA",
     baseWageTitle: "My Minimum Daily Ask",
     iHaveToolsTitle: "Tools I Own & Carry",
     shareOnWhatsApp: "Share Profile on WhatsApp",
@@ -1023,6 +1023,7 @@ export const DICTIONARY = {
     reportIssue: "Help / Report",
     postJobTitle: "Post a New Job",
     findWorkersTitle: "Available Workers at Nearby Nakas",
+    sampleDataNote: "SAMPLE DATA: Strictly for demonstration. Verify with official authorities before actual use.",
     // Extended Keys
     onboardingTitle: "Select Language",
     onboardingSub: "Choose your preferred language for voice and text",
@@ -1069,7 +1070,7 @@ export const DICTIONARY = {
     toolsCarryCount: "verified trade tools"
   },
   hi: {
-    appTitle: "हॉकर्स हेल्प",
+    appTitle: "नाका (NAKA)",
     tagline: "काम आपको खोजेगा। अब चौराहे पर खड़े होकर इंतज़ार नहीं।",
     nakaModeText: "खोपोली नाके पर सक्रिय",
     workersActiveHere: "आज यहाँ 14 कारीगर उपलब्ध हैं",
@@ -1177,7 +1178,7 @@ export const DICTIONARY = {
     toolsCarryCount: "सत्यापित औजार"
   },
   mr: {
-    appTitle: "हॉकर्स हेल्प",
+    appTitle: "नाका (NAKA)",
     tagline: "काम तुम्हाला शोधेल. आता नाक्यावर तिष्ठत उभे राहण्याची गरज नाही.",
     nakaModeText: "खोपोली नाक्यावर उपस्थित",
     workersActiveHere: "आज या नाक्यावर 14 कारागीर उपलब्ध आहेत",
