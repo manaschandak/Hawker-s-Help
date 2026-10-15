@@ -19,6 +19,7 @@ import Plans from './pages/Plans';
 import RightsHub from './pages/RightsHub';
 import MyTeam from './pages/MyTeam';
 import MyWorkHours from './pages/MyWorkHours';
+import DocumentVault from './pages/DocumentVault';
 import PostJobModal from './pages/PostJobModal';
 import ReportFlow from './pages/ReportFlow';
 
@@ -62,6 +63,7 @@ export default function App() {
     if (path.includes('/workers')) return 'find_workers';
     if (path.includes('/employer/jobs')) return 'employer_jobs';
     if (path.includes('/work-hours')) return 'work_hours';
+    if (path.includes('/vault')) return 'vault';
     if (path.includes('/team')) return 'team';
     if (path.includes('/rights')) return 'rights';
     if (path.includes('/profile')) return 'profile';
@@ -72,6 +74,7 @@ export default function App() {
     setSelectedJob(null);
     if (tab === 'jobs') navigate('/jobs');
     else if (tab === 'work_hours') navigate('/work-hours');
+    else if (tab === 'vault') navigate('/vault');
     else if (tab === 'team') navigate('/team');
     else if (tab === 'rights') navigate('/rights');
     else if (tab === 'profile') navigate('/profile');
@@ -159,17 +162,15 @@ export default function App() {
           setIsMobileView={setIsMobileView}
         />
 
-        {/* Top GSAP-Powered Expandable CardNav (Hidden only on clean onboarding routes) */}
-        {!isOnboardingRoute && (
-          <header className="sticky top-0 z-40">
-            <CardNav
-              locationName={locationState.nearestPickup ? (locationState.nearestPickup.name[language] || locationState.nearestPickup.name.en) : locationState.areaName}
-              nearestDistance={locationState.nearestPickup ? `${locationState.nearestPickup.distanceKm} km` : '0.9 km'}
-              onOpenLocationModal={() => setIsLocationModalOpen(true)}
-              onOpenPostJob={() => setIsPostJobModalOpen(true)}
-            />
-          </header>
-        )}
+        {/* Top GSAP-Powered Expandable CardNav (Always visible on all screens) */}
+        <header className="sticky top-0 z-40">
+          <CardNav
+            locationName={locationState.nearestPickup ? (locationState.nearestPickup.name[language] || locationState.nearestPickup.name.en) : locationState.areaName}
+            nearestDistance={locationState.nearestPickup ? `${locationState.nearestPickup.distanceKm} km` : '0.9 km'}
+            onOpenLocationModal={() => setIsLocationModalOpen(true)}
+            onOpenPostJob={() => setIsPostJobModalOpen(true)}
+          />
+        </header>
 
         {/* Main Content Area */}
         <main className="flex-1 w-full overflow-x-hidden">
@@ -257,6 +258,9 @@ export default function App() {
 
             {/* Worker Profile */}
             <Route path="/profile" element={<WorkerProfile />} />
+
+            {/* Gov ID & Document Vault */}
+            <Route path="/vault" element={<DocumentVault />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/jobs" replace />} />

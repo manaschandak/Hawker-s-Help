@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Briefcase, Users, Shield, User, Search, PlusCircle, Clock } from 'lucide-react';
+import { Briefcase, Users, Shield, User, Search, PlusCircle, Clock, Lock } from 'lucide-react';
 
 export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
   const { role, t, language } = useApp();
@@ -24,7 +24,7 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
         {/* Big Post Job Action for Employer */}
         <button
           onClick={onOpenPostJob}
-          className="flex flex-col items-center justify-center -mt-5 bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] min-h-[56px] px-4 py-2 rounded-full shadow-2xl border-2 border-[#0A0A0A] ring-4 ring-[#0A0A0A] active:scale-95 transition-all"
+          className="flex flex-col items-center justify-center -mt-5 bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A] min-h-[56px] px-4 py-2 rounded-full shadow-2xl border-2 border-[#0A0A0A] ring-4 ring-[#0A0A0A] active:scale-95 transition-all cursor-pointer"
           aria-label="Post Job"
         >
           <PlusCircle className="w-6 h-6 stroke-[2.5]" />
@@ -47,24 +47,24 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
         </button>
 
         <button
-          onClick={() => setActiveTab('profile')}
+          onClick={() => setActiveTab('vault')}
           className={`flex flex-col items-center justify-center min-h-[56px] px-3.5 py-1.5 rounded-full transition-all active:scale-95 ${
-            activeTab === 'profile'
+            activeTab === 'vault'
               ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
               : 'text-neutral-400 font-semibold hover:text-white'
           }`}
-          aria-label={t('navProfile')}
+          aria-label="Document Vault"
         >
-          <User className="w-5 h-5 mb-0.5" />
-          <span className="text-[12px]">{t('navProfile')}</span>
+          <Lock className="w-5 h-5 mb-0.5" />
+          <span className="text-[12px]">{language === 'mr' ? 'तिजोरी' : 'Vault'}</span>
         </button>
       </nav>
     );
   }
 
-  // Worker Navigation: 5 tabs with Work & Hours included!
+  // Worker Navigation: 5 high-impact tabs
   return (
-    <nav className="sticky bottom-0 bg-[#0A0A0A] border-t-2 border-[#262626] px-1.5 py-1.5 flex items-center justify-around z-30 shadow-2xl">
+    <nav className="sticky bottom-0 bg-[#0A0A0A] border-t-2 border-[#262626] px-1 py-1.5 flex items-center justify-around z-30 shadow-2xl">
       <button
         onClick={() => setActiveTab('jobs')}
         className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
@@ -92,16 +92,16 @@ export default function BottomNav({ activeTab, setActiveTab, onOpenPostJob }) {
       </button>
 
       <button
-        onClick={() => setActiveTab('team')}
+        onClick={() => setActiveTab('vault')}
         className={`flex-1 flex flex-col items-center justify-center min-h-[54px] py-1 mx-0.5 rounded-full transition-all active:scale-95 ${
-          activeTab === 'team'
+          activeTab === 'vault'
             ? 'bg-[#FDE047] text-[#0A0A0A] font-black shadow-md'
             : 'text-neutral-400 font-semibold hover:text-white'
         }`}
-        aria-label={t('navMyTeam')}
+        aria-label="Gov ID Vault"
       >
-        <Users className="w-4 h-4 mb-0.5" />
-        <span className="text-[11px] leading-tight">{t('navMyTeam')}</span>
+        <Lock className="w-4 h-4 mb-0.5" />
+        <span className="text-[11px] leading-tight">{language === 'mr' ? 'तिजोरी' : 'Vault'}</span>
       </button>
 
       <button

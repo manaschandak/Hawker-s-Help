@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import {
   User,
@@ -13,11 +14,15 @@ import {
   Check,
   Volume2,
   QrCode,
-  Lock
+  Lock,
+  ArrowUpRight,
+  Trash2,
+  CheckCircle2
 } from 'lucide-react';
 import { TradeCharacter } from '../components/Characters';
 
 export default function WorkerProfile() {
+  const navigate = useNavigate();
   const {
     workerProfile,
     setWorkerProfile,
@@ -38,6 +43,47 @@ export default function WorkerProfile() {
   const [aadhaarOtpSent, setAadhaarOtpSent] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
+  const photoFileInputRef = useRef(null);
+
+  // Handle Real Photo Upload from Camera / Device
+  const handleRealPhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const newPhoto = {
+        id: `photo_${Date.now()}`,
+        imageUrl: reader.result,
+        title: file.name.replace(/\.[^/.]+$/, "") || (language === 'mr' ? 'नवीन काम फोटो' : 'New Work Photo'),
+        label: new Date().toLocaleDateString(language === 'mr' ? 'mr-IN' : 'en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        tag: workerProfile.trade || 'General Work',
+        timestamp: Date.now()
+      };
+
+      setWorkerProfile(prev => ({
+        ...prev,
+        workPhotos: [newPhoto, ...(prev.workPhotos || [])]
+      }));
+
+      showToast(
+        language === 'mr' ? 'काम फोटो गॅलरीत जोडला गेला!' : 'Real photo added to your profile gallery!',
+        'success'
+      );
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleDeletePhoto = (photoId) => {
+    setWorkerProfile(prev => ({
+      ...prev,
+      workPhotos: (prev.workPhotos || []).filter(p => p.id !== photoId)
+    }));
+    setActivePhotoModal(null);
+    showToast(language === 'mr' ? 'फोटो हटवला गेला' : 'Photo removed', 'info');
+  };
+
   // Experience stepper
   const handleExperienceNudge = (delta) => {
     setWorkerProfile(prev => ({
@@ -46,19 +92,11 @@ export default function WorkerProfile() {
     }));
   };
 
-  // Add mock photo
+  // Add mock photo fallback
   const handleAddMockPhoto = () => {
-    const newPhoto = {
-      id: `p_${Date.now()}`,
-      title: language === 'mr' ? 'नवीन नळ दुरुस्ती काम' : 'New Plumbing Inspection',
-      label: language === 'mr' ? 'आज पूर्ण केलेले काम' : 'Completed Today',
-      tag: 'Plumbing'
-    };
-    setWorkerProfile(prev => ({
-      ...prev,
-      workPhotos: [newPhoto, ...prev.workPhotos]
-    }));
-    showToast(language === 'mr' ? 'फोटो जोडला गेला!' : 'Work photo added to gallery!', 'success');
+    if (photoFileInputRef.current) {
+      photoFileInputRef.current.click();
+    }
   };
 
   // Simulate Aadhaar Verification
@@ -209,32 +247,52 @@ export default function WorkerProfile() {
             </h2>
           </div>
 
+          {/* Hidden File Input for Real Photo Uploads */}
+          <input
+            type="file"
+            ref={photoFileInputRef}
+            accept="image/*"
+            onChange={handleRealPhotoUpload}
+            className="hidden"
+          />
+
           <button
-            onClick={handleAddMockPhoto}
-            className="text-xs font-black text-[#0A0A0A] bg-[#FDE047] border border-[#0A0A0A] px-3 py-1 rounded-full flex items-center gap-1 active:scale-95"
+            type="button"
+            onClick={() => photoFileInputRef.current?.click()}
+            className="text-xs font-black text-[#0A0A0A] bg-[#FDE047] hover:bg-yellow-400 border-2 border-[#0A0A0A] px-3.5 py-1.5 rounded-full flex items-center gap-1 active:scale-95 transition-all shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>{language === 'mr' ? 'फोटो जोडा' : 'Add Photo'}</span>
           </button>
         </div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid with Real Photos & Previews */}
         <div className="grid grid-cols-2 gap-3">
           {workerProfile.workPhotos?.map(photo => (
             <div
               key={photo.id}
               onClick={() => setActivePhotoModal(photo)}
-              className="bg-neutral-50 border-2 border-[#0A0A0A] rounded-[24px] p-3 cursor-pointer active:scale-95 transition-all space-y-2"
+              className="bg-neutral-50 border-2 border-[#0A0A0A] rounded-[24px] p-2.5 cursor-pointer active:scale-95 transition-all space-y-2 group hover:border-black"
             >
-              <div className="h-28 bg-[#FDE047]/30 border-2 border-[#0A0A0A] rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
-                <Camera className="w-7 h-7 text-[#0A0A0A] stroke-[2]" />
-                <span className="text-xs font-black text-[#0A0A0A] mt-1">{photo.tag}</span>
-                <span className="absolute bottom-1 right-1 px-2 py-0.5 bg-[#0A0A0A] text-[#FDE047] text-[10px] rounded-full font-black">
+              <div className="h-32 bg-[#FAF8F5] border-2 border-[#0A0A0A] rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                {photo.imageUrl ? (
+                  <img
+                    src={photo.imageUrl}
+                    alt={photo.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-2 text-center">
+                    <Camera className="w-7 h-7 text-[#0A0A0A] stroke-[2]" />
+                    <span className="text-xs font-black text-[#0A0A0A] mt-1">{photo.tag}</span>
+                  </div>
+                )}
+                <span className="absolute bottom-1 right-1 px-2 py-0.5 bg-[#0A0A0A] text-[#FDE047] text-[10px] rounded-full font-black shadow-xs">
                   Verified
                 </span>
               </div>
 
-              <div>
+              <div className="px-1">
                 <div className="font-black text-xs text-[#0A0A0A] truncate">
                   {photo.title}
                 </div>
@@ -245,6 +303,32 @@ export default function WorkerProfile() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Gov ID & Document Vault Quick Banner */}
+      <div className="bg-[#FDE047] rounded-[32px] border-3 border-[#0A0A0A] p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-[#0A0A0A] text-[#FDE047] rounded-2xl shrink-0">
+            <Lock className="w-6 h-6 stroke-[2.5]" />
+          </div>
+          <div>
+            <div className="text-xs font-black text-[#0A0A0A] uppercase tracking-wider">
+              {language === 'mr' ? 'शासकीय कागदपत्रे व ओळखपत्र तिजोरी' : 'Gov ID & Document Vault'}
+            </div>
+            <div className="text-sm font-black text-[#0A0A0A]">
+              {language === 'mr' ? 'आधार कार्ड, BOCW स्मार्ट कार्ड व ई-श्रम सुरक्षित पहा' : 'Aadhaar, BOCW Card & e-Shram Vault'}
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate('/vault')}
+          className="min-h-[48px] px-5 rounded-full bg-[#0A0A0A] text-[#FDE047] hover:bg-[#171717] font-black text-xs flex items-center justify-center gap-2 active:scale-95 border-2 border-[#0A0A0A] shadow-xs cursor-pointer"
+        >
+          <span>{language === 'mr' ? 'तिजोरी उघडा' : 'Open Vault'}</span>
+          <ArrowUpRight size={16} className="stroke-[2.5]" />
+        </button>
       </div>
 
       {/* 4. Minimum Base Wage Stepper */}
@@ -491,18 +575,53 @@ export default function WorkerProfile() {
       {/* Expanded Photo Preview Modal */}
       {activePhotoModal && (
         <div className="fixed inset-0 z-50 bg-[#0A0A0A]/85 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-[360px] bg-white rounded-[32px] p-5 space-y-3.5 text-center border-4 border-[#0A0A0A]">
-            <div className="h-48 bg-[#FDE047]/30 rounded-2xl flex flex-col items-center justify-center border-2 border-[#0A0A0A]">
-              <Wrench className="w-12 h-12 text-[#0A0A0A] stroke-[2]" />
-              <span className="font-black text-[#0A0A0A] text-sm mt-2">{activePhotoModal.title}</span>
+          <div className="w-full max-w-[390px] bg-white rounded-[32px] p-5 space-y-4 text-center border-4 border-[#0A0A0A] shadow-2xl">
+            <div className="space-y-1">
+              <span className="px-3 py-1 bg-[#FDE047] text-[#0A0A0A] rounded-full text-xs font-black uppercase tracking-wider border border-[#0A0A0A] inline-block">
+                {activePhotoModal.tag || 'Work Photo'}
+              </span>
+              <h3 className="font-black text-[#0A0A0A] text-lg">
+                {activePhotoModal.title}
+              </h3>
             </div>
+
+            {/* Real Image Preview */}
+            <div className="h-60 bg-[#FAF8F5] rounded-2xl overflow-hidden border-2 border-[#0A0A0A] flex items-center justify-center">
+              {activePhotoModal.imageUrl ? (
+                <img
+                  src={activePhotoModal.imageUrl}
+                  alt={activePhotoModal.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-4">
+                  <Camera className="w-12 h-12 text-[#0A0A0A] stroke-[2]" />
+                  <span className="font-black text-[#0A0A0A] text-sm mt-2">{activePhotoModal.title}</span>
+                </div>
+              )}
+            </div>
+
             <p className="text-xs text-neutral-600 font-bold">{activePhotoModal.label}</p>
-            <button
-              onClick={() => setActivePhotoModal(null)}
-              className="w-full min-h-[52px] bg-[#0A0A0A] text-[#FDE047] font-black rounded-full text-xs active:scale-95"
-            >
-              {language === 'mr' ? 'बंद करा' : 'Close Preview'}
-            </button>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setActivePhotoModal(null)}
+                className="flex-1 min-h-[52px] bg-[#0A0A0A] text-[#FDE047] font-black rounded-full text-xs active:scale-95 border-2 border-[#0A0A0A] cursor-pointer"
+              >
+                {language === 'mr' ? 'बंद करा' : 'Close Preview'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDeletePhoto(activePhotoModal.id)}
+                className="min-h-[52px] px-4 bg-red-50 hover:bg-red-100 text-red-600 font-black rounded-full text-xs active:scale-95 border-2 border-red-300 flex items-center justify-center gap-1 cursor-pointer"
+                title="Delete Photo"
+              >
+                <Trash2 size={16} />
+                <span>{language === 'mr' ? 'हटवा' : 'Delete'}</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

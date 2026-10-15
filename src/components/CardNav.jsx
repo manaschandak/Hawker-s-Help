@@ -14,7 +14,9 @@ import {
   LogIn,
   LogOut,
   Wrench,
-  Clock
+  Clock,
+  FileText,
+  Lock
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -80,7 +82,7 @@ export default function CardNav({
       links: [
         { label: language === 'mr' ? 'BOCW / ई-श्रम योजना' : language === 'hi' ? 'ई-श्रम व पेंशन' : 'e-Shram & BOCW Grants', href: '/rights' },
         { label: language === 'mr' ? 'पात्रता तपासणी (3 प्रश्न)' : language === 'hi' ? 'पात्रता जांचें' : 'Scheme Eligibility Test', href: '/rights' },
-        { label: language === 'mr' ? 'तक्रार व मदत कक्ष' : language === 'hi' ? 'शिकायत व मदद' : 'Grievance / Dispute Cell', href: '/rights' }
+        { label: language === 'mr' ? 'कागदपत्रे तिजोरी (Vault)' : language === 'hi' ? 'दस्तावेज वॉल्ट' : 'Gov & ID Document Vault', href: '/vault' }
       ]
     },
     {
@@ -94,7 +96,7 @@ export default function CardNav({
       },
       links: [
         { label: language === 'mr' ? 'काम फोटो व अनुभव' : language === 'hi' ? 'काम के फोटो' : 'Work Photos & Gallery', href: '/profile' },
-        { label: language === 'mr' ? 'उपलब्धता बदला' : language === 'hi' ? 'उपलब्धता दर्ज करें' : 'Set Availability', href: '/profile' },
+        { label: language === 'mr' ? 'दस्तऐवज तिजोरी (Vault)' : language === 'hi' ? 'आईडी प्रूफ वॉल्ट' : 'Gov ID Proof Vault', href: '/vault' },
         { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Switch Account', href: '/onboarding/login' },
         { label: language === 'mr' ? 'मालक मोडमध्ये जा' : language === 'hi' ? 'नियोक्ता मोड चुनें' : 'Switch to Employer Mode', href: '#switch-role', onClick: () => { setRole('employer'); navigate('/employer/jobs'); } }
       ]
@@ -148,15 +150,16 @@ export default function CardNav({
       ]
     },
     {
-      label: language === 'mr' ? 'खाते व लॉगिन' : language === 'hi' ? 'खाता व लॉगिन' : 'Account & Login',
-      href: '/onboarding/login',
+      label: language === 'mr' ? 'खाते व दस्तऐवज' : language === 'hi' ? 'खाता व दस्तावेज' : 'Account & Gov Vault',
+      href: '/vault',
       bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <User className="w-5 h-5 text-[#FDE047]" />,
+      icon: <Lock className="w-5 h-5 text-[#FDE047]" />,
       onClick: () => {
-        navigate('/onboarding/login');
+        navigate('/vault');
       },
       links: [
+        { label: language === 'mr' ? 'मालक दस्तऐवज तिजोरी' : language === 'hi' ? 'नियोक्ता दस्तावेज वॉल्ट' : 'Employer Gov ID Vault', href: '/vault' },
         { label: language === 'mr' ? 'कामगार मोडमध्ये जा' : language === 'hi' ? 'कामगार मोड चुनें' : 'Switch to Worker Mode', href: '#switch-role', onClick: () => { setRole('worker'); navigate('/jobs'); } },
         { label: language === 'mr' ? 'मदत व ग्राहक कक्ष' : language === 'hi' ? 'हेल्पलाइन' : 'Customer Support Cell', href: 'tel:18001801551' }
       ]
@@ -165,50 +168,109 @@ export default function CardNav({
 
   const items = role === 'employer' ? employerItems : workerItems;
 
-  const tlRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const navEl = navRef.current;
-      if (!navEl) return;
-
-      gsap.set(navEl, { height: 68, overflow: 'hidden' });
-
-      const tl = gsap.timeline({ paused: true });
-
-      tl.to(navEl, {
-        height: 'auto',
-        duration: 0.45,
-        ease: 'power3.inOut'
-      });
-
-      tl.from(
-        cardsRef.current.filter(Boolean),
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.35,
-          stagger: 0.05,
-          ease: 'power2.out'
-        },
-        '-=0.2'
-      );
-
-      tlRef.current = tl;
-    });
-
-    return () => ctx.revert();
-  }, [items]);
+  const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
-    if (tlRef.current) {
-      if (isExpanded) {
-        tlRef.current.play();
-      } else {
-        tlRef.current.reverse();
+    const updateCompact = () => {
+      if (navRef.current) {
+        setIsCompact(navRef.current.offsetWidth < 680);
       }
+    };
+    updateCompact();
+    window.addEventListener('resize', updateCompact);
+    return () => window.removeEventListener('resize', updateCompact);
+  }, []);
+
+  const calculateHeight = () => {
+    const navEl = navRef.current;
+    if (!navEl) return 400;
+
+    const contentEl = navEl.querySelector('.card-nav-content');
+    if (contentEl) {
+      // Temporarily measure scrollHeight without being constrained
+      const wasPosition = contentEl.style.position;
+      const wasHeight = contentEl.style.height;
+      const wasMaxHeight = contentEl.style.maxHeight;
+      const wasVisibility = contentEl.style.visibility;
+
+      contentEl.style.position = 'static';
+      contentEl.style.height = 'auto';
+      contentEl.style.maxHeight = 'none';
+      contentEl.style.visibility = 'hidden';
+
+      const contentHeight = contentEl.scrollHeight;
+
+      contentEl.style.position = wasPosition;
+      contentEl.style.height = wasHeight;
+      contentEl.style.maxHeight = wasMaxHeight;
+      contentEl.style.visibility = wasVisibility;
+
+      const windowH = typeof window !== 'undefined' ? window.innerHeight : 800;
+      return Math.min(68 + contentHeight + 20, Math.max(windowH * 0.85, 540));
     }
-  }, [isExpanded]);
+
+    const isNarrow = navEl.offsetWidth < 680 || window.matchMedia('(max-width: 768px)').matches;
+    return isNarrow ? 560 : 360;
+  };
+
+  // State-driven GSAP animation that calculates explicit target height
+  useLayoutEffect(() => {
+    const navEl = navRef.current;
+    if (!navEl) return;
+
+    const validCards = cardsRef.current.filter(Boolean);
+
+    if (isExpanded) {
+      const targetHeight = calculateHeight();
+      gsap.killTweensOf(navEl);
+      gsap.killTweensOf(validCards);
+
+      gsap.to(navEl, {
+        height: targetHeight,
+        duration: 0.4,
+        ease: 'power3.out'
+      });
+
+      gsap.fromTo(
+        validCards,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power3.out',
+          stagger: 0.05,
+          delay: 0.08
+        }
+      );
+    } else {
+      gsap.killTweensOf(navEl);
+      gsap.killTweensOf(validCards);
+
+      gsap.to(validCards, {
+        y: 15,
+        opacity: 0,
+        duration: 0.2,
+        ease: 'power2.in'
+      });
+
+      gsap.to(navEl, {
+        height: 68,
+        duration: 0.35,
+        ease: 'power3.inOut'
+      });
+    }
+  }, [isExpanded, items, isCompact]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!navRef.current || !isExpanded) return;
+      const newHeight = calculateHeight();
+      gsap.to(navRef.current, { height: newHeight, duration: 0.25 });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isExpanded, isCompact]);
 
   const toggleMenu = () => {
     setIsExpanded(prev => !prev);
@@ -360,7 +422,7 @@ export default function CardNav({
         <div
           className={`card-nav-content absolute left-0 right-0 top-[68px] bottom-0 p-3 sm:p-5 flex flex-col gap-3 justify-start z-10 ${
             isExpanded ? 'visible pointer-events-auto opacity-100' : 'invisible pointer-events-none opacity-0'
-          } md:flex-row md:items-stretch md:gap-4 bg-[#FDE047]`}
+          } ${isCompact ? 'flex-col' : 'md:flex-row md:items-stretch'} md:gap-4 bg-[#FDE047] overflow-y-auto`}
           aria-hidden={!isExpanded}
         >
           {items.map((item, idx) => (
