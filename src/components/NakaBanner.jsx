@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { MapPin, Users, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react';
+import { TradeCharacter } from './Characters';
 
 export default function NakaBanner() {
   const { language, t } = useApp();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const nakaWorkersSummary = [
-    { trade: 'Plumbers', count: 3, icon: '🔧' },
-    { trade: 'Electricians', count: 2, icon: '⚡' },
-    { trade: 'Painters', count: 3, icon: '🎨' },
-    { trade: 'Masons', count: 2, icon: '🧱' },
-    { trade: 'Helpers', count: 4, icon: '👷' },
+    { tradeKey: 'plumber', trade: 'Plumbers', count: 3 },
+    { tradeKey: 'electrician', trade: 'Electricians', count: 2 },
+    { tradeKey: 'painter', trade: 'Painters', count: 3 },
+    { tradeKey: 'mason', trade: 'Masons', count: 2 },
+    { tradeKey: 'helper', trade: 'Helpers', count: 4 },
   ];
 
   return (
@@ -64,7 +65,10 @@ export default function NakaBanner() {
                 key={idx}
                 className="bg-white p-2 rounded-2xl border-2 border-[#0A0A0A] flex items-center justify-between text-[#0A0A0A]"
               >
-                <span className="font-bold text-xs">{item.icon} {item.trade}</span>
+                <div className="flex items-center gap-1.5">
+                  <TradeCharacter trade={item.tradeKey} className="w-8 h-8 flex-shrink-0" />
+                  <span className="font-bold text-xs">{item.trade}</span>
+                </div>
                 <span className="font-black text-sm bg-neutral-100 px-2 py-0.5 rounded-lg border border-neutral-300">{item.count}</span>
               </div>
             ))}

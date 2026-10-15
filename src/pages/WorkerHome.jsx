@@ -3,7 +3,8 @@ import { useApp } from '../context/AppContext';
 import AvailabilityCard from '../components/AvailabilityCard';
 import NakaBanner from '../components/NakaBanner';
 import JobCard from '../components/JobCard';
-import { Filter, Volume2, Sparkles, CheckSquare } from 'lucide-react';
+import { Filter, Volume2, Sparkles, Zap, Calendar, Building, Wrench, Paintbrush, Hammer, HardHat } from 'lucide-react';
+import { StateCharacter, TradeCharacter } from '../components/Characters';
 
 export default function WorkerHome({ onSelectJob }) {
   const { jobs, workerProfile, language, speakText, t } = useApp();
@@ -42,7 +43,7 @@ export default function WorkerHome({ onSelectJob }) {
   };
 
   return (
-    <div className="space-y-4 pb-16">
+    <div className="space-y-4 pb-20">
       {/* 1. Global Worker Availability Card */}
       <AvailabilityCard />
 
@@ -50,14 +51,14 @@ export default function WorkerHome({ onSelectJob }) {
       <NakaBanner />
 
       {/* 3. Filter Bar & Quick Tools Match */}
-      <div className="space-y-2 pt-1">
+      <div className="space-y-3 pt-1">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <Filter className="w-4 h-4 text-[#B45309]" />
-            <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-[#0A0A0A] stroke-[2.5]" />
+            <span className="text-xs font-black text-[#0A0A0A] uppercase tracking-wider">
               {language === 'mr' ? 'कामे निवडा' : 'Filters'}
             </span>
-            <span className="text-xs bg-slate-200 text-slate-800 px-1.5 py-0.2 rounded-full font-bold">
+            <span className="text-xs bg-[#0A0A0A] text-[#FDE047] px-2.5 py-0.5 rounded-full font-black">
               {filteredJobs.length}
             </span>
           </div>
@@ -65,145 +66,109 @@ export default function WorkerHome({ onSelectJob }) {
           {/* Audio Feed Readout */}
           <button
             onClick={handleReadFeed}
-            className="text-[11px] font-bold text-[#B45309] flex items-center gap-1 hover:underline"
+            className="text-xs font-black text-[#0A0A0A] bg-[#FDE047] border border-[#0A0A0A] px-3 py-1 rounded-full flex items-center gap-1.5 active:scale-95"
           >
-            <Volume2 className="w-3.5 h-3.5" />
+            <Volume2 className="w-3.5 h-3.5 stroke-[2.5]" />
             <span>{t('speakReadAloud')}</span>
           </button>
         </div>
 
-        {/* Time Filter Chips */}
-        <div className="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        {/* Time Filter Chips: Pill buttons min 44px */}
+        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
           <button
             onClick={() => setTimeFilter('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all touch-target ${
+            className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border-2 active:scale-95 ${
               timeFilter === 'all'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A] shadow-xs'
+                : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
             {t('filterAll')}
           </button>
           <button
             onClick={() => setTimeFilter('today')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all touch-target ${
+            className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border-2 active:scale-95 flex items-center gap-1.5 ${
               timeFilter === 'today'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A] shadow-xs'
+                : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            ⚡ {t('filterToday')}
+            <Zap className="w-3.5 h-3.5 stroke-[2.5] text-amber-500" />
+            <span>{t('filterToday')}</span>
           </button>
           <button
             onClick={() => setTimeFilter('tomorrow')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all touch-target ${
+            className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border-2 active:scale-95 flex items-center gap-1.5 ${
               timeFilter === 'tomorrow'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A] shadow-xs'
+                : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            🗓️ {t('filterTomorrow')}
+            <Calendar className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>{t('filterTomorrow')}</span>
           </button>
           <button
             onClick={() => setTimeFilter('long_term')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all touch-target ${
+            className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border-2 active:scale-95 flex items-center gap-1.5 ${
               timeFilter === 'long_term'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#0A0A0A] text-[#FDE047] border-[#0A0A0A] shadow-xs'
+                : 'bg-white text-[#0A0A0A] border-[#0A0A0A] hover:bg-neutral-100'
             }`}
           >
-            🏗️ {language === 'mr' ? 'मोठी कामे (2+ दिवस)' : 'Long Term'}
+            <Building className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>{language === 'mr' ? 'मोठी कामे (2+ दिवस)' : 'Long Term'}</span>
           </button>
         </div>
 
-        {/* Trade Filter Chips */}
-        <div className="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+        {/* Trade Filter Chips with Trade Character Avatars */}
+        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
           <button
             onClick={() => setTradeFilter('all')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
+            className={`min-h-[44px] px-4 py-1.5 rounded-full font-black whitespace-nowrap border-2 active:scale-95 ${
               tradeFilter === 'all'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
+                ? 'bg-[#FDE047] text-[#0A0A0A] border-[#0A0A0A] shadow-xs'
+                : 'bg-white text-[#0A0A0A] border-neutral-300'
             }`}
           >
             {language === 'mr' ? 'सर्व व्यवसाय' : 'All Trades'}
           </button>
-          <button
-            onClick={() => setTradeFilter('plumber')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'plumber'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            🔧 {language === 'mr' ? 'प्लंबर' : 'Plumber'}
-          </button>
-          <button
-            onClick={() => setTradeFilter('electrician')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'electrician'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            ⚡ {language === 'mr' ? 'इलेक्ट्रिशियन' : 'Electrician'}
-          </button>
-          <button
-            onClick={() => setTradeFilter('carpenter')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'carpenter'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            🪚 {language === 'mr' ? 'सुतार' : 'Carpenter'}
-          </button>
-          <button
-            onClick={() => setTradeFilter('painter')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'painter'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            🎨 {language === 'mr' ? 'पेंटर' : 'Painter'}
-          </button>
-          <button
-            onClick={() => setTradeFilter('mason')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'mason'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            🧱 {language === 'mr' ? 'गवंडी' : 'Mason'}
-          </button>
-          <button
-            onClick={() => setTradeFilter('helper')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold whitespace-nowrap border ${
-              tradeFilter === 'helper'
-                ? 'bg-[#B45309] text-white border-[#B45309]'
-                : 'bg-white text-slate-600 border-slate-200'
-            }`}
-          >
-            👷 {language === 'mr' ? 'हेल्पर' : 'Helper'}
-          </button>
+          {[
+            { id: 'plumber', label: language === 'mr' ? 'प्लंबर' : 'Plumber' },
+            { id: 'electrician', label: language === 'mr' ? 'इलेक्ट्रिशियन' : 'Electrician' },
+            { id: 'carpenter', label: language === 'mr' ? 'सुतार' : 'Carpenter' },
+            { id: 'painter', label: language === 'mr' ? 'पेंटर' : 'Painter' },
+            { id: 'mason', label: language === 'mr' ? 'गवंडी' : 'Mason' },
+            { id: 'helper', label: language === 'mr' ? 'हेल्पर' : 'Helper' },
+          ].map(tradeItem => (
+            <button
+              key={tradeItem.id}
+              onClick={() => setTradeFilter(tradeItem.id)}
+              className={`min-h-[44px] px-3.5 py-1.5 rounded-full font-black whitespace-nowrap border-2 active:scale-95 flex items-center gap-2 ${
+                tradeFilter === tradeItem.id
+                  ? 'bg-[#FDE047] text-[#0A0A0A] border-[#0A0A0A] shadow-xs'
+                  : 'bg-white text-[#0A0A0A] border-neutral-300'
+              }`}
+            >
+              <TradeCharacter trade={tradeItem.id} className="w-6 h-6 flex-shrink-0" />
+              <span>{tradeItem.label}</span>
+            </button>
+          ))}
         </div>
 
         {/* "Matches My Tools" Quick Toggle */}
         <button
           onClick={() => setToolsOnlyFilter(!toolsOnlyFilter)}
-          className={`w-full py-2 px-3 rounded-xl border flex items-center justify-between text-xs font-bold transition-all ${
+          className={`w-full min-h-[52px] py-2.5 px-4 rounded-full border-2 border-[#0A0A0A] flex items-center justify-between text-xs font-black transition-all active:scale-[0.99] ${
             toolsOnlyFilter
-              ? 'bg-amber-100 border-[#B45309] text-[#B45309]'
-              : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+              ? 'bg-[#FDE047] text-[#0A0A0A] shadow-sm'
+              : 'bg-white text-[#0A0A0A] hover:bg-neutral-50'
           }`}
         >
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#B45309]" />
+            <Sparkles className="w-4 h-4 text-[#0A0A0A] stroke-[2.5]" />
             <span>{t('filterMatchesTools')} ({workerProfile.ownedTools?.length} {language === 'mr' ? 'अवजारे उपलब्ध' : 'tools'})</span>
           </div>
-          <span className={`px-2 py-0.5 rounded text-[10px] ${toolsOnlyFilter ? 'bg-[#B45309] text-white' : 'bg-slate-100 text-slate-600'}`}>
+          <span className={`px-2.5 py-0.5 rounded-full text-xs font-black border border-[#0A0A0A] ${toolsOnlyFilter ? 'bg-[#0A0A0A] text-[#FDE047]' : 'bg-neutral-100 text-[#0A0A0A]'}`}>
             {toolsOnlyFilter ? 'ON' : 'OFF'}
           </span>
         </button>
@@ -212,12 +177,12 @@ export default function WorkerHome({ onSelectJob }) {
       {/* 4. Jobs Feed List */}
       <div className="pt-1">
         {filteredJobs.length === 0 ? (
-          <div className="bg-white border-2 border-dashed border-slate-300 rounded-3xl p-8 text-center space-y-2">
-            <span className="text-4xl">🔍</span>
-            <h3 className="font-black text-slate-800 text-sm">
+          <div className="bg-white border-3 border-dashed border-[#0A0A0A] rounded-[32px] p-8 text-center space-y-3 shadow-sm">
+            <StateCharacter state="thinking" className="w-24 h-24 mx-auto" />
+            <h3 className="font-black text-[#0A0A0A] text-base">
               {language === 'mr' ? 'या फिल्टरनुसार कामे सापडली नाहीत' : 'No jobs matching these filters'}
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-neutral-600 font-semibold max-w-xs mx-auto">
               {language === 'mr' ? 'कृपया फिल्टर बदला किंवा सर्व कामे पहा' : 'Try resetting your filter to view all listings'}
             </p>
             <button
@@ -226,7 +191,7 @@ export default function WorkerHome({ onSelectJob }) {
                 setTradeFilter('all');
                 setToolsOnlyFilter(false);
               }}
-              className="mt-2 px-5 py-2.5 bg-slate-900 text-white font-black text-xs rounded-xl shadow-md hover:bg-slate-800"
+              className="mt-2 min-h-[56px] px-6 py-3 bg-[#FDE047] text-[#0A0A0A] font-black text-sm rounded-full border-2 border-[#0A0A0A] shadow-md hover:bg-yellow-300 active:scale-95"
             >
               {language === 'mr' ? 'सर्व कामे दाखवा' : 'Show All Jobs'}
             </button>

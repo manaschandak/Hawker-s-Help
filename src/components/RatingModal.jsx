@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Star, X, Check, ThumbsUp } from 'lucide-react';
+import { Star, X, Check, ThumbsUp, Smile, Meh, Frown } from 'lucide-react';
 import { StateCharacter } from './Characters';
 
 export default function RatingModal({ isOpen, onClose, targetName, targetRole, jobId }) {
@@ -81,7 +81,7 @@ export default function RatingModal({ isOpen, onClose, targetName, targetRole, j
                 : 'bg-white text-neutral-600'
             }`}
           >
-            <div className="text-3xl mb-1">😃</div>
+            <Smile className="w-8 h-8 mb-1 stroke-[2.5]" />
             <div className="text-xs font-black">{language === 'mr' ? 'उत्तम काम' : 'Great'}</div>
           </button>
 
@@ -96,7 +96,7 @@ export default function RatingModal({ isOpen, onClose, targetName, targetRole, j
                 : 'bg-white text-neutral-600'
             }`}
           >
-            <div className="text-3xl mb-1">😐</div>
+            <Meh className="w-8 h-8 mb-1 stroke-[2.5]" />
             <div className="text-xs font-black">{language === 'mr' ? 'साधारण' : 'Okay'}</div>
           </button>
 
@@ -111,7 +111,7 @@ export default function RatingModal({ isOpen, onClose, targetName, targetRole, j
                 : 'bg-white text-neutral-600'
             }`}
           >
-            <div className="text-3xl mb-1">🙁</div>
+            <Frown className="w-8 h-8 mb-1 stroke-[2.5]" />
             <div className="text-xs font-black">{language === 'mr' ? 'असमाधानी' : 'Poor'}</div>
           </button>
         </div>
@@ -154,7 +154,7 @@ export default function RatingModal({ isOpen, onClose, targetName, targetRole, j
                       : 'bg-white text-[#0A0A0A] hover:bg-neutral-100'
                   }`}
                 >
-                  {active ? '✓ ' : '+ '} {tag.label}
+                  {active ? <Check className="w-3.5 h-3.5 inline mr-1 stroke-[3]" /> : '+ '} {tag.label}
                 </button>
               );
             })}

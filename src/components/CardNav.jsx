@@ -12,7 +12,8 @@ import {
   Shield,
   CheckCircle2,
   LogIn,
-  LogOut
+  LogOut,
+  Wrench
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -275,7 +276,9 @@ export default function CardNav({
           {/* Center Brand Identity */}
           <div className="logo-container absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-auto">
             <Link to={role === 'employer' ? '/employer/jobs' : '/jobs'} onClick={closeMenu} className="flex items-center gap-2 no-underline">
-              <span className="text-2xl drop-shadow-sm">🔨</span>
+              <span className="p-1.5 bg-[#0A0A0A] text-[#FDE047] rounded-xl flex items-center justify-center shadow-xs">
+                <Wrench className="w-4 h-4 stroke-[2.5]" />
+              </span>
               <span className="font-black text-[#0A0A0A] text-lg sm:text-xl tracking-tight">
                 {t('appTitle')}
               </span>

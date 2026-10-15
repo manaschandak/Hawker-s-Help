@@ -10,8 +10,13 @@ import {
   PhoneCall,
   X,
   FileCheck,
-  AlertTriangle
+  AlertTriangle,
+  Banknote,
+  AlertCircle,
+  FileText,
+  Check
 } from 'lucide-react';
+import { HelpfulAdvocateCharacter } from '../components/Characters';
 
 export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
   const { submitGrievance, SAMPLE_DATA_DISCLAIMER, language, showToast, t } = useApp();
@@ -30,29 +35,39 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
     {
       id: 'wage_theft',
       title: language === 'mr' ? 'काम झाल्यावर पैसे दिले नाहीत (मजुरी बुडवली)' : 'Did not pay me / Wage theft',
-      icon: '💸'
+      iconType: 'banknote'
     },
     {
       id: 'asked_money',
       title: language === 'mr' ? 'कामासाठी आधी डिपॉझिट/पैसे मागितले' : 'Asked for money/deposit upfront',
-      icon: '⚠️'
+      iconType: 'warning'
     },
     {
       id: 'unsafe_site',
       title: language === 'mr' ? 'धोकादायक काम / सुरक्षा साधने दिली नाहीत' : 'Unsafe work site / No safety gear',
-      icon: '🚨'
+      iconType: 'shield'
     },
     {
       id: 'harassment',
       title: language === 'mr' ? 'शिवीगाळ किंवा गैरवर्तन केले' : 'Harassment / Abusive behavior',
-      icon: '🛑'
+      iconType: 'danger'
     },
     {
       id: 'other',
       title: language === 'mr' ? 'इतर तक्रार' : 'Other grievance',
-      icon: '📝'
+      iconType: 'file'
     }
   ];
+
+  const renderReasonIcon = (type) => {
+    switch (type) {
+      case 'banknote': return <Banknote className="w-5 h-5 text-[#DC2626]" />;
+      case 'warning': return <AlertTriangle className="w-5 h-5 text-[#DC2626]" />;
+      case 'shield': return <ShieldAlert className="w-5 h-5 text-[#DC2626]" />;
+      case 'danger': return <AlertCircle className="w-5 h-5 text-[#DC2626]" />;
+      default: return <FileText className="w-5 h-5 text-[#0A0A0A]" />;
+    }
+  };
 
   // Voice note toggle
   const handleToggleVoice = () => {
@@ -88,28 +103,26 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl border-t-4 border-red-600 shadow-2xl p-5 overflow-y-auto max-h-[92vh] space-y-4">
+    <div className="fixed inset-0 z-50 bg-[#0A0A0A]/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="w-full max-w-lg bg-white rounded-t-[32px] sm:rounded-[32px] border-2 border-[#0A0A0A] shadow-2xl p-6 overflow-y-auto max-h-[92vh] space-y-4">
         
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-red-100 text-red-700 rounded-xl">
-              <ShieldAlert className="w-5 h-5" />
-            </div>
+        {/* Header with Advocate Character */}
+        <div className="flex items-center justify-between border-b-2 border-neutral-100 pb-3">
+          <div className="flex items-center gap-3">
+            <HelpfulAdvocateCharacter className="w-12 h-12 shrink-0" />
             <div>
-              <h2 className="font-black text-slate-900 text-sm">
-                {language === 'mr' ? 'तक्रार नोंदणी केंद्र (Grievance Cell)' : 'File Grievance / Report'}
+              <h2 className="font-black text-[#0A0A0A] text-base leading-tight">
+                {language === 'mr' ? 'तक्रार निवारण केंद्र' : 'Worker Grievance Cell'}
               </h2>
-              <p className="text-[10px] text-slate-500 font-medium">
-                {language === 'mr' ? 'नाका कामगार हक्क व संरक्षण' : 'Worker Protection Protocol'}
+              <p className="text-xs text-neutral-600 font-bold">
+                {language === 'mr' ? 'नाका कामगार हक्क व कायदेशीर संरक्षण' : 'Worker Protection Protocol'}
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-slate-100 text-slate-500"
+            className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 border border-[#0A0A0A] flex items-center justify-center text-[#0A0A0A]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -118,7 +131,7 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
         {/* STEP 1: Choose Grievance Reason */}
         {step === 1 && (
           <div className="space-y-3">
-            <p className="text-xs font-bold text-slate-700">
+            <p className="text-xs font-black text-[#0A0A0A]">
               {language === 'mr' ? 'काय समस्या झाली? कारण निवडा:' : 'What happened? Choose reason:'}
             </p>
 
@@ -127,13 +140,15 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
                 <button
                   key={item.id}
                   onClick={() => setSelectedReason(item.id)}
-                  className={`w-full p-3 rounded-2xl border-2 flex items-center gap-3 text-left transition-all touch-target active:scale-98 ${
+                  className={`w-full p-4 rounded-[24px] border-2 flex items-center gap-3 text-left transition-all touch-target active:scale-98 ${
                     selectedReason === item.id
-                      ? 'border-red-600 bg-red-50 text-slate-950 font-black shadow-xs'
-                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                      ? 'border-[#DC2626] bg-[#FEE2E2] text-[#0A0A0A] font-black shadow-xs'
+                      : 'border-neutral-200 bg-white text-neutral-800 hover:border-[#0A0A0A]'
                   }`}
                 >
-                  <span className="text-2xl">{item.icon}</span>
+                  <div className="w-9 h-9 rounded-full bg-white border border-[#0A0A0A] flex items-center justify-center shrink-0">
+                    {renderReasonIcon(item.iconType)}
+                  </div>
                   <span className="text-xs flex-1 font-bold">{item.title}</span>
                 </button>
               ))}
@@ -141,10 +156,10 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
 
             <button
               onClick={() => setStep(2)}
-              className="w-full mt-2 py-3.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-2xl shadow-lg flex items-center justify-center gap-2 touch-target active:scale-95"
+              className="w-full mt-4 min-h-[56px] bg-[#DC2626] hover:bg-red-700 text-white font-black rounded-full shadow-lg border-2 border-[#0A0A0A] flex items-center justify-center gap-2 touch-target active:scale-95"
             >
               <span>{language === 'mr' ? 'पुढे चला' : 'Continue'}</span>
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5 stroke-[2.5]" />
             </button>
           </div>
         )}
@@ -153,7 +168,7 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
         {step === 2 && (
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-black text-[#0A0A0A] mb-1.5">
                 {language === 'mr' ? 'काय घडले? थोडक्यात सांगा किंवा आवाजात रेकॉर्ड करा:' : 'Details or Voice Note:'}
               </label>
               <textarea
@@ -161,31 +176,37 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
                 value={detailsText}
                 onChange={(e) => setDetailsText(e.target.value)}
                 placeholder={language === 'mr' ? 'उदा. काम पूर्ण झाल्यावर शेठ फोन उचलत नाही...' : 'Briefly describe what happened...'}
-                className="w-full p-3 bg-white border-2 border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none"
+                className="w-full p-3.5 bg-white border-2 border-[#0A0A0A] rounded-[24px] text-xs font-bold text-[#0A0A0A] focus:outline-none"
               />
             </div>
 
             {/* Voice Note Recorder Simulator */}
-            <div className="p-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-2">
-              <div className="flex justify-between items-center text-xs font-bold text-slate-800">
-                <span>🎙️ {language === 'mr' ? 'आवाजात तक्रार सांगा (Voice Note)' : 'Voice Message:'}</span>
+            <div className="p-4 bg-neutral-50 border-2 border-[#0A0A0A] rounded-[24px] space-y-2.5">
+              <div className="flex justify-between items-center text-xs font-black text-[#0A0A0A]">
+                <span className="flex items-center gap-1.5">
+                  <Mic className="w-4 h-4 text-[#0A0A0A]" />
+                  <span>{language === 'mr' ? 'आवाजात तक्रार सांगा (Voice Note)' : 'Voice Message:'}</span>
+                </span>
                 {hasVoiceNote && (
-                  <span className="text-emerald-700 font-bold">✓ 0:06 {language === 'mr' ? 'रेकॉर्ड झाली' : 'Saved'}</span>
+                  <span className="text-[#15803D] font-black inline-flex items-center gap-1">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    <span>0:06 {language === 'mr' ? 'रेकॉर्ड झाली' : 'Saved'}</span>
+                  </span>
                 )}
               </div>
 
               <button
                 type="button"
                 onClick={handleToggleVoice}
-                className={`w-full py-3 rounded-xl font-black text-xs flex items-center justify-center gap-2 touch-target transition-all ${
+                className={`w-full min-h-[52px] rounded-full font-black text-xs flex items-center justify-center gap-2 touch-target transition-all border-2 border-[#0A0A0A] ${
                   isRecordingVoice
-                    ? 'bg-red-600 text-white animate-pulse'
+                    ? 'bg-[#DC2626] text-white animate-pulse'
                     : hasVoiceNote
-                    ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
-                    : 'bg-white border-2 border-slate-300 text-slate-800'
+                    ? 'bg-[#DCFCE7] text-[#15803D]'
+                    : 'bg-[#FDE047] hover:bg-yellow-300 text-[#0A0A0A]'
                 }`}
               >
-                <Mic className="w-4 h-4" />
+                <Mic className="w-4 h-4 stroke-[2.5]" />
                 <span>
                   {isRecordingVoice
                     ? `रेकॉर्डिंग सुरू आहे... (${voiceRecordedDuration}s / टॅप करून थांबवा)`
@@ -195,7 +216,7 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
                 </span>
               </button>
 
-              <p className="text-[10px] text-slate-500 italic">
+              <p className="text-[11px] text-neutral-600 font-bold italic">
                 {language === 'mr'
                   ? 'लिहिता येत नसल्यास फक्त आवाजात तक्रार नोंदवता येते.'
                   : 'Limited typing literacy? Just tap and speak your grievance.'}
@@ -205,16 +226,16 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
             <div className="flex gap-2 pt-1">
               <button
                 onClick={() => setStep(1)}
-                className="py-3 px-4 border border-slate-300 rounded-xl text-xs font-bold text-slate-700"
+                className="min-h-[56px] px-6 border-2 border-[#0A0A0A] rounded-full text-xs font-black text-[#0A0A0A] bg-white hover:bg-neutral-100"
               >
                 {language === 'mr' ? 'मागे' : 'Back'}
               </button>
               <button
                 onClick={handleSubmit}
-                className="flex-1 py-3.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl shadow-lg flex items-center justify-center gap-2 touch-target active:scale-95"
+                className="flex-1 min-h-[56px] bg-[#DC2626] hover:bg-red-700 text-white font-black rounded-full shadow-lg border-2 border-[#0A0A0A] flex items-center justify-center gap-2 touch-target active:scale-95"
               >
                 <span>{language === 'mr' ? 'तक्रार दाखल करा' : 'Submit Grievance'}</span>
-                <CheckCircle2 className="w-5 h-5" />
+                <CheckCircle2 className="w-5 h-5 stroke-[2.5]" />
               </button>
             </div>
           </div>
@@ -223,28 +244,28 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
         {/* STEP 3: Case Generated & What Happens Next */}
         {step === 3 && (
           <div className="space-y-4 text-center py-2">
-            <div className="w-14 h-14 bg-red-100 text-red-700 rounded-full flex items-center justify-center mx-auto">
-              <FileCheck className="w-8 h-8" />
+            <div className="w-16 h-16 bg-[#FEE2E2] text-[#DC2626] border-2 border-[#DC2626] rounded-full flex items-center justify-center mx-auto">
+              <FileCheck className="w-8 h-8 stroke-[2.5]" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="font-black text-slate-900 text-lg">
+              <h3 className="font-black text-[#0A0A0A] text-lg">
                 {language === 'mr' ? 'तक्रार अधिकृतरीत्या दाखल झाली!' : 'Grievance Registered!'}
               </h3>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-neutral-600 font-bold">
                 {language === 'mr' ? 'तुमचा केस संदर्भ क्रमांक (Case ID):' : 'Official Case Reference ID:'}
               </p>
-              <div className="font-mono font-black text-base text-red-800 bg-red-50 border border-red-300 py-1.5 px-4 rounded-xl inline-block">
+              <div className="font-mono font-black text-base text-[#991B1B] bg-[#FEE2E2] border-2 border-[#DC2626] py-1.5 px-4 rounded-full inline-block">
                 {generatedCaseId}
               </div>
             </div>
 
             {/* What Happens Next Guide */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-left space-y-2 text-xs text-slate-700">
-              <div className="font-black text-slate-900 text-xs">
+            <div className="p-4 bg-neutral-50 border-2 border-[#0A0A0A] rounded-[24px] text-left space-y-2 text-xs text-neutral-800">
+              <div className="font-black text-[#0A0A0A] text-xs">
                 {language === 'mr' ? 'आता पुढे काय होईल? (What Happens Next):' : 'What Happens Next:'}
               </div>
-              <ul className="space-y-1.5 list-disc pl-4 text-[11px] leading-relaxed">
+              <ul className="space-y-1.5 list-disc pl-4 text-[11px] leading-relaxed font-bold">
                 <li>
                   {language === 'mr'
                     ? 'नाका कामगार सुरक्षा सेल आणि स्थानिक कामगार प्रतिनिधीला तातडीने संदेश पाठवला गेला आहे.'
@@ -266,15 +287,15 @@ export default function ReportFlow({ isOpen, onClose, defaultJobId = null }) {
             {/* Helpline Action */}
             <a
               href="tel:14434"
-              className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-md touch-target block"
+              className="w-full min-h-[52px] bg-[#15803D] hover:bg-green-700 text-white font-black rounded-full text-xs flex items-center justify-center gap-2 shadow-md touch-target no-underline"
             >
-              <PhoneCall className="w-4 h-4" />
+              <PhoneCall className="w-4 h-4 stroke-[2.5]" />
               <span>{language === 'mr' ? 'कामगार तक्रार निवारण केंद्रास कॉल करा (14434)' : 'Call Grievance Helpdesk (14434)'}</span>
             </a>
 
             <button
               onClick={onClose}
-              className="w-full py-2.5 border border-slate-300 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50 touch-target"
+              className="w-full min-h-[48px] border-2 border-[#0A0A0A] text-[#0A0A0A] font-black rounded-full text-xs hover:bg-neutral-100 touch-target"
             >
               {language === 'mr' ? 'बंद करा' : 'Done'}
             </button>

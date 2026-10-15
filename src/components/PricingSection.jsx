@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, ShieldCheck, Sparkles, Zap, PhoneCall } from 'lucide-react';
+import { Check, ShieldCheck, Sparkles, Zap, PhoneCall, Star } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function PricingSection({ onBookCall, className = '' }) {
@@ -75,14 +75,14 @@ export default function PricingSection({ onBookCall, className = '' }) {
         
         {/* Title Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-[#B45309] text-xs font-black uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDE047] text-[#0A0A0A] border-2 border-[#0A0A0A] text-xs font-black uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{t('plansPilotBadge')}</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
             {t('plansTitle')}
           </h1>
-          <p className="text-sm sm:text-base text-slate-600 font-medium">
+          <p className="text-sm sm:text-base text-neutral-700 font-bold">
             {t('plansSubtitle')}
           </p>
         </div>
@@ -92,11 +92,12 @@ export default function PricingSection({ onBookCall, className = '' }) {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200/90 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+              className="bg-white rounded-[32px] p-6 sm:p-8 border-2 border-[#0A0A0A] shadow-md hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
             >
               {plan.id === 'contractor_pro' && (
-                <div className="absolute top-0 right-0 bg-[#B45309] text-white text-[10px] font-black uppercase px-4 py-1 rounded-bl-xl tracking-wider">
-                  ★ MOST POPULAR
+                <div className="absolute top-0 right-0 bg-[#FDE047] text-[#0A0A0A] border-b-2 border-l-2 border-[#0A0A0A] text-[10px] font-black uppercase px-4 py-1.5 rounded-bl-2xl tracking-wider flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 fill-[#0A0A0A]" />
+                  <span>MOST POPULAR</span>
                 </div>
               )}
 
@@ -105,20 +106,20 @@ export default function PricingSection({ onBookCall, className = '' }) {
                 {/* Left Column: Plan Details */}
                 <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-5">
                   <div className="space-y-3">
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    <h3 className="text-xl sm:text-2xl font-black text-[#0A0A0A] tracking-tight">
                       {plan.name}
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-neutral-600 font-medium leading-relaxed">
                       {plan.description}
                     </p>
 
                     <div className="pt-2">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                        <span className="text-3xl sm:text-4xl font-black text-[#0A0A0A] tracking-tight">
                           {plan.price}
                         </span>
                         {plan.priceNote && (
-                          <span className="text-xs sm:text-sm font-bold text-slate-500">
+                          <span className="text-xs sm:text-sm font-bold text-neutral-600">
                             {plan.priceNote}
                           </span>
                         )}
@@ -126,8 +127,8 @@ export default function PricingSection({ onBookCall, className = '' }) {
                     </div>
 
                     {plan.alertText && (
-                      <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 text-xs font-bold text-amber-950 flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-[#B45309] shrink-0" />
+                      <div className="p-3 bg-[#FEF08A]/40 rounded-[20px] border-2 border-[#0A0A0A] text-xs font-bold text-[#0A0A0A] flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-[#0A0A0A] shrink-0" />
                         <span>{plan.alertText}</span>
                       </div>
                     )}
@@ -136,10 +137,7 @@ export default function PricingSection({ onBookCall, className = '' }) {
                   {/* 3D Pill Button */}
                   <button
                     onClick={() => handleSelect(plan.id)}
-                    className="w-full py-3.5 px-6 rounded-full font-black text-xs sm:text-sm text-white bg-slate-900 
-                    shadow-[0_8px_16px_-4px_rgba(15,23,42,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)]
-                    hover:shadow-[0_16px_28px_-6px_rgba(15,23,42,0.4),inset_0_1px_1px_rgba(255,255,255,0.3)]
-                    hover:bg-[#B45309] active:scale-[0.98] transition-all duration-300 ease-out flex items-center justify-center gap-2"
+                    className="w-full min-h-[56px] px-6 rounded-full font-black text-sm text-[#0A0A0A] bg-[#FDE047] hover:bg-yellow-300 border-2 border-[#0A0A0A] shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                   >
                     <PhoneCall className="w-4 h-4" />
                     <span>{plan.buttonText}</span>
@@ -149,13 +147,13 @@ export default function PricingSection({ onBookCall, className = '' }) {
                 {/* Right Column: Features */}
                 <div className="lg:col-span-7 relative pt-2 lg:pt-0">
                   {/* Desktop Divider */}
-                  <div className="hidden lg:block absolute left-[-1.5rem] top-0 bottom-0 w-[1px] bg-slate-200"></div>
+                  <div className="hidden lg:block absolute left-[-1.5rem] top-0 bottom-0 w-[2px] bg-neutral-200"></div>
 
                   {/* Mobile Divider */}
-                  <div className="block lg:hidden w-full h-[1px] bg-slate-200 mb-6"></div>
+                  <div className="block lg:hidden w-full h-[2px] bg-neutral-200 mb-6"></div>
 
                   <div className="space-y-2 mb-3">
-                    <span className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+                    <span className="text-xs font-black uppercase tracking-wider text-neutral-500">
                       {language === 'mr' ? 'समाविष्ट वैशिष्ट्ये' : language === 'hi' ? 'शामिल सुविधाएं' : 'Included Capabilities'}
                     </span>
                   </div>
@@ -164,11 +162,11 @@ export default function PricingSection({ onBookCall, className = '' }) {
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
                         <div className="shrink-0 mt-0.5">
-                          <div className="bg-[#B45309] rounded-full p-1 w-5 h-5 flex items-center justify-center shadow-sm">
-                            <Check className="w-3 h-3 text-white stroke-[3]" />
+                          <div className="bg-[#0A0A0A] rounded-full p-1 w-5 h-5 flex items-center justify-center shadow-xs">
+                            <Check className="w-3 h-3 text-[#FDE047] stroke-[3]" />
                           </div>
                         </div>
-                        <span className="text-xs sm:text-sm text-slate-700 font-semibold leading-snug">
+                        <span className="text-xs sm:text-sm text-neutral-800 font-bold leading-snug">
                           {feature}
                         </span>
                       </li>
@@ -179,17 +177,6 @@ export default function PricingSection({ onBookCall, className = '' }) {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom Trust Note */}
-        <div className="mt-10 p-5 rounded-2xl bg-white border border-slate-200 text-center max-w-xl mx-auto shadow-sm space-y-1">
-          <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-800">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>100% Commission-Free Direct Hiring on NAKA</span>
-          </div>
-          <p className="text-[11px] text-slate-500">
-            Workers receive 100% of their daily wage. No platform deductions from worker earnings.
-          </p>
         </div>
 
       </div>

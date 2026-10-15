@@ -63,13 +63,13 @@ export default function NakaMap({
         .addTo(map)
         .bindPopup(`
           <div style="font-family: sans-serif; font-size: 12px; font-weight: bold; padding: 4px;">
-            📍 <strong>You Are Here</strong>
+            <strong>You Are Here</strong>
           </div>
         `);
       markersRef.current.push(userMarker);
     }
 
-    // 2. Pickup Points Markers (Terracotta Chowk Pins)
+    // 2. Pickup Points Markers (Chowk Pins)
     if (pickupPoints && pickupPoints.length > 0) {
       pickupPoints.forEach(point => {
         const isSelected = selectedPickup?.id === point.id;
@@ -79,21 +79,20 @@ export default function NakaMap({
           className: 'naka-pin-marker',
           html: `
             <div style="
-              background: ${isSelected ? '#B45309' : '#0F172A'};
-              color: #FFFFFF;
+              background: ${isSelected ? '#FDE047' : '#0A0A0A'};
+              color: ${isSelected ? '#0A0A0A' : '#FFFFFF'};
               font-size: 11px;
               font-weight: 900;
-              padding: 4px 8px;
-              border-radius: 12px;
-              border: 2px solid #FFFFFF;
-              box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+              padding: 5px 10px;
+              border-radius: 9999px;
+              border: 2px solid ${isSelected ? '#0A0A0A' : '#FFFFFF'};
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
               display: flex;
               align-items: center;
               gap: 4px;
               white-space: nowrap;
               cursor: pointer;
             ">
-              <span>🔨</span>
               <span>${point.area}</span>
             </div>
           `,
@@ -105,13 +104,13 @@ export default function NakaMap({
           .addTo(map)
           .bindPopup(`
             <div style="font-family: sans-serif; font-size: 12px; padding: 6px; min-width: 140px;">
-              <div style="font-weight: 900; color: #0F172A; font-size: 13px; margin-bottom: 2px;">
+              <div style="font-weight: 900; color: #0A0A0A; font-size: 13px; margin-bottom: 2px;">
                 ${ptName}
               </div>
-              <div style="color: #64748B; font-size: 11px; margin-bottom: 4px;">
+              <div style="color: #525252; font-size: 11px; margin-bottom: 4px; font-weight: 600;">
                 ${point.workersCount} workers active • ${formatDistance(point.distanceKm, language)}
               </div>
-              <a href="${point.directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #B45309; color: #FFF; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">
+              <a href="${point.directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #0A0A0A; color: #FDE047; padding: 4px 10px; border-radius: 9999px; text-decoration: none; font-size: 11px; font-weight: 900;">
                 Directions ↗
               </a>
             </div>

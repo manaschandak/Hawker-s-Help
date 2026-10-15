@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Sparkles, ChevronDown, ChevronUp, PlayCircle } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, PlayCircle, ArrowRightLeft, AlertTriangle, Clock, Shield } from 'lucide-react';
 
 export default function ScenarioPresets({ onSelectScenario }) {
   const { language } = useApp();
@@ -11,25 +11,25 @@ export default function ScenarioPresets({ onSelectScenario }) {
       id: 'negotiation',
       title: language === 'mr' ? '1-क्लिक: मजुरी बोलणी व विश्वासू कार्ड' : '1-Click: Wage Negotiation & Trust Card',
       subtitle: language === 'mr' ? 'सुनिता जोशी (घरमालक) सोबत दर निश्चित करा' : 'Negotiate ₹700/day with homeowner Sunita',
-      icon: '🤝'
+      icon: <ArrowRightLeft className="w-5 h-5 text-[#FDE047] stroke-[2.5]" />
     },
     {
       id: 'scam_alert',
       title: language === 'mr' ? '1-क्लिक: संशयास्पद काम व सुरक्षा सूचना' : '1-Click: Flagged Suspicious Job Alert',
       subtitle: language === 'mr' ? '₹250 डिपॉझिट मागणारे बनावट काम ओळखा' : 'Spot scam contractor asking ₹250 upfront fee',
-      icon: '🚨'
+      icon: <AlertTriangle className="w-5 h-5 text-[#DC2626] stroke-[2.5]" />
     },
     {
       id: 'clock_in_pay',
       title: language === 'mr' ? '1-क्लिक: हजेरी, हिशोब व 3-फेस रेटिंग' : '1-Click: Clock-in, Mark Paid & Rating',
       subtitle: language === 'mr' ? 'मालक भूमिकेतून तास मंजूर करा व पैसे द्या' : 'Employer view: approve 8 hrs & rate Ramesh',
-      icon: '⏱️'
+      icon: <Clock className="w-5 h-5 text-emerald-400 stroke-[2.5]" />
     },
     {
       id: 'welfare_checker',
       title: language === 'mr' ? '1-क्लिक: 3-प्रश्नांत सरकारी योजना पात्रता' : '1-Click: 3-Question Welfare Eligibility',
       subtitle: language === 'mr' ? 'BOCW, ई-श्रम व पेन्शन योजना पहा' : 'Instant scheme match with SAMPLE DATA tags',
-      icon: '📜'
+      icon: <Shield className="w-5 h-5 text-blue-400 stroke-[2.5]" />
     }
   ];
 

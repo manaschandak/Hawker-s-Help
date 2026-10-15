@@ -6,6 +6,7 @@ import {
   ShieldCheck,
   AlertTriangle,
   ChevronRight,
+  Check,
   CheckCircle2,
   Wrench,
   Utensils
@@ -22,20 +23,6 @@ export default function JobCard({ job, onSelect }) {
   const toolsNeededCount = job.toolsNeeded?.length || 0;
   const ownedCount = job.toolsNeeded?.filter(toolId => workerProfile.ownedTools?.includes(toolId))?.length || 0;
   const allToolsOwned = toolsNeededCount === 0 || ownedCount === toolsNeededCount;
-
-  // Trade visual icon
-  const getTradeIcon = (trade) => {
-    switch (trade) {
-      case 'plumber': return '🔧';
-      case 'electrician': return '⚡';
-      case 'carpenter': return '🪚';
-      case 'painter': return '🎨';
-      case 'mason': return '🧱';
-      case 'sweeper': return '🧹';
-      case 'helper': return '👷';
-      default: return '🛠️';
-    }
-  };
 
   return (
     <div
@@ -110,15 +97,20 @@ export default function JobCard({ job, onSelect }) {
             </span>
           ) : (
             <span
-              className={`font-black px-2.5 py-1 rounded-full border-2 ${
+              className={`font-black px-2.5 py-1 rounded-full border-2 inline-flex items-center gap-1 ${
                 allToolsOwned
                   ? 'bg-[#DCFCE7] text-[#15803D] border-[#15803D]'
                   : 'bg-amber-100 text-[#0A0A0A] border-amber-400'
               }`}
             >
-              {allToolsOwned
-                ? (language === 'mr' ? 'तुमची अवजारे जुळतात ✓' : 'You have tools ✓')
-                : `${ownedCount}/${toolsNeededCount} ${language === 'mr' ? 'अवजारे आहेत' : 'tools owned'}`}
+              {allToolsOwned ? (
+                <>
+                  <span>{language === 'mr' ? 'तुमची अवजारे जुळतात' : 'You have tools'}</span>
+                  <Check className="w-3.5 h-3.5" />
+                </>
+              ) : (
+                `${ownedCount}/${toolsNeededCount} ${language === 'mr' ? 'अवजारे आहेत' : 'tools owned'}`
+              )}
             </span>
           )}
 
@@ -130,7 +122,10 @@ export default function JobCard({ job, onSelect }) {
       {!isSafe && job.suspiciousFlags && (
         <div className="bg-[#FEE2E2] border-2 border-[#DC2626] rounded-2xl p-3 text-xs text-[#991B1B] font-bold flex items-center gap-3">
           <StateCharacter state="concerned" className="w-10 h-10 flex-shrink-0" />
-          <span className="flex-1">⚠️ {job.suspiciousFlags[0][language] || job.suspiciousFlags[0].en}</span>
+          <span className="flex-1">
+            <AlertTriangle className="w-4 h-4 inline mr-1 text-[#DC2626]" />
+            {job.suspiciousFlags[0][language] || job.suspiciousFlags[0].en}
+          </span>
         </div>
       )}
     </div>

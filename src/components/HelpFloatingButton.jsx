@@ -59,7 +59,9 @@ export default function HelpFloatingButton({ onOpenReport, onOpenRights }) {
                 className="w-full min-h-[56px] p-4 bg-white border-2 border-[#0A0A0A] hover:border-[#DC2626] rounded-[24px] flex items-center justify-between text-left shadow-sm active:scale-98 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl p-2 bg-[#FEE2E2] rounded-xl border border-red-200">⚠️</span>
+                  <span className="p-2 bg-[#FEE2E2] rounded-xl border border-red-200 flex items-center justify-center">
+                    <ShieldAlert className="w-5 h-5 text-[#DC2626] stroke-[2.5]" />
+                  </span>
                   <div>
                     <div className="font-black text-sm text-[#0A0A0A]">
                       {language === 'mr' ? 'मजुरी बुडवली / गैरवर्तनाची तक्रार' : 'Report Wage Theft / Harassment'}
@@ -81,7 +83,9 @@ export default function HelpFloatingButton({ onOpenReport, onOpenRights }) {
                 className="w-full min-h-[56px] p-4 bg-white border-2 border-[#0A0A0A] hover:border-[#FDE047] rounded-[24px] flex items-center justify-between text-left shadow-sm active:scale-98 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl p-2 bg-[#FDE047] rounded-xl border-2 border-[#0A0A0A]">📜</span>
+                  <span className="p-2 bg-[#FDE047] rounded-xl border-2 border-[#0A0A0A] flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-[#0A0A0A] stroke-[2.5]" />
+                  </span>
                   <div>
                     <div className="font-black text-sm text-[#0A0A0A]">
                       {language === 'mr' ? 'सरकारी योजना व हक्क' : 'Welfare Schemes & Cards'}
