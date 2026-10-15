@@ -1,41 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 40 33% 97%; /* #FAF8F5 */
-  --foreground: 222 47% 11%; /* #0F172A */
-  --primary: 32 95% 37%; /* #B45309 */
-  --primary-foreground: 0 0% 100%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --border: 214.3 31.8% 91.4%;
+  /* Cyber Yellow #FDE047 (HSL: 50 98% 64%) */
+  --primary: 50 98% 64%;
+  /* Pure Black Text #0A0A0A (HSL: 0 0% 4%) */
+  --primary-foreground: 0 0% 4%;
+  
+  --background: 0 0% 99%;
+  --foreground: 0 0% 4%;
+  
+  --dark: 0 0% 4%; /* #0A0A0A */
+  --dark-surface: 0 0% 9%; /* #171717 */
+  
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 40%;
+  --border: 0 0% 88%;
   --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --accent: 38 92% 50%;
-  --accent-foreground: 0 0% 100%;
+  --card-foreground: 0 0% 4%;
 }
 
 @layer base {
   * {
     border-color: hsl(var(--border));
+    box-sizing: border-box;
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
-    font-size: 16px;
+    font-family: 'Inter', 'Noto Sans Devanagari', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px; /* Accessibility requirement: min 16px */
     line-height: 1.5;
-    background-color: #FAF8F5;
-    color: #0F172A;
+    background-color: #FFFFFF;
+    color: #0A0A0A;
     -webkit-tap-highlight-color: transparent;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  /* Accessible focus indicators */
+  /* Accessible focus indicators with high contrast black/yellow */
   :focus-visible {
-    outline: 3px solid #B45309;
-    outline-offset: 2px;
+    outline: 3px solid #0A0A0A;
+    outline-offset: 3px;
   }
 
   /* Smooth scroll */
@@ -49,24 +57,149 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #F1F5F9;
+    background: #F4F4F5;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
+    background: #A1A1AA;
     border-radius: 9999px;
   }
 }
 
-/* Big touch target utility */
+/* ========================================================
+   CYBER YELLOW THEME UTILITY CLASSES & ACCESSIBILITY RULES
+   ======================================================== */
+
+/* Pill Buttons: min 56px tall, rounded-full, bold, accessible tap target */
+.btn-cyber-primary {
+  min-height: 56px;
+  border-radius: 9999px;
+  background-color: #FDE047; /* Flat Cyber Yellow */
+  color: #0A0A0A; /* Always black text on yellow */
+  font-weight: 800;
+  font-size: 16px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(253, 224, 71, 0.35);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.btn-cyber-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-cyber-dark {
+  min-height: 56px;
+  border-radius: 9999px;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.btn-cyber-dark:active {
+  transform: scale(0.96);
+}
+
+/* Big touch target utility (min 56px per specification) */
 .touch-target {
-  min-height: 48px;
-  min-width: 48px;
+  min-height: 56px;
+  min-width: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Hide scrollbar for clean UI chips */
+/* Large rounded cards (32px radius) */
+.card-cyber {
+  border-radius: 32px;
+  border: 2px solid #E5E7EB;
+  background-color: #FFFFFF;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.card-cyber-dark {
+  border-radius: 32px;
+  border: 2px solid #262626;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Wavy asymmetrical curved bottom for header and hero areas */
+.hero-wave-bottom {
+  border-bottom-left-radius: 36px;
+  border-bottom-right-radius: 48px;
+}
+
+/* Solid background badges for money, terms, and warnings (no see-through glass) */
+.solid-wage-tag {
+  background-color: #FDE047;
+  color: #0A0A0A;
+  font-weight: 900;
+  font-size: 20px;
+  border-radius: 16px;
+  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.solid-safe-tag {
+  background-color: #DCFCE7;
+  color: #15803D;
+  font-weight: 800;
+  border: 1px solid #86EFAC;
+  border-radius: 12px;
+  padding: 4px 10px;
+}
+
+.solid-danger-tag {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  font-weight: 800;
+  border: 1px solid #FCA5A5;
+  border-radius: 12px;
+  padding: 4px 10px;
+}
+
+/* Motion: smooth slide-up entrances */
+@keyframes slideUpCyber {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-cyber {
+  animation: slideUpCyber 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Motion disabled under prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn-cyber-primary:active,
+  .btn-cyber-dark:active {
+    transform: none !important;
+  }
+}
+
+/* Hide scrollbar for chips */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

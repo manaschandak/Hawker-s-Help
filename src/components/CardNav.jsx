@@ -10,7 +10,6 @@ import {
   User,
   Briefcase,
   Shield,
-  FileText,
   CheckCircle2,
   LogIn,
   LogOut
@@ -31,13 +30,13 @@ export default function CardNav({
   const navRef = useRef(null);
   const cardsRef = useRef([]);
 
-  // Role-specific navigation items memoized so references stay stable
+  // Role-specific navigation items styled with Dark High-Contrast cards
   const workerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कामाचे शोध' : language === 'hi' ? 'काम खोजें' : 'Find Jobs',
-      bgColor: '#1E293B', // Deep Slate Blue
+      bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
-      icon: <Briefcase className="w-5 h-5 text-amber-400" />,
+      icon: <Briefcase className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'सर्व उपलब्ध कामे' : language === 'hi' ? 'सभी उपलब्ध कार्य' : 'All Available Jobs', href: '/jobs' },
         { label: language === 'mr' ? 'आजचे तातडीचे काम' : language === 'hi' ? 'आज का तुरंत काम' : 'Urgent Today Jobs', href: '/jobs?filter=today' },
@@ -46,9 +45,9 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'माझे काम व तास' : language === 'hi' ? 'मेरा काम व हाजिरी' : 'My Work & Hours',
-      bgColor: '#064E3B', // Deep Emerald
+      bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <CheckCircle2 className="w-5 h-5 text-emerald-300" />,
+      icon: <CheckCircle2 className="w-5 h-5 text-[#22C55E]" />,
       links: [
         { label: language === 'mr' ? 'काम हजेरी (Clock In)' : language === 'hi' ? 'हाजिरी व समय' : 'Clock In / Shift', href: '/jobs' },
         { label: language === 'mr' ? 'माझा कामगार संघ' : language === 'hi' ? 'मेरी टीम' : 'My Worker Collective', href: '/team' },
@@ -56,10 +55,10 @@ export default function CardNav({
       ]
     },
     {
-      label: language === 'mr' ? 'हक्क व सरकारी योजना' : language === 'hi' ? 'हक व योजनाएं' : 'Welfare & Rights',
-      bgColor: '#312E81', // Rich Indigo
+      label: language === 'mr' ? 'हक्क व योजना' : language === 'hi' ? 'हक व योजनाएं' : 'Welfare & Rights',
+      bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
-      icon: <Shield className="w-5 h-5 text-indigo-300" />,
+      icon: <Shield className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'BOCW / ई-श्रम योजना' : language === 'hi' ? 'ई-श्रम व पेंशन' : 'e-Shram & BOCW Grants', href: '/rights' },
         { label: language === 'mr' ? 'पात्रता तपासणी (3 प्रश्न)' : language === 'hi' ? 'पात्रता जांचें' : 'Scheme Eligibility Test', href: '/rights' },
@@ -68,9 +67,9 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'माझे प्रोफाईल व खाते' : language === 'hi' ? 'मेरी प्रोफाइल व खाता' : 'My Profile & Account',
-      bgColor: '#78350F', // Rich Warm Amber/Rust
+      bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <User className="w-5 h-5 text-amber-300" />,
+      icon: <User className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'काम फोटो व अनुभव' : language === 'hi' ? 'काम के फोटो' : 'Work Photos & Gallery', href: '/profile' },
         { label: language === 'mr' ? 'उपलब्धता बदला' : language === 'hi' ? 'उपलब्धता दर्ज करें' : 'Set Availability', href: '/profile' },
@@ -83,9 +82,9 @@ export default function CardNav({
   const employerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कारागीर शोधा' : language === 'hi' ? 'कारीगर खोजें' : 'Find Workers',
-      bgColor: '#1E293B',
+      bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
-      icon: <User className="w-5 h-5 text-amber-400" />,
+      icon: <User className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'नाक्यावरील उपलब्ध कारागीर' : language === 'hi' ? 'उपलब्ध कारीगर' : 'Nearby Available Workers', href: '/workers' },
         { label: language === 'mr' ? 'तयार कामगार संघ (Teams)' : language === 'hi' ? 'कारीगर टीमें' : 'Pre-formed Work Teams', href: '/workers?tab=teams' },
@@ -94,9 +93,9 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'माझी दिलेली कामे' : language === 'hi' ? 'मेरे पोस्ट किए काम' : 'My Jobs & Posts',
-      bgColor: '#064E3B',
+      bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <Briefcase className="w-5 h-5 text-emerald-300" />,
+      icon: <Briefcase className="w-5 h-5 text-[#22C55E]" />,
       links: [
         { label: language === 'mr' ? 'सक्रिय कामे व हजेरी' : language === 'hi' ? 'सक्रिय कार्य' : 'Active Worksites', href: '/employer/jobs' },
         { label: language === 'mr' ? 'कामाचे तास मंजूर करा' : language === 'hi' ? 'घंटे मंजूर करें' : 'Approve Hours & Pay', href: '/employer/jobs' },
@@ -105,9 +104,9 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'कंत्राटदार योजना' : language === 'hi' ? 'हायरिंग प्लान' : 'Hiring Plans',
-      bgColor: '#312E81',
+      bgColor: '#0A0A0A',
       textColor: '#FFFFFF',
-      icon: <Sparkles className="w-5 h-5 text-amber-300" />,
+      icon: <Sparkles className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'कंत्राटदार प्रो योजना' : language === 'hi' ? 'ठेकेदार प्रो' : 'Contractor Pro Plan', href: '/plans' },
         { label: language === 'mr' ? '10 मोफत ट्रायल नेमणुका' : language === 'hi' ? '10 ट्रायल हायरिंग' : '10 Free Trial Hires', href: '/plans' },
@@ -116,9 +115,9 @@ export default function CardNav({
     },
     {
       label: language === 'mr' ? 'खाते व लॉगिन' : language === 'hi' ? 'खाता व लॉगिन' : 'Account & Login',
-      bgColor: '#78350F',
+      bgColor: '#171717',
       textColor: '#FFFFFF',
-      icon: <Shield className="w-5 h-5 text-amber-300" />,
+      icon: <Shield className="w-5 h-5 text-[#FDE047]" />,
       links: [
         { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Verify Phone', href: '/onboarding/login' },
         { label: language === 'mr' ? 'नवीन काम पोस्ट करा' : language === 'hi' ? 'नया काम पोस्ट करें' : 'Post New Job', href: '#post-job', onClick: () => onOpenPostJob && onOpenPostJob() },
@@ -132,25 +131,24 @@ export default function CardNav({
 
   const calculateHeight = () => {
     const navEl = navRef.current;
-    if (!navEl) return 320;
+    if (!navEl) return 340;
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
       const contentEl = navEl.querySelector('.card-nav-content');
       if (contentEl) {
-        return Math.max(380, 64 + contentEl.scrollHeight + 20);
+        return Math.max(380, 68 + contentEl.scrollHeight + 20);
       }
       return 420;
     }
-    return 320;
+    return 340;
   };
 
-  // State-driven GSAP animation: perfectly synchronized with isExpanded
+  // State-driven GSAP animation
   useLayoutEffect(() => {
     const navEl = navRef.current;
     if (!navEl) return;
 
-    // Filter valid card DOM elements
     const validCards = cardsRef.current.filter(Boolean);
 
     if (isExpanded) {
@@ -158,14 +156,12 @@ export default function CardNav({
       gsap.killTweensOf(navEl);
       gsap.killTweensOf(validCards);
 
-      // Animate container height
       gsap.to(navEl, {
         height: targetHeight,
-        duration: 0.45,
+        duration: 0.4,
         ease: 'power3.out'
       });
 
-      // Animate cards appearance
       gsap.fromTo(
         validCards,
         { y: 25, opacity: 0 },
@@ -182,7 +178,6 @@ export default function CardNav({
       gsap.killTweensOf(navEl);
       gsap.killTweensOf(validCards);
 
-      // Animate cards exit
       gsap.to(validCards, {
         y: 15,
         opacity: 0,
@@ -190,16 +185,14 @@ export default function CardNav({
         ease: 'power2.in'
       });
 
-      // Animate container back to initial bar height
       gsap.to(navEl, {
-        height: 64,
+        height: 68,
         duration: 0.35,
         ease: 'power3.inOut'
       });
     }
   }, [isExpanded, items]);
 
-  // Window resize handler
   useEffect(() => {
     const handleResize = () => {
       if (!navRef.current || !isExpanded) return;
@@ -243,63 +236,64 @@ export default function CardNav({
 
   return (
     <div className="card-nav-container relative w-full max-w-7xl mx-auto z-40 px-3 sm:px-6 pt-3">
+      {/* Flat Cyber Yellow #FDE047 Header with Pill & 32px curves */}
       <nav
         ref={navRef}
         className={`card-nav ${
-          isExpanded ? 'open shadow-2xl' : 'shadow-md'
-        } block h-[64px] p-0 rounded-2xl sm:rounded-3xl relative overflow-hidden will-change-[height] border-2 border-slate-200/90 bg-[#FFFFFF] backdrop-blur-md transition-shadow`}
+          isExpanded ? 'open shadow-2xl' : 'shadow-lg'
+        } block h-[68px] p-0 rounded-[32px] relative overflow-hidden will-change-[height] border-3 border-[#0A0A0A] bg-[#FDE047] transition-shadow`}
       >
-        {/* Top Bar */}
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[64px] flex items-center justify-between px-3 sm:px-5 z-20 bg-white">
+        {/* Top Bar: Always black text on Cyber Yellow */}
+        <div className="card-nav-top absolute inset-x-0 top-0 h-[68px] flex items-center justify-between px-3 sm:px-5 z-20 bg-[#FDE047]">
           
-          {/* Left: Menu Trigger & Location Chip */}
+          {/* Left: Pill Menu Trigger & Location Badge */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={toggleMenu}
-              className="group h-11 w-11 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors cursor-pointer touch-target border border-slate-200"
+              className="h-12 w-12 flex items-center justify-center rounded-full bg-[#0A0A0A] text-[#FDE047] hover:bg-[#171717] transition-all cursor-pointer touch-target border-2 border-[#0A0A0A] active:scale-95 shadow-sm"
               aria-label={isExpanded ? 'Close menu' : 'Open menu'}
             >
               {isExpanded ? (
-                <X size={22} className="transition-transform duration-300 text-slate-900" />
+                <X size={22} className="text-[#FDE047]" />
               ) : (
-                <Menu size={22} className="transition-transform duration-300 text-slate-900" />
+                <Menu size={22} className="text-[#FDE047]" />
               )}
             </button>
 
-            {/* Quick Location Badge */}
+            {/* Solid White Location Badge (No see-through glass) */}
             <button
               onClick={onOpenLocationModal}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs font-bold text-amber-950 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#FFFFFF] border-2 border-[#0A0A0A] text-sm font-black text-[#0A0A0A] transition-colors cursor-pointer shadow-xs active:scale-95"
               title={t('nearestNakaLabel')}
             >
-              <MapPin size={14} className="text-[#B45309] shrink-0" />
-              <span className="truncate max-w-[110px] sm:max-w-[160px] font-black">{locationName}</span>
-              <span className="hidden sm:inline text-[11px] font-medium text-amber-800">({nearestDistance})</span>
+              <MapPin size={15} className="text-[#0A0A0A] shrink-0 fill-[#FDE047]" />
+              <span className="truncate max-w-[110px] sm:max-w-[170px]">{locationName}</span>
+              <span className="hidden sm:inline text-xs font-bold text-slate-600">({nearestDistance})</span>
             </button>
           </div>
 
           {/* Center Brand Identity */}
           <div className="logo-container absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-auto">
-            <Link to={role === 'employer' ? '/employer/jobs' : '/jobs'} onClick={closeMenu} className="flex items-center gap-1.5 no-underline">
-              <span className="text-xl sm:text-2xl drop-shadow">🔨</span>
-              <span className="font-black text-slate-900 text-base sm:text-lg tracking-tight">
+            <Link to={role === 'employer' ? '/employer/jobs' : '/jobs'} onClick={closeMenu} className="flex items-center gap-2 no-underline">
+              <span className="text-2xl drop-shadow-sm">🔨</span>
+              <span className="font-black text-[#0A0A0A] text-lg sm:text-xl tracking-tight">
                 {t('appTitle')}
               </span>
             </Link>
           </div>
 
-          {/* Right Actions: Login Button, Language Switcher & Role CTA */}
+          {/* Right Actions: Pill Buttons with Black text on yellow / Yellow on Black */}
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* LOGIN / ACCOUNT BUTTON */}
+            {/* LOGIN / ACCOUNT PILL */}
             {auth?.isLoggedIn && !auth?.isGuest ? (
               <div className="flex items-center gap-1">
                 <Link
                   to="/profile"
                   onClick={closeMenu}
-                  className="h-10 px-2.5 sm:px-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-950 font-black text-xs flex items-center gap-1.5 transition-colors no-underline"
+                  className="min-h-[46px] px-3.5 rounded-full bg-[#FFFFFF] border-2 border-[#0A0A0A] text-[#0A0A0A] font-black text-sm flex items-center gap-1.5 transition-colors no-underline shadow-xs"
                   title={auth.name || 'Account'}
                 >
-                  <User size={14} className="text-[#B45309]" />
+                  <User size={15} className="text-[#0A0A0A]" />
                   <span className="hidden sm:inline truncate max-w-[85px]">{auth.name ? auth.name.split(' ')[0] : 'Account'}</span>
                 </Link>
                 <button
@@ -308,65 +302,64 @@ export default function CardNav({
                     logout();
                     navigate('/onboarding/login');
                   }}
-                  className="h-10 px-2 rounded-xl bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-600 font-bold text-xs transition-colors"
+                  className="h-11 w-11 rounded-full bg-[#0A0A0A] text-[#FDE047] hover:bg-red-600 hover:text-white font-bold flex items-center justify-center transition-colors shadow-xs"
                   title="Logout / Switch Account"
                 >
-                  <LogOut size={14} />
+                  <LogOut size={16} />
                 </button>
               </div>
             ) : (
               <Link
                 to="/onboarding/login"
                 onClick={closeMenu}
-                className="h-10 px-3 sm:px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all no-underline"
+                className="min-h-[46px] px-4 rounded-full bg-[#0A0A0A] text-[#FDE047] hover:bg-[#171717] font-black text-sm flex items-center gap-1.5 shadow-sm active:scale-95 transition-all no-underline border-2 border-[#0A0A0A]"
               >
-                <LogIn size={14} className="text-amber-400" />
+                <LogIn size={16} className="text-[#FDE047]" />
                 <span>{language === 'mr' ? 'लॉगिन' : language === 'hi' ? 'लॉगिन' : 'Login'}</span>
               </Link>
             )}
 
-            {/* Language Switcher */}
+            {/* Language Switcher Pill */}
             <button
               type="button"
               onClick={handleLanguageToggle}
-              className="h-10 px-2.5 sm:px-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-extrabold text-xs flex items-center gap-1 transition-all active:scale-95"
+              className="h-11 px-3 rounded-full bg-[#FFFFFF] border-2 border-[#0A0A0A] text-[#0A0A0A] font-black text-xs flex items-center gap-1 transition-all active:scale-95 shadow-xs"
               title="Change Language"
             >
-              <Globe size={14} className="text-[#B45309]" />
+              <Globe size={14} className="text-[#0A0A0A]" />
               <span className="uppercase">{language}</span>
             </button>
 
-            {/* Role CTA */}
+            {/* Primary Action CTA (Pill Button 56px minimum tall on md) */}
             <button
               type="button"
               onClick={handleCtaClick}
-              className="hidden md:inline-flex rounded-xl px-4 items-center h-10 font-black text-xs sm:text-sm bg-[#B45309] hover:bg-[#92400E] text-white shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="hidden md:inline-flex rounded-full px-6 items-center min-h-[50px] font-black text-sm bg-[#0A0A0A] text-[#FDE047] hover:bg-[#171717] shadow-md transition-all duration-200 active:scale-95 border-2 border-[#0A0A0A]"
             >
               {ctaButtonText}
             </button>
           </div>
         </div>
 
-        {/* Content / Expandable Navigation Cards */}
+        {/* Content / Expandable Navigation Cards (Dark High-Contrast 32px Cards) */}
         <div
-          className={`card-nav-content absolute left-0 right-0 top-[64px] bottom-0 p-3 sm:p-4 flex flex-col gap-3 justify-start z-10 ${
+          className={`card-nav-content absolute left-0 right-0 top-[68px] bottom-0 p-3 sm:p-5 flex flex-col gap-3 justify-start z-10 ${
             isExpanded ? 'visible pointer-events-auto opacity-100' : 'invisible pointer-events-none opacity-0'
-          } md:flex-row md:items-stretch md:gap-4`}
+          } md:flex-row md:items-stretch md:gap-4 bg-[#FDE047]`}
           aria-hidden={!isExpanded}
         >
           {items.map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}
               ref={setCardRef(idx)}
-              className="nav-card relative flex flex-col gap-2.5 p-4 sm:p-5 rounded-2xl min-w-0 flex-[1_1_auto] md:flex-1 shadow-lg border border-white/10 group/card transition-transform duration-200 hover:-translate-y-0.5"
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
+              className="nav-card relative flex flex-col gap-3 p-5 rounded-[28px] sm:rounded-[32px] min-w-0 flex-[1_1_auto] md:flex-1 shadow-xl border-3 border-[#0A0A0A] group/card transition-transform duration-200 hover:-translate-y-1 bg-[#0A0A0A] text-white"
             >
-              <div className="flex items-center gap-2 font-black tracking-tight text-base sm:text-lg">
+              <div className="flex items-center gap-2 font-black tracking-tight text-lg text-[#FDE047]">
                 {item.icon}
                 <span>{item.label}</span>
               </div>
 
-              <div className="nav-card-links mt-auto flex flex-col gap-1.5 pt-2 border-t border-white/15">
+              <div className="nav-card-links mt-auto flex flex-col gap-2 pt-3 border-t-2 border-neutral-800">
                 {item.links.map((lnk, i) => {
                   if (lnk.onClick) {
                     return (
@@ -376,10 +369,10 @@ export default function CardNav({
                           closeMenu();
                           lnk.onClick();
                         }}
-                        className="nav-card-link inline-flex items-center justify-between no-underline cursor-pointer transition-all duration-200 text-xs sm:text-sm text-left opacity-90 hover:opacity-100 hover:translate-x-1 py-1"
+                        className="nav-card-link inline-flex items-center justify-between no-underline cursor-pointer transition-all duration-150 text-sm text-left font-bold text-white hover:text-[#FDE047] hover:translate-x-1 py-1"
                       >
-                        <span className="font-semibold text-white">{lnk.label}</span>
-                        <ArrowUpRight size={14} className="shrink-0 text-amber-300" />
+                        <span>{lnk.label}</span>
+                        <ArrowUpRight size={16} className="shrink-0 text-[#FDE047]" />
                       </button>
                     );
                   }
@@ -388,10 +381,10 @@ export default function CardNav({
                       key={`${lnk.label}-${i}`}
                       to={lnk.href}
                       onClick={closeMenu}
-                      className="nav-card-link inline-flex items-center justify-between no-underline cursor-pointer transition-all duration-200 text-xs sm:text-sm opacity-90 hover:opacity-100 hover:translate-x-1 py-1"
+                      className="nav-card-link inline-flex items-center justify-between no-underline cursor-pointer transition-all duration-150 text-sm font-bold text-white hover:text-[#FDE047] hover:translate-x-1 py-1"
                     >
-                      <span className="font-semibold text-white">{lnk.label}</span>
-                      <ArrowUpRight size={14} className="shrink-0 text-amber-300" />
+                      <span>{lnk.label}</span>
+                      <ArrowUpRight size={16} className="shrink-0 text-[#FDE047]" />
                     </Link>
                   );
                 })}
