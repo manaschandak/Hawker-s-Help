@@ -1023,6 +1023,7 @@ export const DICTIONARY = {
     reportIssue: "Help / Report",
     postJobTitle: "Post a New Job",
     findWorkersTitle: "Available Workers at Nearby Nakas",
+    sampleDataNote: "SAMPLE DATA: Strictly for demonstration. Verify with official authorities before actual use.",
     // Extended Keys
     onboardingTitle: "Select Language",
     onboardingSub: "Choose your preferred language for voice and text",

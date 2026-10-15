@@ -1,6 +1,20 @@
-import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState, useMemo, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ArrowUpRight, Menu, X, Globe, MapPin, Sparkles, User, Briefcase, Shield, FileText, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Menu,
+  X,
+  Globe,
+  MapPin,
+  Sparkles,
+  User,
+  Briefcase,
+  Shield,
+  FileText,
+  CheckCircle2,
+  LogIn,
+  LogOut
+} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
@@ -16,10 +30,9 @@ export default function CardNav({
   const [isExpanded, setIsExpanded] = useState(false);
   const navRef = useRef(null);
   const cardsRef = useRef([]);
-  const tlRef = useRef(null);
 
-  // Role-specific navigation items with deep, vibrant distinctive card backgrounds
-  const workerItems = [
+  // Role-specific navigation items memoized so references stay stable
+  const workerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कामाचे शोध' : language === 'hi' ? 'काम खोजें' : 'Find Jobs',
       bgColor: '#1E293B', // Deep Slate Blue
@@ -54,19 +67,20 @@ export default function CardNav({
       ]
     },
     {
-      label: language === 'mr' ? 'माझे प्रोफाईल' : language === 'hi' ? 'मेरी प्रोफाइल' : 'My Profile',
+      label: language === 'mr' ? 'माझे प्रोफाईल व खाते' : language === 'hi' ? 'मेरी प्रोफाइल व खाता' : 'My Profile & Account',
       bgColor: '#78350F', // Rich Warm Amber/Rust
       textColor: '#FFFFFF',
       icon: <User className="w-5 h-5 text-amber-300" />,
       links: [
         { label: language === 'mr' ? 'काम फोटो व अनुभव' : language === 'hi' ? 'काम के फोटो' : 'Work Photos & Gallery', href: '/profile' },
         { label: language === 'mr' ? 'उपलब्धता बदला' : language === 'hi' ? 'उपलब्धता दर्ज करें' : 'Set Availability', href: '/profile' },
-        { label: language === 'mr' ? 'व्हॉट्सॲप कार्ड शेअर' : language === 'hi' ? 'कार्ड शेयर करें' : 'Share WhatsApp Card', href: '/profile' }
+        { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Switch Account', href: '/onboarding/login' },
+        { label: language === 'mr' ? 'मालक मोडमध्ये जा' : language === 'hi' ? 'नियोक्ता मोड चुनें' : 'Switch to Employer Mode', href: '#switch-role', onClick: () => { setRole('employer'); navigate('/employer/jobs'); } }
       ]
     }
-  ];
+  ], [language, setRole, navigate]);
 
-  const employerItems = [
+  const employerItems = useMemo(() => [
     {
       label: language === 'mr' ? 'कारागीर शोधा' : language === 'hi' ? 'कारीगर खोजें' : 'Find Workers',
       bgColor: '#1E293B',
@@ -101,121 +115,111 @@ export default function CardNav({
       ]
     },
     {
-      label: language === 'mr' ? 'खाते व भूमिका' : language === 'hi' ? 'खाता व सेटिंग्स' : 'Account & Role',
+      label: language === 'mr' ? 'खाते व लॉगिन' : language === 'hi' ? 'खाता व लॉगिन' : 'Account & Login',
       bgColor: '#78350F',
       textColor: '#FFFFFF',
       icon: <Shield className="w-5 h-5 text-amber-300" />,
       links: [
+        { label: language === 'mr' ? 'मोबाईलने लॉगिन करा (OTP)' : language === 'hi' ? 'मोबाइल से लॉगिन' : 'Mobile Login / Verify Phone', href: '/onboarding/login' },
         { label: language === 'mr' ? 'नवीन काम पोस्ट करा' : language === 'hi' ? 'नया काम पोस्ट करें' : 'Post New Job', href: '#post-job', onClick: () => onOpenPostJob && onOpenPostJob() },
         { label: language === 'mr' ? 'भाषा बदला' : language === 'hi' ? 'भाषा बदलें' : 'Change Language', href: '/onboarding/language' },
         { label: language === 'mr' ? 'कामगार मोडमध्ये जा' : language === 'hi' ? 'कारीगर मोड चुनें' : 'Switch to Worker Mode', href: '#switch-role', onClick: () => { setRole('worker'); navigate('/jobs'); } }
       ]
     }
-  ];
+  ], [language, onOpenPostJob, setRole, navigate]);
 
   const items = role === 'employer' ? employerItems : workerItems;
 
   const calculateHeight = () => {
     const navEl = navRef.current;
-    if (!navEl) return 260;
+    if (!navEl) return 320;
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
       const contentEl = navEl.querySelector('.card-nav-content');
       if (contentEl) {
-        const wasVisible = contentEl.style.visibility;
-        const wasPosition = contentEl.style.position;
-        const wasHeight = contentEl.style.height;
-
-        contentEl.style.visibility = 'visible';
-        contentEl.style.position = 'static';
-        contentEl.style.height = 'auto';
-
-        const topBar = 64;
-        const padding = 20;
-        const contentHeight = contentEl.scrollHeight;
-
-        contentEl.style.visibility = wasVisible;
-        contentEl.style.position = wasPosition;
-        contentEl.style.height = wasHeight;
-
-        return topBar + contentHeight + padding;
+        return Math.max(380, 64 + contentEl.scrollHeight + 20);
       }
+      return 420;
     }
-    return 310;
+    return 320;
   };
 
-  const createTimeline = () => {
+  // State-driven GSAP animation: perfectly synchronized with isExpanded
+  useLayoutEffect(() => {
     const navEl = navRef.current;
-    if (!navEl) return null;
+    if (!navEl) return;
 
-    gsap.set(navEl, { height: 64, overflow: 'hidden' });
-    gsap.set(cardsRef.current, { y: 25, opacity: 0 });
+    // Filter valid card DOM elements
+    const validCards = cardsRef.current.filter(Boolean);
 
-    const tl = gsap.timeline({ paused: true });
+    if (isExpanded) {
+      const targetHeight = calculateHeight();
+      gsap.killTweensOf(navEl);
+      gsap.killTweensOf(validCards);
 
-    tl.to(navEl, {
-      height: calculateHeight,
-      duration: 0.45,
-      ease: 'power3.out'
-    });
+      // Animate container height
+      gsap.to(navEl, {
+        height: targetHeight,
+        duration: 0.45,
+        ease: 'power3.out'
+      });
 
-    tl.to(
-      cardsRef.current,
-      {
-        y: 0,
-        opacity: 1,
+      // Animate cards appearance
+      gsap.fromTo(
+        validCards,
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power3.out',
+          stagger: 0.06,
+          delay: 0.08
+        }
+      );
+    } else {
+      gsap.killTweensOf(navEl);
+      gsap.killTweensOf(validCards);
+
+      // Animate cards exit
+      gsap.to(validCards, {
+        y: 15,
+        opacity: 0,
+        duration: 0.2,
+        ease: 'power2.in'
+      });
+
+      // Animate container back to initial bar height
+      gsap.to(navEl, {
+        height: 64,
         duration: 0.35,
-        ease: 'power3.out',
-        stagger: 0.06
-      },
-      '-=0.2'
-    );
+        ease: 'power3.inOut'
+      });
+    }
+  }, [isExpanded, items]);
 
-    return tl;
-  };
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = createTimeline();
-      tlRef.current = tl;
-    }, navRef);
-
-    return () => ctx.revert();
-  }, [items, language, role]);
-
-  useLayoutEffect(() => {
+  // Window resize handler
+  useEffect(() => {
     const handleResize = () => {
-      if (!tlRef.current) return;
-      if (isExpanded) {
-        const newHeight = calculateHeight();
-        gsap.to(navRef.current, { height: newHeight, duration: 0.25 });
-      }
+      if (!navRef.current || !isExpanded) return;
+      const newHeight = calculateHeight();
+      gsap.to(navRef.current, { height: newHeight, duration: 0.25 });
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [isExpanded]);
 
   const toggleMenu = () => {
-    const tl = tlRef.current;
-    if (!tl) return;
-
-    if (!isExpanded) {
-      setIsExpanded(true);
-      tl.play();
-    } else {
-      tl.reverse().eventCallback('onReverseComplete', () => setIsExpanded(false));
-    }
+    setIsExpanded(prev => !prev);
   };
 
   const closeMenu = () => {
-    if (isExpanded && tlRef.current) {
-      tlRef.current.reverse().eventCallback('onReverseComplete', () => setIsExpanded(false));
-    }
+    setIsExpanded(false);
   };
 
   const setCardRef = (i) => (el) => {
-    if (el) cardsRef.current[i] = el;
+    cardsRef.current[i] = el;
   };
 
   const handleLanguageToggle = () => {
@@ -246,7 +250,7 @@ export default function CardNav({
         } block h-[64px] p-0 rounded-2xl sm:rounded-3xl relative overflow-hidden will-change-[height] border-2 border-slate-200/90 bg-[#FFFFFF] backdrop-blur-md transition-shadow`}
       >
         {/* Top Bar */}
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[64px] flex items-center justify-between px-3 sm:px-5 z-10">
+        <div className="card-nav-top absolute inset-x-0 top-0 h-[64px] flex items-center justify-between px-3 sm:px-5 z-20 bg-white">
           
           {/* Left: Menu Trigger & Location Chip */}
           <div className="flex items-center gap-2 sm:gap-3">
@@ -284,8 +288,44 @@ export default function CardNav({
             </Link>
           </div>
 
-          {/* Right Actions: Language Switcher & Role CTA */}
-          <div className="flex items-center gap-2">
+          {/* Right Actions: Login Button, Language Switcher & Role CTA */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* LOGIN / ACCOUNT BUTTON */}
+            {auth?.isLoggedIn && !auth?.isGuest ? (
+              <div className="flex items-center gap-1">
+                <Link
+                  to="/profile"
+                  onClick={closeMenu}
+                  className="h-10 px-2.5 sm:px-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-950 font-black text-xs flex items-center gap-1.5 transition-colors no-underline"
+                  title={auth.name || 'Account'}
+                >
+                  <User size={14} className="text-[#B45309]" />
+                  <span className="hidden sm:inline truncate max-w-[85px]">{auth.name ? auth.name.split(' ')[0] : 'Account'}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    navigate('/onboarding/login');
+                  }}
+                  className="h-10 px-2 rounded-xl bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-600 font-bold text-xs transition-colors"
+                  title="Logout / Switch Account"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/onboarding/login"
+                onClick={closeMenu}
+                className="h-10 px-3 sm:px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all no-underline"
+              >
+                <LogIn size={14} className="text-amber-400" />
+                <span>{language === 'mr' ? 'लॉगिन' : language === 'hi' ? 'लॉगिन' : 'Login'}</span>
+              </Link>
+            )}
+
+            {/* Language Switcher */}
             <button
               type="button"
               onClick={handleLanguageToggle}
@@ -296,6 +336,7 @@ export default function CardNav({
               <span className="uppercase">{language}</span>
             </button>
 
+            {/* Role CTA */}
             <button
               type="button"
               onClick={handleCtaClick}
@@ -308,8 +349,8 @@ export default function CardNav({
 
         {/* Content / Expandable Navigation Cards */}
         <div
-          className={`card-nav-content absolute left-0 right-0 top-[64px] bottom-0 p-3 sm:p-4 flex flex-col gap-3 justify-start z-[1] ${
-            isExpanded ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
+          className={`card-nav-content absolute left-0 right-0 top-[64px] bottom-0 p-3 sm:p-4 flex flex-col gap-3 justify-start z-10 ${
+            isExpanded ? 'visible pointer-events-auto opacity-100' : 'invisible pointer-events-none opacity-0'
           } md:flex-row md:items-stretch md:gap-4`}
           aria-hidden={!isExpanded}
         >

@@ -60,7 +60,7 @@ export default function PostJobModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="w-full max-w-[430px] bg-white rounded-t-3xl sm:rounded-3xl border-t-4 sm:border-2 border-[#B45309] shadow-2xl p-5 overflow-y-auto max-h-[92vh] space-y-4">
+      <div className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl border-t-4 sm:border-2 border-[#B45309] shadow-2xl p-5 overflow-y-auto max-h-[92vh] space-y-4">
         
         {/* Header with Step Indicator */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">

@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Navigation, ExternalLink, X, RotateCcw, CheckCircle2, ShieldCheck, Bus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatDistance } from '../utils/distance';
+import NakaMap from './NakaMap';
 
 export default function LocationModal({
   isOpen,
@@ -83,6 +84,20 @@ export default function LocationModal({
               <span>{t('refreshGps')}</span>
             </button>
           </div>
+        </div>
+
+        {/* Interactive Leaflet OpenStreetMap */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-black uppercase text-slate-400 tracking-wider block">
+            Roadside Chowks Map
+          </label>
+          <NakaMap
+            userCoords={coords}
+            pickupPoints={sortedPickupPoints}
+            selectedPickup={selectedPickup}
+            onSelectPickup={setManualPickup}
+            language={language}
+          />
         </div>
 
         {/* Nearest Pickup Highlight Card */}
