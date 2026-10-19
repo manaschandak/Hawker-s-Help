@@ -1,4 +1,4 @@
-# Hawker's Help (हॉकर्स हेल्प / फेरीवाला मदत)
+#Naka
 > *"Work finds you. You don't have to wait."*
 > **Theme**: Inclusive Design, Employment, Digital Empowerment
 > **Target Audience**: Daily-wage hawkers & naka workers (plumbers, carpenters, electricians, painters, sweepers, helpers, masons) across Indian labour chowks.
